@@ -12,6 +12,7 @@ use WeglotWP\Services\Language_Service_Weglot;
 use WeglotWP\Services\Option_Service_Weglot;
 use WeglotWP\Services\Parser_Service_Weglot;
 use WeglotWP\Services\Request_Url_Service_Weglot;
+use WP_Query;
 
 /**
  * @since 2.4.0

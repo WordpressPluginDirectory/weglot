@@ -49,20 +49,18 @@ class Regex_Checkers_Service_Weglot {
 					$file    = str_replace( 'class-', '', $file );
 					$file    = implode( '_', array_map( 'ucfirst', explode( '-', $file ) ) );
 					$service = weglot_get_service( $file );
-					if ( isset( $service ) ) {
-						$active = $service->is_active();
-						if ( $active ) {
-							$regex_dir = WEGLOT_DIR . '/src/third/' . $third . '/regexcheckers/';
-							if ( is_dir( $regex_dir ) ) {
-								$regex_files = array_diff( scandir( WEGLOT_DIR . '/src/third/' . $third . '/regexcheckers/' ), array( '..', '.' ) );
+					$active = $service->is_active();
+					if ( $active ) {
+						$regex_dir = WEGLOT_DIR . '/src/third/' . $third . '/regexcheckers/';
+						if ( is_dir( $regex_dir ) ) {
+							$regex_files = array_diff( scandir( WEGLOT_DIR . '/src/third/' . $third . '/regexcheckers/' ), array( '..', '.' ) );
 
-								foreach ( $regex_files as $regex_file ) {
-									$filename = Text::removeFileExtension( $regex_file );
-									$filename = str_replace( 'class-', '', $filename );
-									$filename = implode( '_', array_map( 'ucfirst', explode( '-', $filename ) ) );
-									$class    = '\\WeglotWP\\Third\\' . implode( '', array_map( 'ucfirst', explode( '-', $third ) ) ) . '\\Regexcheckers\\' . $filename;
-									array_push( $checkers, new RegexChecker( $class::REGEX, $class::TYPE, $class::VAR_NUMBER, $class::$KEYS ) );
-								}
+							foreach ( $regex_files as $regex_file ) {
+								$filename = Text::removeFileExtension( $regex_file );
+								$filename = str_replace( 'class-', '', $filename );
+								$filename = implode( '_', array_map( 'ucfirst', explode( '-', $filename ) ) );
+								$class    = '\\WeglotWP\\Third\\' . implode( '', array_map( 'ucfirst', explode( '-', $third ) ) ) . '\\Regexcheckers\\' . $filename;
+								array_push( $checkers, new RegexChecker( $class::REGEX, $class::TYPE, $class::VAR_NUMBER, $class::$KEYS ) );
 							}
 						}
 					}

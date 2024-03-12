@@ -50,7 +50,7 @@ class Front_Enqueue_Weglot implements Hooks_Interface_Weglot {
 		if ( $options['page_views_enabled'] ) { ?>
 			<script>
 				let request = new XMLHttpRequest();
-				let url = 'ht' + 'tps:' + '//' + 'cdn-api.weglot.com/' + 'pageviews?api_key=' + '<?= esc_js( $options['api_key'] ); ?>';
+				let url = 'ht' + 'tps:' + '//' + 'api.weglot.com/' + 'pageviews?api_key=' + '<?= esc_js( $options['api_key'] ); ?>';
 				let data = JSON.stringify({
 						url: location.protocol + '//' + location.host + location.pathname,
 						language: document.getElementsByTagName('html')[0].getAttribute('lang'),

@@ -172,6 +172,10 @@ class Translate_Service_Weglot {
 		$type      = apply_filters( 'weglot_type_treat_page', $type );
 		$canonical = $this->get_canonical_url_from_content( $content );
 
+		$weglot_force_translate_cart = apply_filters( 'weglot_force_translate_cart', false );
+		if( $weglot_force_translate_cart){
+			$content   = $this->force_translate_cart($content);
+		}
 		// No need to translate but prepare new dom with button.
 		if (
 			$this->current_language === $this->original_language
@@ -260,6 +264,26 @@ class Translate_Service_Weglot {
 		return preg_replace( '/<!--(.*)-->/Uis', '', $html );
 	}
 
+	/**
+	 * Force translate woocommerce cart.
+	 *
+	 * @param string $content the HTML string.
+	 *
+	 * @return string
+	 * @since 2.3.0
+	 */
+	private function force_translate_cart( $content ) {
+		if ( false !== strpos( wp_get_referer(), '/cart/' ) ) {
+			// This is the cart page
+			$parser = $this->parser_services->get_parser();
+			$current_language = $this->request_url_services->create_url_object( wp_get_referer() )->getCurrentLanguage();
+			if($current_language->getInternalCode() != $this->original_language){
+				$translated_content = $parser->translate( $content, $this->original_language, $current_language->getInternalCode(), array(), $canonical );
+				$translated_content = apply_filters( 'weglot_html_treat_page', $translated_content );
+				return $this->weglot_render_dom( $translated_content, $canonical );
+			}
+		}
+	}
 
 	/**
 	 * Replace links and add switcher on the final HTML.

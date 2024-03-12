@@ -52,7 +52,7 @@ class Wprentals_translate_calendar implements Hooks_Interface_Weglot {
 	 */
 	public function wg_wpestate_datepicker_language( ) {
 
-		/** @var $request_url_services Request_Url_Service_Weglot */
+		/** @var Request_Url_Service_Weglot $request_url_services */
 		$request_url_services = weglot_get_service( 'Request_Url_Service_Weglot' );
 		return $request_url_services->get_current_language()->getInternalCode();
 

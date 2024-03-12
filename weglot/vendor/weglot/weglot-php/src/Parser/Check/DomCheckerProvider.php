@@ -103,6 +103,12 @@ class DomCheckerProvider
         return $this->inlineNodes;
     }
 
+    /**
+     * @return array
+     */
+    public function addInlineNode($node) {
+        $this->inlineNodes[] = $node;
+    }
 
     /**
      * @param int $translationEngine

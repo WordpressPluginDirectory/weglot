@@ -112,10 +112,18 @@ class CustomSwitchersFormatter {
         }
 
         // if we have temporary switcher, we place it before the body end tag.
-        if ( ! empty( $temp_switcher ) ) {
-            $dom = str_replace( '</body>', $temp_switcher . '</body>', $dom );
+        if (!empty($temp_switcher)) {
+            // Find the </body> tag
+            $bodyTag = $dom->find('body', 0);
+            // Check if $bodyTag is not null before proceeding
+            if ($bodyTag !== null) {
+                // Insert the new element before the </body> tag
+                $bodyTag->innertext = $bodyTag->innertext . $temp_switcher;
+            } else {
+                // If $bodyTag is null, use str_replace as a fallback
+                $dom = str_replace('</body>', $temp_switcher . '</body>', $dom);
+            }
         }
-
         return $dom;
     }
 }

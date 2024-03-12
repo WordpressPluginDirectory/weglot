@@ -281,7 +281,9 @@ class Replace_Url_Service_Weglot {
 		$parsed_url['host'] = ! empty( $parsed_url['host'] ) ? $parsed_url['host'] : '';
 
 		$not_other_site = true;
-		if ( $this->multisite_other_paths ) {
+
+		$check_multisite_other_paths = apply_filters( 'weglot_check_multisite_other_paths', true );
+		if ( $this->multisite_other_paths && $check_multisite_other_paths) {
 			if ( isset( $parsed_url['path'] ) ) {
 				$paths = explode( '/', $parsed_url['path'] );
 				if ( isset( $paths[1] ) ) {

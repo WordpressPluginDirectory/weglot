@@ -181,10 +181,10 @@ class Metabox_Visual_Editor_Weglot implements Hooks_Interface_Weglot {
 	 */
 	public function get_weglot_path_status( $path, $list ): void {
 		$wg_path       = $this->request_url_services->create_url_object( $path );
-		$visual_editor = 'https://ve-weglot.com/?inject=visual-editor&mode=translations&url=' . $wg_path->getUrl();
-		$visual_exclusion = 'https://ve-weglot.com/?inject=visual-editor&mode=exclusions&url=' . $wg_path->getUrl();
 		$organization_slug = $this->option_services->get_option('organization_slug');
 		$project_slug = $this->option_services->get_option('project_slug');
+		$visual_editor = esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/visual-editor/launch?mode=translations&url='.$wg_path->getUrl(), 'weglot' );
+		$visual_exclusion = esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/visual-editor/launch?mode=exclusions&url='.$wg_path->getUrl(), 'weglot' );
 		$url_exclusion = esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/settings/exclusions#excluded-urls', 'weglot' );
 
 		if ( $list ) {

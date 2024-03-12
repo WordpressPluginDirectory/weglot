@@ -169,7 +169,7 @@ class Redirect_Service_Weglot {
 
 
 		// Redirect using the best language.
-		if ( isset( $best_language ) && $best_language !== $this->language_services->get_original_language() && $this->language_services->get_original_language() === $this->request_url_services->get_current_language() ) {
+		if ( $best_language !== $this->language_services->get_original_language() && $this->language_services->get_original_language() === $this->request_url_services->get_current_language() ) {
 			//Cancel redirect if excluded page.
 			if ( ! $this->request_url_services->get_weglot_url()->getForLanguage( $best_language, false ) ){
 				return;
@@ -182,8 +182,7 @@ class Redirect_Service_Weglot {
 		}
 
 		// If there is no best language, we redirect using the auto switch fallback if there is one in the options.
-		if ( ! isset( $best_language ) &&
-			! in_array( $this->language_services->get_original_language()->getExternalCode(), $navigator_languages ) &&
+		if ( ! in_array( $this->language_services->get_original_language()->getExternalCode(), $navigator_languages ) &&
 			$this->option_services->get_option( 'autoswitch_fallback' ) !== null
 		) {
 			$fallback_language = $this->language_services->get_language_from_internal( $this->option_services->get_option( 'autoswitch_fallback' ) );

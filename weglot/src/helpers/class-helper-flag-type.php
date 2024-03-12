@@ -79,7 +79,7 @@ class Helper_Flag_Type {
 	 * @return string
 	 */
 	public static function get_new_flags( $is_admin = false ) {
-		$options         = get_transient( 'weglot_cache_cdn', false );
+		$options         = get_transient( 'weglot_cache_cdn' );
 		$custom_flag_css = '';
 
 		for ( $flag_number = 0; $flag_number <= 3; $flag_number++ ) {

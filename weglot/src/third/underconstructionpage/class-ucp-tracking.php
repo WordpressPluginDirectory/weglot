@@ -57,8 +57,7 @@ class UCP_Tracking implements Hooks_Interface_Weglot {
 		if ( isset( $options_available['api_key_private']['description'] ) ) {
 
 			$register_link         = 'https://dashboard.weglot.com/register-wordpress';
-			$register_link_tracked = 'https://weglot.com/ad-track?origin=UCP&redirectTo=https://dashboard.weglot.com/register-wordpress';
-
+			$register_link_tracked = 'https://dashboard.weglot.com/register-wordpress?fpr=ucp';
 			$options_available['api_key_private']['description'] = \str_replace( $register_link, $register_link_tracked, $options_available['api_key_private']['description'] );
 		}
 

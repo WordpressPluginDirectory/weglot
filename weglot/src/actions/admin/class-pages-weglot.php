@@ -130,7 +130,7 @@ class Pages_Weglot implements Hooks_Interface_Weglot {
 				'id'     => 'weglot-visual-editor',
 				'parent' => 'weglot',
 				'title'  => __( 'Edit with visual editor', 'weglot' ),
-				'href'   => esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/visual-editor/launch/?url='.$url_to_edit.'&mode=translation', 'weglot' ),
+				'href'   => esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/visual-editor/launch?url='.$url_to_edit.'&mode=translations', 'weglot' ),
 				'meta'   => array(
 					'target' => '_blank',
 				),

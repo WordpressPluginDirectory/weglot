@@ -23,7 +23,7 @@ class Meta_Twitter extends AbstractDomChecker {
 	 */
 	const PROPERTY = 'content';
 	/**
-	 * {@inheritdoc}
+	 * @var integer
 	 */
 	const WORD_TYPE = WordType::META_CONTENT;
 }

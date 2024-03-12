@@ -3,16 +3,33 @@
 function switcherPlacement() {
 	const button_switcher_ajax = document.querySelectorAll(".weglot-custom-switcher-ajax")
 	Array.prototype.forEach.call(button_switcher_ajax, function (el, i) {
-		let button_target = document.querySelector(el.getAttribute('data-wg-target'))
-		let button_sibling = document.querySelector(el.getAttribute('data-wg-sibling'))
+		let button_sibling = null;
+		let button_target = null;
+		let targetSelector = null;
+		let siblingSelector = null;
 
-		if (button_target && button_sibling) {
+		if (el.getAttribute('data-wg-target') !== '') {
+			targetSelector = el.getAttribute('data-wg-target');
+		}
+
+		if (el.getAttribute('data-wg-sibling') !== '') {
+			siblingSelector = el.getAttribute('data-wg-sibling');
+		}
+
+		if (targetSelector) {
+			button_target = document.querySelector(targetSelector)
+		}
+		if (siblingSelector) {
+			button_sibling = document.querySelector(siblingSelector)
+		}
+
+		if (button_target != null && button_sibling != null) {
 			button_target.insertBefore(el, button_sibling)
 			el.classList.remove("weglot-custom-switcher-ajax")
-		} else if (button_target) {
+		} else if (button_target && button_sibling == null) {
 			button_target.insertBefore(el, button_target.firstChild)
 			el.classList.remove("weglot-custom-switcher-ajax")
-		} else if (button_sibling) {
+		} else if (button_sibling && button_target == null) {
 			button_sibling.parentNode.insertBefore(el, button_sibling)
 			el.classList.remove("weglot-custom-switcher-ajax")
 		}
@@ -28,11 +45,13 @@ function inFrame() {
 	}
 }
 
-if (document.readyState === "loading") {
-	document.addEventListener( "DOMContentLoaded", () => switcherPlacement() );
-} else {
-	switcherPlacement();
-}
+setTimeout(() => {
+	if (document.readyState === "loading") {
+		document.addEventListener( "DOMContentLoaded", () => switcherPlacement() );
+	} else {
+		switcherPlacement();
+	}
+}, 1500);
 
 document.addEventListener( "DOMContentLoaded", function ( event ) {
 

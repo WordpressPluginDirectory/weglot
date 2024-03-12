@@ -122,7 +122,7 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 	 * @return array
 	 */
 	public function woocommerce_filter_url_array( $result ) {
-		/** @var  $language_service Language_Service_Weglot */
+		/** @var Language_Service_Weglot $language_service */
 		$language_service = weglot_get_service( 'Language_Service_Weglot' );
 
 		$choose_current_language = $this->request_url_services->get_current_language();
@@ -158,7 +158,7 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
  * @return void
 	 */
 	public function woocommerce_filter_reset_password( $url ) {
-		/** @var  $language_service Language_Service_Weglot */
+		/** @var Language_Service_Weglot $language_service */
 		$language_service = weglot_get_service( 'Language_Service_Weglot' );
 
 		if ( $this->request_url_services->get_current_language() === $language_service->get_original_language() ) {

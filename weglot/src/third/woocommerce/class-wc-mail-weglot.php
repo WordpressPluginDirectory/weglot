@@ -132,10 +132,15 @@ class WC_Mail_Weglot implements Hooks_Interface_Weglot {
 		}
 
 		$woocommerce_order_language = get_post_meta( $order_id, 'weglot_language', true );
-
+		$order = wc_get_order($order_id);
 		if ( ! $woocommerce_order_language ) {
 			$current_language = $this->request_url_services->get_current_language()->getExternalCode();
-			add_post_meta( $order_id, 'weglot_language', $current_language );
+			if ($order) {
+				// Add your custom metadata
+				$order->update_meta_data('weglot_language', $current_language);
+				// Save the order data
+				$order->save();
+			}
 		}
 
 		return $order_id;

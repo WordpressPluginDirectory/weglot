@@ -8,11 +8,13 @@
 namespace WeglotWP\Helpers;
 
 // Exit if accessed directly.
+use AllowDynamicProperties;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
+#[AllowDynamicProperties]
 class Helper_Rollback_Weglot extends \Plugin_Upgrader {
 
 	/**

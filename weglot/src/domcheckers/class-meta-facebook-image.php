@@ -23,7 +23,7 @@ class Meta_Facebook_Image extends AbstractDomChecker {
 	 */
 	const PROPERTY = 'content';
 	/**
-	 * {@inheritdoc}
+	 * @var integer
 	 */
 	const WORD_TYPE = WordType::IMG_SRC;
 }

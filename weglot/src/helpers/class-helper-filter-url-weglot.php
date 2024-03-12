@@ -41,7 +41,7 @@ abstract class Helper_Filter_Url_Weglot {
 	public static function filter_url_log_redirect( $url_filter ) {
 
 		$request_url_service = weglot_get_request_url_service();
-		/** @var  $language_service Language_Service_Weglot */
+		/** @var Language_Service_Weglot $language_service */
 		$language_service = weglot_get_service( 'Language_Service_Weglot' );
 
 		$url = $request_url_service->create_url_object( $url_filter );

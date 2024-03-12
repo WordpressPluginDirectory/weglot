@@ -20,7 +20,7 @@ class Video_Source extends AbstractDomChecker {
 	 */
 	const PROPERTY = 'src';
 	/**
-	 * {@inheritdoc}
+	 * @var integer
 	 */
 	const WORD_TYPE = WordType::IMG_SRC;
 }

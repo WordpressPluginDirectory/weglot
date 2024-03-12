@@ -129,7 +129,7 @@ class Generate_Switcher_Service_Weglot {
 					$dom              = str_replace( '<div data-wg-position="' . $key . '" data-wg-ajax="true"></div>', $button_ajax_html, $dom );
 					$find_location    = true;
 				} else {
-					$button_html   = $this->button_services->get_html( 'weglot-default location-not-found', $switcher, '', '', $key );
+					$button_html   = $this->button_services->get_html( 'weglot-custom-switcher-ajax location-not-found', $switcher, '', '', $key );
 					$dom           = str_replace( '</body>', $button_html, $dom );
 					$find_location = true;
 				}

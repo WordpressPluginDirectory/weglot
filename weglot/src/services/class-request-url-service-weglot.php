@@ -129,7 +129,7 @@ class Request_Url_Service_Weglot {
 			}
 		}
 
-		if ( empty( $current_language ) ) {
+		if ( !$current_language ) {
 			return apply_filters( 'weglot_default_current_language_empty', $this->language_services->get_original_language() );
 		}
 

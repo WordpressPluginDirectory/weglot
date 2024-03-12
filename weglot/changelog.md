@@ -3,6 +3,30 @@
 
 # Change Log
 
+##4.2.4 (25/01/2024) =
+* Bug: Fixed slug translation update
+* Bug: Fixed issue using block menu or widget
+* Bug: Fixed bug deleting body tag
+
+##4.2.3 (16/01/2024) =
+* Bug: Fixed WooCommerce cart translations
+* Bug: Fixed issue with custom flags when using the switcher template
+* Improvement: Added filter to enable translation links into multisite config
+* Improvement: Reworked switcher editor location
+* Improvement: Removed page settings custom-urls
+* Improvement: Added filter to increase wp_remote_get timeout
+* Quality: Improved regex performance for translation links
+* Quality: Improved JavaScript organization and appearance
+* Quality: Achieved PHPStan level 2
+
+##4.2.2 (31/10/2023) =
+* Bug: Fix deprecated issue on PHP 8.2 due to creation of dynamic property
+* Bug: Fix issue with email defer option from woocommerce
+* Improvement: Add quote about autoredirect fallback
+* Improvement: Install via wp-packagist works
+* Improvement: Add plugin version to our Weglot settings
+* Improvement: Update pageviews endpoint to enable more country stats
+
 ##4.2.1 (10/10/2023) =
 * Bug: Fix deprecated issue on PHP 8.2 due to creation of dynamic property
 * Improvement: Add Negative excludedPath implementation

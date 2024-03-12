@@ -53,7 +53,7 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 	public function weglot_widget_block_render_callback( $block_attributes, $content ) {
 
 		$type_block = $block_attributes['type'];
-		/** @var $button_service Button_Service_Weglot */
+		/** @var Button_Service_Weglot $button_service */
 		$button_service = weglot_get_service( 'Button_Service_Weglot' );
 		$class_name = '';
 		$button = $button_service->get_html( 'weglot-widget weglot-widget-block' );
@@ -66,11 +66,9 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 		if ( 'widget' === $type_block ) {
 			$button = $button_service->get_html( $class_name.' weglot-widget weglot-widget-block ' );
 			$button = str_replace( 'name="menu" ', 'name="menu" value=""', $button );
-			$button = str_replace( 'data-wg-notranslate=""', '', $button );
 		} elseif ( 'menu' === $type_block ) {
 			$button = $button_service->get_html( $class_name.' weglot-menu weglot-menu-block ' );
 			$button = str_replace( 'name="menu" ', 'name="menu" value=""', $button );
-			$button = str_replace( 'data-wg-notranslate=""', '', $button );
 		}
 
 		return $button;

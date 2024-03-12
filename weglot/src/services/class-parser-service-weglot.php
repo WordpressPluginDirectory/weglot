@@ -51,7 +51,7 @@ class Parser_Service_Weglot {
 		$api_key            = $this->option_services->get_api_key( true );
 		$version            = $this->option_services->get_version();
 		$translation_engine = $this->option_services->get_translation_engine();
-		if ( ! $translation_engine || empty( $translation_engine ) ) {
+		if ( empty( $translation_engine ) ) {
 			$translation_engine = 2;
 		}
 

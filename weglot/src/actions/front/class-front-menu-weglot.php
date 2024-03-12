@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AllowDynamicProperties;
 use WeglotWP\Models\Hooks_Interface_Weglot;
 use WeglotWP\Services\Button_Service_Weglot;
 
@@ -18,6 +19,7 @@ use WeglotWP\Services\Request_Url_Service_Weglot;
  * @since 2.0
  *
  */
+#[AllowDynamicProperties]
 class Front_Menu_Weglot implements Hooks_Interface_Weglot {
 	/**
 	 * @var Option_Service_Weglot
@@ -60,7 +62,6 @@ class Front_Menu_Weglot implements Hooks_Interface_Weglot {
 		if ( ! $this->option_services->get_option( 'api_key' ) ) {
 			return;
 		}
-
 
 		add_filter( 'wp_get_nav_menu_items', array( $this, 'weglot_wp_get_nav_menu_items' ), 20 );
 		add_filter( 'nav_menu_link_attributes', array( $this, 'add_nav_menu_link_attributes_atts' ), 10, 3 );

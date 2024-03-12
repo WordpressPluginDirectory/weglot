@@ -93,7 +93,7 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 			case Helper_Tabs_Admin_Weglot::SETTINGS:
 				$has_first_settings = $this->option_services->get_has_first_settings();
 				$options            = $this->sanitize_options_settings( $options, $has_first_settings );
-				$response           = $this->option_services->save_options_to_weglot( $options, $has_first_settings );
+				$response           = $this->option_services->save_options_to_weglot( $options );
 
 				if ( $response['success'] && is_array( $response['result'] ) ) {
 					delete_transient( 'weglot_cache_cdn' );
@@ -143,19 +143,6 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 					$options_bdd['active_wc_reload'] = true;
 				} else {
 					$options_bdd['active_wc_reload'] = false;
-				}
-
-				$this->option_services->set_options( $options_bdd );
-				break;
-			case Helper_Tabs_Admin_Weglot::CUSTOM_URLS:
-				if ( null === $options_bdd ) {
-					$options_bdd['custom_urls'] = array();
-				}
-
-				if ( array_key_exists( 'custom_urls', $options ) ) {
-					$options_bdd['custom_urls'] = $options['custom_urls'];
-				} else {
-					$options_bdd['custom_urls'] = array();
 				}
 
 				$this->option_services->set_options( $options_bdd );
