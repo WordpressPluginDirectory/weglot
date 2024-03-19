@@ -4,7 +4,7 @@ Tags: translate, multilingual, language, translation, localization, multilingual
 Requires at least: 4.5
 Tested up to: 6.4
 Requires PHP: 7.0
-Stable tag: 4.2.5
+Stable tag: 4.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -251,11 +251,8 @@ See changelog for upgrade changes.
 
 == Changelog ==
 
-= 4.2.5 (12/03/2024) =
-* Bug: Fixed slug translation warning on first install
-* Bug: Fixed link to switcher editor on BO
-* Bug: Fixed save language on WooCommerce Meta
-* Quality: Fixed missing escaped text
+= 4.2.6 (19/03/2024) =
+* Security: sanitization fixes; thank you Wordfence (CVE-2024-2124)
 
 = Older versions =
 

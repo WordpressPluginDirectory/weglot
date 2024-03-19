@@ -71,7 +71,74 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 			$button = str_replace( 'name="menu" ', 'name="menu" value=""', $button );
 		}
 
-		return $button;
+		return $this->sanitize_switcher($button);
+	}
+
+	/**
+	 * @return string
+	 * @since 2.0
+	 */
+	public function sanitize_switcher($button_html){
+
+		$active_sanitizer = apply_filters( 'weglot_active_switcher_sanitizer', true );
+
+		if( ! $active_sanitizer ){
+			return $button_html;
+		}
+		// Define allowed HTML elements and attributes.
+		$allowed_html = array(
+			'aside' => array(
+				'class' => array(),
+				'data-wg-notranslate' => array(),
+				'tabindex' => array(),
+				'aria-expanded' => array(),
+				'aria-label' => array()
+			),
+			'input' => array(
+				'id' => array(),
+				'class' => array(),
+				'type' => array(),
+				'name' => array()
+			),
+			'label' => array(
+				'data-l' => array(),
+				'tabindex' => array(),
+				'for' => array(),
+				'class' => array(),
+				'data-code-language' => array(),
+				'data-name-language' => array()
+			),
+			'ul' => array(
+				'role' => array()
+			),
+			'li' => array(
+				'data-l' => array(),
+				'class' => array(),
+				'data-code-language' => array(),
+				'role' => array()
+			),
+			'a' => array(
+				'title' => array(),
+				'class' => array(),
+				'role' => array(),
+				'href' => array(),
+				'data-wg-notranslate' => array()
+			),
+			'span' => array(
+				'class' => array()
+			)
+		);
+		$allowed_html = apply_filters('allowed_html_filter', $allowed_html);
+		$patterns = [
+			'/<script\b[^>]*>(.*?)<\/script>/s', // Detect <script> tags
+			'/\bon\w+\s*=\s*("[^"]*"|\'[^\']*\'|[^"\'<>\s]+)/i', // Detect inline event handlers (e.g., onmouseover)
+			//'/\b(https?|ftp):\/\/[^\s<>"\'()]+/', // Detect suspicious URLs
+		];
+		foreach ($patterns as $pattern) {
+			$button_html = preg_replace($pattern, '', $button_html);
+		}
+
+		return wp_kses( $button_html, $allowed_html );
 	}
 
 	/**

@@ -3,6 +3,12 @@
 
 # Change Log
 
+##4.2.5 (12/03/2024) =
+* Bug: Fixed slug translation warning on first install
+* Bug: Fixed link to switcher editor on BO
+* Bug: Fixed save language on WooCommerce Meta
+* Quality: Fixed missing escaped text
+
 ##4.2.4 (25/01/2024) =
 * Bug: Fixed slug translation update
 * Bug: Fixed issue using block menu or widget

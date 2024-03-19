@@ -124,12 +124,14 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 
 					// get menu options.
 					$options_menu = $this->option_services->get_option( 'menu_switcher' );
-					if ( ! empty( $options_menu ) ) {
-						foreach ( $options_menu as $key => $menu ) {
-							if ( $options['custom_settings']['button_style']['is_dropdown'] ) {
-								$options_menu[ $key ]['dropdown'] = 1;
-							} else {
-								$options_menu[ $key ]['dropdown'] = 0;
+					if ( is_array( $options_menu ) ) {
+						if ( ! empty( $options_menu ) ) {
+							foreach ( $options_menu as $key => $menu ) {
+								if ( $options['custom_settings']['button_style']['is_dropdown'] ) {
+									$options_menu[ $key ]['dropdown'] = 1;
+								} else {
+									$options_menu[ $key ]['dropdown'] = 0;
+								}
 							}
 						}
 					}
