@@ -121,9 +121,9 @@ class Replace_Link_Service_Weglot {
 				$other_site = in_array( '/' . $paths[1] . '/', $this->multisite_other_paths );
 				if ( $other_site ) {
 					$replace_url_other_site = preg_replace( '#(?<!https:)\/\/+#', '/', 'wg-' . $replace_url_other_site );
-					$translated_page        = preg_replace( '/<a' . preg_quote( $sometags, '/' ) . 'href=' . preg_quote( $quote1 . $current_url . $quote2, '/' ) . preg_quote( $sometags2, '/' ) . '>/', '<span>Weglot debug replace link 1</span><a' . $sometags . 'href=' . $quote1 . $replace_url_other_site . $quote2 . $sometags2 . '>', $translated_page );
+					$translated_page        = preg_replace( '/<a' . preg_quote( $sometags, '/' ) . 'href=' . preg_quote( $quote1 . $current_url . $quote2, '/' ) . preg_quote( $sometags2, '/' ) . '>/', 'a' . $sometags . 'href=' . $quote1 . $replace_url_other_site . $quote2 . $sometags2 . '>', $translated_page );
 				} else {
-					$translated_page = preg_replace( '/<a' . preg_quote( $sometags, '/' ) . 'href=' . preg_quote( $quote1 . $current_url . $quote2, '/' ) . preg_quote( $sometags2, '/' ) . '>/', '<span>Weglot debug replace link 2</span><a' . $sometags . 'href=' . $quote1 . $this->replace_url( $current_url, $current_language ) . $quote2 . $sometags2 . '>', $translated_page );
+					$translated_page = preg_replace( '/<a' . preg_quote( $sometags, '/' ) . 'href=' . preg_quote( $quote1 . $current_url . $quote2, '/' ) . preg_quote( $sometags2, '/' ) . '>/', '<a' . $sometags . 'href=' . $quote1 . $this->replace_url( $current_url, $current_language ) . $quote2 . $sometags2 . '>', $translated_page );
 				}
 
 			}

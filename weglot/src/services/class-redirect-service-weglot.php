@@ -203,7 +203,7 @@ class Redirect_Service_Weglot {
 	 *
 	 */
 	public function verify_no_redirect() {
-		if ( isset ( $_GET["wg-choose-original"] ) ) { //phpcs:ignore
+		if ( isset( $_GET["wg-choose-original"] ) ) { //phpcs:ignore
 			$wg_choose_original = $_GET["wg-choose-original"]; //phpcs:ignore
 			if ( 'true' === $wg_choose_original ) {
 				setcookie( "WG_CHOOSE_ORIGINAL", true, time() + 86400 * 2, '/' ); //phpcs:ignore
@@ -214,16 +214,24 @@ class Redirect_Service_Weglot {
 			}
 			if ( isset( $_SERVER['REQUEST_URI'] ) ) { // phpcs:ignore
 
-				$_SERVER['REQUEST_URI'] = str_replace(
-					"?wg-choose-original=$wg_choose_original",
-					'',
-					str_replace(
-						"?wg-choose-original=$wg_choose_original&",
-						'?',
-						$_SERVER['REQUEST_URI'] //phpcs:ignore
-					)
+				// Remove the 'wg-choose-original' parameter from the query string
+				$_SERVER['REQUEST_URI'] = preg_replace(
+					'/([&?])wg-choose-original=[^&]*(&|$)/',
+					'$1',
+					$_SERVER['REQUEST_URI']
 				);
-				$this->request_url_services->init_weglot_url(); // We reset the URL as we removed the parameter from URL.
+
+				// Remove any trailing '&' or '?' left in the query string
+				$_SERVER['REQUEST_URI'] = rtrim( $_SERVER['REQUEST_URI'], '&?' );
+
+				// Ensure the URL doesn't end with a '?' if no other query parameters are present
+				$_SERVER['REQUEST_URI'] = preg_replace( '/\?$/', '', $_SERVER['REQUEST_URI'] );
+
+				// Sanitize the URL
+				$_SERVER['REQUEST_URI'] = esc_url_raw( $_SERVER['REQUEST_URI'] );
+
+				// Reset the URL as we removed the parameter from URL
+				$this->request_url_services->init_weglot_url();
 				header( 'Location:' . $this->request_url_services->get_weglot_url()->getUrl(), true, 302 );
 				exit();
 			}

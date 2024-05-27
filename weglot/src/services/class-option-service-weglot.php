@@ -270,7 +270,8 @@ class Option_Service_Weglot {
 	 * @since 3.0.0
 	 */
 	public function get_slugs_from_api_with_api_key( $api_key, $destinations_languages ) {
-		if ( $this->slugs_from_api ) {
+		$active_slugs = apply_filters( 'weglot_active_slugs', true );
+		if ( $this->slugs_from_api || ! $active_slugs) {
 			return $this->slugs_from_api;
 		}
 		$custom_timeout = apply_filters('custom_http_request_timeout', 3);
@@ -495,6 +496,7 @@ class Option_Service_Weglot {
 	 */
 	public function save_options_to_weglot( $options ) {
 
+
 		$response = wp_remote_post( // phpcs:ignore
 			sprintf( '%s/projects/settings?api_key=%s', Helper_API::get_api_url(), $options['api_key_private'] ),
 			array(
@@ -579,6 +581,48 @@ class Option_Service_Weglot {
 		}
 
 		return $options[ $key ];
+	}
+
+	/**
+	 *
+	 * Returns the array "button_style" and validate it to avoid empty option button
+	 *
+	 * @return array|boolean|int
+	 * @since 3.0.0
+	 */
+	public function validate_button_option() {
+		$options = $this->get_options();
+		if (
+			array_key_exists( 'custom_settings', $options ) &&
+			is_array( $options['custom_settings'] ) &&
+			! empty( $options['custom_settings']['button_style'] )
+		) {
+			add_filter( 'weglot_get_options_from_cdn_cache', '__return_false' );
+			$button_options = $options['custom_settings']['button_style'];
+			if (
+				$button_options['is_dropdown'] === false &&
+				$button_options['with_flags'] === false &&
+				$button_options['with_name'] === false &&
+				$button_options['full_name'] === false
+			) {
+				$options['custom_settings']['button_style']['is_dropdown'] = true;
+				$options['custom_settings']['button_style']['with_name'] = true;
+				$options['custom_settings']['button_style']['full_name'] = true;
+				$options['custom_settings']['button_style']['with_flags'] = true;
+
+				$response           = $this->save_options_to_weglot( $options );
+				if ( $response['success'] && is_array( $response['result'] ) ) {
+
+					$options_bdd = $this->get_options_bdd_v3();
+					$options_bdd['custom_settings']['button_style']['is_dropdown'] = true;
+					$options_bdd['custom_settings']['button_style']['with_name'] = true;
+					$options_bdd['custom_settings']['button_style']['full_name'] = true;
+					$options_bdd['custom_settings']['button_style']['with_flags'] = true;
+					$this->set_options( $options_bdd );
+					delete_transient( 'weglot_cache_cdn' );
+				}
+			}
+		}
 	}
 
 	/**

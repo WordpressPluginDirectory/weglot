@@ -1,39 +1,26 @@
 //find and place wg-ajax-button-switcher
 
 function switcherPlacement() {
-	const button_switcher_ajax = document.querySelectorAll(".weglot-custom-switcher-ajax")
-	Array.prototype.forEach.call(button_switcher_ajax, function (el, i) {
-		let button_sibling = null;
-		let button_target = null;
-		let targetSelector = null;
-		let siblingSelector = null;
+	const buttons = document.querySelectorAll(".weglot-custom-switcher-ajax");
 
-		if (el.getAttribute('data-wg-target') !== '') {
-			targetSelector = el.getAttribute('data-wg-target');
-		}
+	buttons.forEach(button => {
+		const targetSelector = button.getAttribute('data-wg-target');
+		const siblingSelector = button.getAttribute('data-wg-sibling');
+		const target = targetSelector ? document.querySelector(targetSelector) : null;
+		const sibling = siblingSelector ? document.querySelector(siblingSelector) : null;
 
-		if (el.getAttribute('data-wg-sibling') !== '') {
-			siblingSelector = el.getAttribute('data-wg-sibling');
-		}
-
-		if (targetSelector) {
-			button_target = document.querySelector(targetSelector)
-		}
-		if (siblingSelector) {
-			button_sibling = document.querySelector(siblingSelector)
+		if (target && sibling) {
+			target.insertBefore(button, sibling);
+		} else if (target) {
+			target.insertBefore(button, target.firstChild);
+		} else if (sibling) {
+			sibling.parentNode.insertBefore(button, sibling);
+		}else{
+			button.classList.add("weglot-default", "weglot-invert");
 		}
 
-		if (button_target != null && button_sibling != null) {
-			button_target.insertBefore(el, button_sibling)
-			el.classList.remove("weglot-custom-switcher-ajax")
-		} else if (button_target && button_sibling == null) {
-			button_target.insertBefore(el, button_target.firstChild)
-			el.classList.remove("weglot-custom-switcher-ajax")
-		} else if (button_sibling && button_target == null) {
-			button_sibling.parentNode.insertBefore(el, button_sibling)
-			el.classList.remove("weglot-custom-switcher-ajax")
-		}
-	})
+		button.classList.remove("weglot-custom-switcher-ajax");
+	});
 }
 
 //detect iframe

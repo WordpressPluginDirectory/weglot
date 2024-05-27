@@ -198,6 +198,7 @@ class Translate_Service_Weglot {
 				}
 			}
 		}
+		do_action('weglot_treat_page_hook', $this->current_language);
 
 		$parser = $this->parser_services->get_parser();
 

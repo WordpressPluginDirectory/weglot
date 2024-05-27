@@ -132,7 +132,6 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 		$patterns = [
 			'/<script\b[^>]*>(.*?)<\/script>/s', // Detect <script> tags
 			'/\bon\w+\s*=\s*("[^"]*"|\'[^\']*\'|[^"\'<>\s]+)/i', // Detect inline event handlers (e.g., onmouseover)
-			//'/\b(https?|ftp):\/\/[^\s<>"\'()]+/', // Detect suspicious URLs
 		];
 		foreach ($patterns as $pattern) {
 			$button_html = preg_replace($pattern, '', $button_html);

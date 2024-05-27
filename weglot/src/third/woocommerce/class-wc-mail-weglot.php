@@ -75,13 +75,16 @@ class WC_Mail_Weglot implements Hooks_Interface_Weglot {
 
 			if ( $mail->is_customer_email() ) { // If mail is for customer.
 				$woocommerce_order_language = get_post_meta( $mail->object->get_id(), 'weglot_language', true );
+				if( empty($woocommerce_order_language)){
+					$order = wc_get_order($mail->object->get_id());
+					$woocommerce_order_language = $order->get_meta('weglot_language');
+				}
 				if ( ! empty( $woocommerce_order_language ) ) {
 
-					$current_and_original_language            = array(
+					$current_and_original_language = [
 						'original' => $this->language_services->get_original_language()->getInternalCode(),
-						'current'  => $this->request_url_services->get_current_language()->getInternalCode(),
-					);
-					$current_and_original_language['current'] = $this->language_services->get_language_from_external( $woocommerce_order_language )->getInternalCode();
+						'current'  => $this->language_services->get_language_from_external($woocommerce_order_language)->getInternalCode(),
+					];
 
 					add_filter(
 						'weglot_translate_email_languages_forced',

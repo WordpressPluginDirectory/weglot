@@ -148,6 +148,8 @@ class Button_Service_Weglot {
 	 */
 	public function get_html( $add_class = '', $switcher = array(), $add_attr_target = '', $add_attr_sibling = '', $pos = '') {
 
+		$this->option_services->validate_button_option();
+
 		$weglot_url                = $this->request_url_services->get_weglot_url();
 		$amp_regex                 = $this->amp_services->get_regex( true );
 		$current_language          = $this->request_url_services->get_current_language();

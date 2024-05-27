@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use WeglotWP\Helpers\Helper_API;
 use WeglotWP\Helpers\Helper_Is_Admin;
 use WeglotWP\Models\Hooks_Interface_Weglot;
 use WeglotWP\Services\Language_Service_Weglot;
@@ -75,6 +76,7 @@ class Search_Weglot implements Hooks_Interface_Weglot {
 	 * @since 2.4.0
 	 */
 	public function pre_get_posts_translate( $query ) {
+
 		if ( ! $query->is_search() ) {
 			return;
 		}
@@ -92,9 +94,8 @@ class Search_Weglot implements Hooks_Interface_Weglot {
 		}
 
 		try {
-			$parser           = $this->parser_services->get_parser();
-			$this->old_search = $query->query_vars[ $query_vars_check ];
-			$this->new_search = $parser->translate( $query->query_vars[ $query_vars_check ], $current_language, $original_language ); //phpcs:ignore
+			$api_key_private = $this->option_services->get_api_key_private();
+			$this->new_search = $this->reverseTranslate($api_key_private, $current_language, $original_language, home_url('/'), $query->query_vars[ $query_vars_check ], 1);
 
 			if ( empty( $this->new_search ) ) {
 				return;
@@ -115,4 +116,52 @@ class Search_Weglot implements Hooks_Interface_Weglot {
 	public function get_search_query_translate( $string ) {
 		return ( $this->old_search ) ? $this->old_search : $string;
 	}
+
+	function reverseTranslate($api_key, $l_from, $l_to, $request_url, $word, $t) {
+		// Construct the request body.
+		$requestBody = wp_json_encode(array(
+			"l_from" => $l_from,
+			"l_to" => $l_to,
+			"request_url" => $request_url,
+			"words" => array(
+				array("w" => $word, "t" => $t)
+			)
+		));
+
+		// Define the API endpoint with the Weglot API key.
+		$url = sprintf('%s/translate?api_key=%s', Helper_API::get_api_url(), $api_key);
+
+		// Set up the arguments for the request.
+		$args = array(
+			'body'        => $requestBody,
+			'headers'     => array(
+				'Content-Type' => 'application/json',
+			),
+			'method'      => 'POST',
+			'data_format' => 'body',
+		);
+
+		// Send the request using wp_remote_post.
+		$response = wp_remote_post($url, $args);
+
+		// Check for WP errors.
+		if (is_wp_error($response)) {
+			return "WP Error: " . $response->get_error_message();
+		}
+
+		// Get the response body.
+		$response_body = wp_remote_retrieve_body($response);
+
+		// Parse the JSON response.
+		$responseData = json_decode($response_body, true);
+
+		// Check if response is successful.
+		if (!$responseData || !isset($responseData['ids'])) {
+			return "Error: Invalid response from API";
+		}
+
+		// Return translated data.
+		return $responseData['to_words'][0];
+	}
+
 }

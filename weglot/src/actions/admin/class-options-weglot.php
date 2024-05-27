@@ -165,7 +165,6 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 	 */
 	public function sanitize_options_settings( $options, $has_first_settings = false ) {
 		$user_info = $this->user_api_services->get_user_info( $options['api_key_private'] );
-		$plans     = $this->user_api_services->get_plans();
 		$switchers = $this->option_services->get_switchers_editor_button();
 
 		// Limit language.
@@ -200,17 +199,6 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 
 		$options['auto_switch'] = isset( $options['auto_switch'] );
 
-		if ( ! isset( $options['excluded_blocks'] ) ) {
-			$options['excluded_blocks'] = array();
-		} else {
-			array_walk_recursive(
-				$options['excluded_blocks'],
-				function ( &$element ) {
-					// We remove unwanted backslashes.
-					$element = stripslashes( $element );
-				}
-			);
-		}
 		if(!empty($switchers)){
 			foreach ( $switchers as $switcher ) {
 				$options['custom_settings']['switchers'][] = $switcher;

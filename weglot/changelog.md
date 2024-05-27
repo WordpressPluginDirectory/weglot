@@ -3,6 +3,9 @@
 
 # Change Log
 
+##4.2.6 (15/03/2024) =
+* Security: sanitization fixes; thank you Wordfence (CVE-2024-2124)
+
 ##4.2.5 (12/03/2024) =
 * Bug: Fixed slug translation warning on first install
 * Bug: Fixed link to switcher editor on BO

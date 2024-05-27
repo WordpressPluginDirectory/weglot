@@ -18,7 +18,7 @@ abstract class Helper_API {
 	const API_CDN_BASE_STAGING = 'https://cdn-api-weglot.dev';
 	const CDN_BASE         = 'https://cdn.weglot.com/projects-settings/';
 	const CDN_BASE_SWITCHERS_TPL         = 'https://cdn.weglot.com/switchers/';
-	const CDN_BASE_SWITCHERS_TPL_STAGING         = 'https://cdn-staging.weglot.com/switchers/';
+	const CDN_BASE_SWITCHERS_TPL_STAGING         = 'https://cdn.weglot.dev/switchers/';
 
 	/**
 	 * @since 3.0.0

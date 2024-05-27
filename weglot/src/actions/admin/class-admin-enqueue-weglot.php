@@ -72,7 +72,7 @@ class Admin_Enqueue_Weglot implements Hooks_Interface_Weglot {
 			return;
 		}
 
-		wp_enqueue_script( 'weglot-admin-selectize-js', WEGLOT_URL_DIST . '/selectize.js', array(
+		wp_enqueue_script( 'weglot-admin-selectize-js', 'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js', array(
 			'jquery',
 			'jquery-ui-sortable'
 		) );

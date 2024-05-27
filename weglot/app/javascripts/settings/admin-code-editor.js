@@ -3,7 +3,10 @@ const init_admin_weglot_code_editor = function () {
 
 	const execute = () => {
 		jQuery(document).ready(function($) {
-			wp.codeEditor.initialize($('#override_css'), cm_settings);
+			const $overrideCss = $('#override_css'); // Cache the jQuery selector
+			if ($overrideCss.length) {
+				wp.codeEditor.initialize($overrideCss, cm_settings);
+			}
 		  })
 	}
 

@@ -51,219 +51,221 @@ $options_available = [
 ?>
 <style id="weglot-css-flag-css"></style>
 <style id="weglot-css-inline"></style>
-<?php if ( empty( $this->option_services->get_switchers_editor_button() ) ) { ?>
-	<h3 id="language_button_design">
-		<?php echo esc_html__( 'Language button design', 'weglot' ) . ' ' . esc_html__( '(Optional)', 'weglot' ); ?>
-	</h3>
-	<hr/>
+<h3 id="language_button_design">
+	<?php echo esc_html__( 'Language button design', 'weglot' ) . ' ' . esc_html__( '(Optional)', 'weglot' ); ?>
+</h3>
+<hr/>
+<?php if ( ! empty( $this->option_services->get_switchers_editor_button() ) ) { ?>
+
+	<p><?php esc_html_e( 'We have detected the usage of the Switcher Editor feature. As a result, please be aware that the following options will be avalaible for switcher added in menu, widget or in source code.', 'weglot' ); ?></p>
+
 <?php } ?>
 <table class="form-table">
 	<tbody>
-	<?php if ( empty( $this->option_services->get_switchers_editor_button() ) ) { ?>
-		<tr valign="top">
-			<th scope="row" class="titledesc">
-				<label>
-					<?php echo esc_html__( 'Button preview', 'weglot' ); ?>
-				</label>
-			</th>
-			<td class="forminp forminp-text">
-				<?php echo $this->button_services->get_html( 'weglot-preview' ); //phpcs:ignore ?>
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $options_available['is_dropdown']['key'] ); ?>">
-					<?php echo esc_html( $options_available['is_dropdown']['label'] ); ?>
-				</label>
-			</th>
-			<td class="forminp forminp-text">
-				<input
-					name="<?php echo esc_attr( sprintf( '%s[custom_settings][button_style][is_dropdown]', WEGLOT_SLUG ) ); ?>"
-					id="<?php echo esc_attr( $options_available['is_dropdown']['key'] ); ?>"
-					type="checkbox"
-					<?php checked( $this->options[ $options_available['is_dropdown']['key'] ], 1 ); ?>
+	<tr valign="top">
+		<th scope="row" class="titledesc">
+			<label>
+				<?php echo esc_html__( 'Button preview', 'weglot' ); ?>
+			</label>
+		</th>
+		<td class="forminp forminp-text">
+			<?php echo $this->button_services->get_html( 'weglot-preview' ); //phpcs:ignore ?>
+		</td>
+	</tr>
+	<tr valign="top">
+		<th scope="row" class="titledesc">
+			<label for="<?php echo esc_attr( $options_available['is_dropdown']['key'] ); ?>">
+				<?php echo esc_html( $options_available['is_dropdown']['label'] ); ?>
+			</label>
+		</th>
+		<td class="forminp forminp-text">
+			<input
+				name="<?php echo esc_attr( sprintf( '%s[custom_settings][button_style][is_dropdown]', WEGLOT_SLUG ) ); ?>"
+				id="<?php echo esc_attr( $options_available['is_dropdown']['key'] ); ?>"
+				type="checkbox"
+				<?php checked( $this->options[ $options_available['is_dropdown']['key'] ], 1 ); ?>
+			>
+			<p class="description"><?php echo esc_html( $options_available['is_dropdown']['description'] ); ?></p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<th scope="row" class="titledesc">
+			<label for="<?php echo esc_attr( $options_available['with_flags']['key'] ); ?>">
+				<?php echo esc_html( $options_available['with_flags']['label'] ); ?>
+			</label>
+		</th>
+		<td class="forminp forminp-text">
+			<input
+				name="<?php echo esc_attr( sprintf( '%s[custom_settings][button_style][with_flags]', WEGLOT_SLUG ) ); ?>"
+				id="<?php echo esc_attr( $options_available['with_flags']['key'] ); ?>"
+				type="checkbox"
+				<?php checked( $this->options[ $options_available['with_flags']['key'] ], 1 ); ?>
+			>
+			<p class="description"><?php echo esc_html( $options_available['with_flags']['description'] ); ?></p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<th scope="row" class="titledesc">
+			<label for="<?php echo esc_attr( $options_available['type_flags']['key'] ); ?>">
+				<?php echo esc_html( $options_available['type_flags']['label'] ); ?>
+			</label>
+		</th>
+		<td class="forminp forminp-text">
+			<select
+				class="wg-input-select"
+				name="<?php echo esc_attr( sprintf( '%s[custom_settings][button_style][flag_type]', WEGLOT_SLUG ) ); ?>"
+				id="<?php echo esc_attr( $options_available['type_flags']['key'] ); ?>"
+			>
+				<option
+					<?php selected( $this->options[ $options_available['type_flags']['key'] ], Helper_Flag_Type::RECTANGLE_MAT ); ?>
+					data-value="<?php echo esc_attr( Helper_Flag_Type::get_flag_number_with_type( Helper_Flag_Type::RECTANGLE_MAT ) ); ?>"
+					value="<?php echo esc_attr( Helper_Flag_Type::RECTANGLE_MAT ); ?>"
 				>
-				<p class="description"><?php echo esc_html( $options_available['is_dropdown']['description'] ); ?></p>
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $options_available['with_flags']['key'] ); ?>">
-					<?php echo esc_html( $options_available['with_flags']['label'] ); ?>
-				</label>
-			</th>
-			<td class="forminp forminp-text">
-				<input
-					name="<?php echo esc_attr( sprintf( '%s[custom_settings][button_style][with_flags]', WEGLOT_SLUG ) ); ?>"
-					id="<?php echo esc_attr( $options_available['with_flags']['key'] ); ?>"
-					type="checkbox"
-					<?php checked( $this->options[ $options_available['with_flags']['key'] ], 1 ); ?>
+					<?php esc_html_e( 'Rectangle mat', 'weglot' ); ?>
+				</option>
+				<option
+					<?php selected( $this->options[ $options_available['type_flags']['key'] ], Helper_Flag_Type::SHINY ); ?>
+					data-value="<?php echo esc_attr( Helper_Flag_Type::get_flag_number_with_type( Helper_Flag_Type::SHINY ) ); ?>"
+					value="<?php echo esc_attr( Helper_Flag_Type::SHINY ); ?>"
 				>
-				<p class="description"><?php echo esc_html( $options_available['with_flags']['description'] ); ?></p>
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $options_available['type_flags']['key'] ); ?>">
-					<?php echo esc_html( $options_available['type_flags']['label'] ); ?>
-				</label>
-			</th>
-			<td class="forminp forminp-text">
-				<select
-					class="wg-input-select"
-					name="<?php echo esc_attr( sprintf( '%s[custom_settings][button_style][flag_type]', WEGLOT_SLUG ) ); ?>"
-					id="<?php echo esc_attr( $options_available['type_flags']['key'] ); ?>"
+					<?php esc_html_e( 'Rectangle shiny', 'weglot' ); ?>
+				</option>
+				<option
+					<?php selected( $this->options[ $options_available['type_flags']['key'] ], Helper_Flag_Type::SQUARE ); ?>
+					data-value="<?php echo esc_attr( Helper_Flag_Type::get_flag_number_with_type( Helper_Flag_Type::SQUARE ) ); ?>"
+					value="<?php echo esc_attr( Helper_Flag_Type::SQUARE ); ?>"
 				>
-					<option
-						<?php selected( $this->options[ $options_available['type_flags']['key'] ], Helper_Flag_Type::RECTANGLE_MAT ); ?>
-						data-value="<?php echo esc_attr( Helper_Flag_Type::get_flag_number_with_type( Helper_Flag_Type::RECTANGLE_MAT ) ); ?>"
-						value="<?php echo esc_attr( Helper_Flag_Type::RECTANGLE_MAT ); ?>"
-					>
-						<?php esc_html_e( 'Rectangle mat', 'weglot' ); ?>
-					</option>
-					<option
-						<?php selected( $this->options[ $options_available['type_flags']['key'] ], Helper_Flag_Type::SHINY ); ?>
-						data-value="<?php echo esc_attr( Helper_Flag_Type::get_flag_number_with_type( Helper_Flag_Type::SHINY ) ); ?>"
-						value="<?php echo esc_attr( Helper_Flag_Type::SHINY ); ?>"
-					>
-						<?php esc_html_e( 'Rectangle shiny', 'weglot' ); ?>
-					</option>
-					<option
-						<?php selected( $this->options[ $options_available['type_flags']['key'] ], Helper_Flag_Type::SQUARE ); ?>
-						data-value="<?php echo esc_attr( Helper_Flag_Type::get_flag_number_with_type( Helper_Flag_Type::SQUARE ) ); ?>"
-						value="<?php echo esc_attr( Helper_Flag_Type::SQUARE ); ?>"
-					>
-						<?php esc_html_e( 'Square', 'weglot' ); ?>
-					</option>
-					<option
-						<?php selected( $this->options[ $options_available['type_flags']['key'] ], Helper_Flag_Type::CIRCLE ); ?>
-						data-value="<?php echo esc_attr( Helper_Flag_Type::get_flag_number_with_type( Helper_Flag_Type::CIRCLE ) ); ?>"
-						value="<?php echo esc_attr( Helper_Flag_Type::CIRCLE ); ?>"
-					>
-						<?php esc_html_e( 'Circle', 'weglot' ); ?>
-					</option>
+					<?php esc_html_e( 'Square', 'weglot' ); ?>
+				</option>
+				<option
+					<?php selected( $this->options[ $options_available['type_flags']['key'] ], Helper_Flag_Type::CIRCLE ); ?>
+					data-value="<?php echo esc_attr( Helper_Flag_Type::get_flag_number_with_type( Helper_Flag_Type::CIRCLE ) ); ?>"
+					value="<?php echo esc_attr( Helper_Flag_Type::CIRCLE ); ?>"
+				>
+					<?php esc_html_e( 'Circle', 'weglot' ); ?>
+				</option>
+			</select>
+			<div class="flag-style-openclose"><?php esc_html_e( 'Change country flags', 'weglot' ); ?></div>
+			<p id="custom_flag_tips">You are still using old flags. To use new SVG flags, make sure you are using
+				the default flags (if you have some custom CSS related to background-position or background-image,
+				remove it). Then save your settings and you will be using the flags</p>
+			<div class="flag-style-wrapper" style="display:none;">
+				<select class="flag-en-type wg-input-select">
+					<option value=0><?php esc_html_e( 'Choose English flag:', 'weglot' ); ?></option>
+					<option value=0><?php esc_html_e( 'United Kingdom (default)', 'weglot' ); ?></option>
+					<option value=1><?php esc_html_e( 'United States', 'weglot' ); ?></option>
+					<option value=2><?php esc_html_e( 'Australia', 'weglot' ); ?></option>
+					<option value=3><?php esc_html_e( 'Canada', 'weglot' ); ?></option>
+					<option value=4><?php esc_html_e( 'New Zealand', 'weglot' ); ?></option>
+					<option value=5><?php esc_html_e( 'Jamaica', 'weglot' ); ?></option>
+					<option value=6><?php esc_html_e( 'Ireland', 'weglot' ); ?></option>
 				</select>
-				<div class="flag-style-openclose"><?php esc_html_e( 'Change country flags', 'weglot' ); ?></div>
-				<p id="custom_flag_tips">You are still using old flags. To use new SVG flags, make sure you are using
-					the default flags (if you have some custom CSS related to background-position or background-image,
-					remove it). Then save your settings and you will be using the flags</p>
-				<div class="flag-style-wrapper" style="display:none;">
-					<select class="flag-en-type wg-input-select">
-						<option value=0><?php esc_html_e( 'Choose English flag:', 'weglot' ); ?></option>
-						<option value=0><?php esc_html_e( 'United Kingdom (default)', 'weglot' ); ?></option>
-						<option value=1><?php esc_html_e( 'United States', 'weglot' ); ?></option>
-						<option value=2><?php esc_html_e( 'Australia', 'weglot' ); ?></option>
-						<option value=3><?php esc_html_e( 'Canada', 'weglot' ); ?></option>
-						<option value=4><?php esc_html_e( 'New Zealand', 'weglot' ); ?></option>
-						<option value=5><?php esc_html_e( 'Jamaica', 'weglot' ); ?></option>
-						<option value=6><?php esc_html_e( 'Ireland', 'weglot' ); ?></option>
-					</select>
-					<select class="flag-es-type wg-input-select">
-						<option value=0><?php esc_html_e( 'Choose Spanish flag:', 'weglot' ); ?></option>
-						<option value=0><?php esc_html_e( 'Spain (default)', 'weglot' ); ?></option>
-						<option value=1><?php esc_html_e( 'Mexico', 'weglot' ); ?></option>
-						<option value=2><?php esc_html_e( 'Argentina', 'weglot' ); ?></option>
-						<option value=3><?php esc_html_e( 'Colombia', 'weglot' ); ?></option>
-						<option value=4><?php esc_html_e( 'Peru', 'weglot' ); ?></option>
-						<option value=5><?php esc_html_e( 'Bolivia', 'weglot' ); ?></option>
-						<option value=6><?php esc_html_e( 'Uruguay', 'weglot' ); ?></option>
-						<option value=7><?php esc_html_e( 'Venezuela', 'weglot' ); ?></option>
-						<option value=8><?php esc_html_e( 'Chile', 'weglot' ); ?></option>
-						<option value=9><?php esc_html_e( 'Ecuador', 'weglot' ); ?></option>
-						<option value=10><?php esc_html_e( 'Guatemala', 'weglot' ); ?></option>
-						<option value=11><?php esc_html_e( 'Cuba', 'weglot' ); ?></option>
-						<option value=12><?php esc_html_e( 'Dominican Republic', 'weglot' ); ?></option>
-						<option value=13><?php esc_html_e( 'Honduras', 'weglot' ); ?></option>
-						<option value=14><?php esc_html_e( 'Paraguay', 'weglot' ); ?></option>
-						<option value=15><?php esc_html_e( 'El Salvador', 'weglot' ); ?></option>
-						<option value=16><?php esc_html_e( 'Nicaragua', 'weglot' ); ?></option>
-						<option value=17><?php esc_html_e( 'Costa Rica', 'weglot' ); ?></option>
-						<option value=18><?php esc_html_e( 'Puerto Rico', 'weglot' ); ?></option>
-						<option value=19><?php esc_html_e( 'Panama', 'weglot' ); ?></option>
-					</select>
-					<select class="flag-fr-type wg-input-select">
-						<option value=0><?php esc_html_e( 'Choose French flag:', 'weglot' ); ?></option>
-						<option value=0><?php esc_html_e( 'France (default)', 'weglot' ); ?></option>
-						<option value=1><?php esc_html_e( 'Belgium', 'weglot' ); ?></option>
-						<option value=2><?php esc_html_e( 'Canada', 'weglot' ); ?></option>
-						<option value=3><?php esc_html_e( 'Switzerland', 'weglot' ); ?></option>
-						<option value=4><?php esc_html_e( 'Luxemburg', 'weglot' ); ?></option>
-					</select>
-					<select class="flag-ar-type wg-input-select">
-						<option value=0><?php esc_html_e( 'Choose Arabic flag:', 'weglot' ); ?></option>
-						<option value=0><?php esc_html_e( 'Saudi Arabia (default)', 'weglot' ); ?></option>
-						<option value=1><?php esc_html_e( 'Algeria', 'weglot' ); ?></option>
-						<option value=2><?php esc_html_e( 'Egypt', 'weglot' ); ?></option>
-						<option value=3><?php esc_html_e( 'Iraq', 'weglot' ); ?></option>
-						<option value=4><?php esc_html_e( 'Jordan', 'weglot' ); ?></option>
-						<option value=5><?php esc_html_e( 'Kuwait', 'weglot' ); ?></option>
-						<option value=6><?php esc_html_e( 'Lebanon', 'weglot' ); ?></option>
-						<option value=7><?php esc_html_e( 'Libya', 'weglot' ); ?></option>
-						<option value=8><?php esc_html_e( 'Morocco', 'weglot' ); ?></option>
-						<option value=14><?php esc_html_e( 'Oman', 'weglot' ); ?></option>
-						<option value=9><?php esc_html_e( 'Qatar', 'weglot' ); ?></option>
-						<option value=10><?php esc_html_e( 'Syria', 'weglot' ); ?></option>
-						<option value=11><?php esc_html_e( 'Tunisia', 'weglot' ); ?></option>
-						<option value=12><?php esc_html_e( 'United Arab Emirates', 'weglot' ); ?></option>
-						<option value=13><?php esc_html_e( 'Yemen', 'weglot' ); ?></option>
-					</select>
-					<select class="flag-zh-type wg-input-select">
-						<option value=0><?php esc_html_e( 'Choose Simplified Chinese flag:', 'weglot' ); ?></option>
-						<option value=0><?php esc_html_e( 'China (default)', 'weglot' ); ?></option>
-						<option value=1><?php esc_html_e( 'Taiwan', 'weglot' ); ?></option>
-						<option value=2><?php esc_html_e( 'Hong Kong', 'weglot' ); ?></option>
-					</select>
-					<select class="flag-tw-type wg-input-select">
-						<option value=0><?php esc_html_e( 'Choose Traditional Chinese flag:', 'weglot' ); ?></option>
-						<option value=0><?php esc_html_e( 'Taiwan (default)', 'weglot' ); ?></option>
-						<option value=1><?php esc_html_e( 'China', 'weglot' ); ?></option>
-						<option value=2><?php esc_html_e( 'Hong Kong', 'weglot' ); ?></option>
-					</select>
-					<select class="flag-pt-type wg-input-select">
-						<option value=0><?php esc_html_e( 'Choose Portuguese flag:', 'weglot' ); ?></option>
-						<option value=0><?php esc_html_e( 'Portugal (default)', 'weglot' ); ?></option>
-						<option value=1><?php esc_html_e( 'Brazil', 'weglot' ); ?></option>
-					</select>
-					<p><?php esc_html_e( 'If you want to use a different flag, just ask us.', 'weglot' ); ?></p>
-				</div>
-				<textarea id="flag_css"
-						  name="<?php echo esc_attr( sprintf( '%s[%s]', WEGLOT_SLUG, $options_available['flag_css']['key'] ) ); ?>"
-						  style="display:none;"><?php echo esc_html( $this->options['flag_css'] ); ?></textarea>
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $options_available['with_name']['key'] ); ?>">
-					<?php echo esc_html( $options_available['with_name']['label'] ); ?>
-				</label>
-			</th>
-			<td class="forminp forminp-text">
-				<input
-					name="<?php echo esc_attr( sprintf( '%s[custom_settings][button_style][with_name]', WEGLOT_SLUG ) ); ?>"
-					id="<?php echo esc_attr( $options_available['with_name']['key'] ); ?>"
-					type="checkbox"
-					<?php checked( $this->options[ $options_available['with_name']['key'] ], 1 ); ?>
-				>
-				<p class="description"><?php echo esc_html( $options_available['with_name']['description'] ); ?></p>
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $options_available['is_fullname']['key'] ); ?>">
-					<?php echo esc_html( $options_available['is_fullname']['label'] ); ?>
-				</label>
-			</th>
-			<td class="forminp forminp-text">
-				<input
-					name="<?php echo esc_attr( sprintf( '%s[custom_settings][button_style][full_name]', WEGLOT_SLUG ) ); ?>"
-					id="<?php echo esc_attr( $options_available['is_fullname']['key'] ); ?>"
-					type="checkbox"
-					<?php checked( $this->options[ $options_available['is_fullname']['key'] ], 1 ); ?>
-				>
-				<p class="description"><?php echo esc_html( $options_available['is_fullname']['description'] ); ?></p>
-			</td>
-		</tr>
-	<?php } ?>
+				<select class="flag-es-type wg-input-select">
+					<option value=0><?php esc_html_e( 'Choose Spanish flag:', 'weglot' ); ?></option>
+					<option value=0><?php esc_html_e( 'Spain (default)', 'weglot' ); ?></option>
+					<option value=1><?php esc_html_e( 'Mexico', 'weglot' ); ?></option>
+					<option value=2><?php esc_html_e( 'Argentina', 'weglot' ); ?></option>
+					<option value=3><?php esc_html_e( 'Colombia', 'weglot' ); ?></option>
+					<option value=4><?php esc_html_e( 'Peru', 'weglot' ); ?></option>
+					<option value=5><?php esc_html_e( 'Bolivia', 'weglot' ); ?></option>
+					<option value=6><?php esc_html_e( 'Uruguay', 'weglot' ); ?></option>
+					<option value=7><?php esc_html_e( 'Venezuela', 'weglot' ); ?></option>
+					<option value=8><?php esc_html_e( 'Chile', 'weglot' ); ?></option>
+					<option value=9><?php esc_html_e( 'Ecuador', 'weglot' ); ?></option>
+					<option value=10><?php esc_html_e( 'Guatemala', 'weglot' ); ?></option>
+					<option value=11><?php esc_html_e( 'Cuba', 'weglot' ); ?></option>
+					<option value=12><?php esc_html_e( 'Dominican Republic', 'weglot' ); ?></option>
+					<option value=13><?php esc_html_e( 'Honduras', 'weglot' ); ?></option>
+					<option value=14><?php esc_html_e( 'Paraguay', 'weglot' ); ?></option>
+					<option value=15><?php esc_html_e( 'El Salvador', 'weglot' ); ?></option>
+					<option value=16><?php esc_html_e( 'Nicaragua', 'weglot' ); ?></option>
+					<option value=17><?php esc_html_e( 'Costa Rica', 'weglot' ); ?></option>
+					<option value=18><?php esc_html_e( 'Puerto Rico', 'weglot' ); ?></option>
+					<option value=19><?php esc_html_e( 'Panama', 'weglot' ); ?></option>
+				</select>
+				<select class="flag-fr-type wg-input-select">
+					<option value=0><?php esc_html_e( 'Choose French flag:', 'weglot' ); ?></option>
+					<option value=0><?php esc_html_e( 'France (default)', 'weglot' ); ?></option>
+					<option value=1><?php esc_html_e( 'Belgium', 'weglot' ); ?></option>
+					<option value=2><?php esc_html_e( 'Canada', 'weglot' ); ?></option>
+					<option value=3><?php esc_html_e( 'Switzerland', 'weglot' ); ?></option>
+					<option value=4><?php esc_html_e( 'Luxemburg', 'weglot' ); ?></option>
+				</select>
+				<select class="flag-ar-type wg-input-select">
+					<option value=0><?php esc_html_e( 'Choose Arabic flag:', 'weglot' ); ?></option>
+					<option value=0><?php esc_html_e( 'Saudi Arabia (default)', 'weglot' ); ?></option>
+					<option value=1><?php esc_html_e( 'Algeria', 'weglot' ); ?></option>
+					<option value=2><?php esc_html_e( 'Egypt', 'weglot' ); ?></option>
+					<option value=3><?php esc_html_e( 'Iraq', 'weglot' ); ?></option>
+					<option value=4><?php esc_html_e( 'Jordan', 'weglot' ); ?></option>
+					<option value=5><?php esc_html_e( 'Kuwait', 'weglot' ); ?></option>
+					<option value=6><?php esc_html_e( 'Lebanon', 'weglot' ); ?></option>
+					<option value=7><?php esc_html_e( 'Libya', 'weglot' ); ?></option>
+					<option value=8><?php esc_html_e( 'Morocco', 'weglot' ); ?></option>
+					<option value=14><?php esc_html_e( 'Oman', 'weglot' ); ?></option>
+					<option value=9><?php esc_html_e( 'Qatar', 'weglot' ); ?></option>
+					<option value=10><?php esc_html_e( 'Syria', 'weglot' ); ?></option>
+					<option value=11><?php esc_html_e( 'Tunisia', 'weglot' ); ?></option>
+					<option value=12><?php esc_html_e( 'United Arab Emirates', 'weglot' ); ?></option>
+					<option value=13><?php esc_html_e( 'Yemen', 'weglot' ); ?></option>
+				</select>
+				<select class="flag-zh-type wg-input-select">
+					<option value=0><?php esc_html_e( 'Choose Simplified Chinese flag:', 'weglot' ); ?></option>
+					<option value=0><?php esc_html_e( 'China (default)', 'weglot' ); ?></option>
+					<option value=1><?php esc_html_e( 'Taiwan', 'weglot' ); ?></option>
+					<option value=2><?php esc_html_e( 'Hong Kong', 'weglot' ); ?></option>
+				</select>
+				<select class="flag-tw-type wg-input-select">
+					<option value=0><?php esc_html_e( 'Choose Traditional Chinese flag:', 'weglot' ); ?></option>
+					<option value=0><?php esc_html_e( 'Taiwan (default)', 'weglot' ); ?></option>
+					<option value=1><?php esc_html_e( 'China', 'weglot' ); ?></option>
+					<option value=2><?php esc_html_e( 'Hong Kong', 'weglot' ); ?></option>
+				</select>
+				<select class="flag-pt-type wg-input-select">
+					<option value=0><?php esc_html_e( 'Choose Portuguese flag:', 'weglot' ); ?></option>
+					<option value=0><?php esc_html_e( 'Portugal (default)', 'weglot' ); ?></option>
+					<option value=1><?php esc_html_e( 'Brazil', 'weglot' ); ?></option>
+				</select>
+				<p><?php esc_html_e( 'If you want to use a different flag, just ask us.', 'weglot' ); ?></p>
+			</div>
+			<textarea id="flag_css"
+					  name="<?php echo esc_attr( sprintf( '%s[%s]', WEGLOT_SLUG, $options_available['flag_css']['key'] ) ); ?>"
+					  style="display:none;"><?php echo esc_html( $this->options['flag_css'] ); ?></textarea>
+		</td>
+	</tr>
+	<tr valign="top">
+		<th scope="row" class="titledesc">
+			<label for="<?php echo esc_attr( $options_available['with_name']['key'] ); ?>">
+				<?php echo esc_html( $options_available['with_name']['label'] ); ?>
+			</label>
+		</th>
+		<td class="forminp forminp-text">
+			<input
+				name="<?php echo esc_attr( sprintf( '%s[custom_settings][button_style][with_name]', WEGLOT_SLUG ) ); ?>"
+				id="<?php echo esc_attr( $options_available['with_name']['key'] ); ?>"
+				type="checkbox"
+				<?php checked( $this->options[ $options_available['with_name']['key'] ], 1 ); ?>
+			>
+			<p class="description"><?php echo esc_html( $options_available['with_name']['description'] ); ?></p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<th scope="row" class="titledesc">
+			<label for="<?php echo esc_attr( $options_available['is_fullname']['key'] ); ?>">
+				<?php echo esc_html( $options_available['is_fullname']['label'] ); ?>
+			</label>
+		</th>
+		<td class="forminp forminp-text">
+			<input
+				name="<?php echo esc_attr( sprintf( '%s[custom_settings][button_style][full_name]', WEGLOT_SLUG ) ); ?>"
+				id="<?php echo esc_attr( $options_available['is_fullname']['key'] ); ?>"
+				type="checkbox"
+				<?php checked( $this->options[ $options_available['is_fullname']['key'] ], 1 ); ?>
+			>
+			<p class="description"><?php echo esc_html( $options_available['is_fullname']['description'] ); ?></p>
+		</td>
+	</tr>
+	<?php //} ?>
 	<tr valign="top">
 		<th scope="row" class="titledesc">
 			<label for="<?php echo esc_attr( $options_available['override_css']['key'] ); ?>">
@@ -284,10 +286,9 @@ $options_available = [
   margin-bottom: 20px;
 }"><?php echo $this->options[ $options_available['override_css']['key'] ]; //phpcs:ignore?></textarea>
 	</tr>
-	<?php if ( empty( $this->option_services->get_switchers_editor_button() ) ) { ?>
 	</tbody>
 </table>
-<?php } ?>
+
 
 <h3 id="language_button_position">
 	<?php echo esc_html_e( 'Language button position', 'weglot' ) . ' ' . esc_html__( '(Optional)', 'weglot' ); ?>

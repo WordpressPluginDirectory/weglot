@@ -30,6 +30,10 @@ abstract class Helper_Json_Inline_Weglot {
 	 * @return boolean
 	 */
 	public static function is_xml( $string ) {
-		return is_string( $string ) && simplexml_load_string( $string, "SimpleXMLElement", LIBXML_NOERROR ) ? true : false;
+		if (extension_loaded('simplexml')) {
+			return is_string( $string ) && simplexml_load_string( $string, "SimpleXMLElement", LIBXML_NOERROR ) ? true : false;
+		} else {
+			return false;
+		}
 	}
 }
