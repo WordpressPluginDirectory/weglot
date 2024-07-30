@@ -52,7 +52,11 @@ class Server
     public static function detectBot(array $server)
     {
         $userAgent = self::getUserAgent($server);
-        $checkBotAgent = preg_match('/bot|favicon|crawl|facebook|slurp|spider/i', $userAgent);
+        if (is_string($userAgent) && !empty($userAgent) && preg_match('/bot|favicon|crawl|facebook|slurp|spider/i', $userAgent)) {
+            $checkBotAgent = true;
+        } else {
+            $checkBotAgent = false;
+        }
         $checkBotGoogle = (Text::contains($userAgent, 'Google') ||
                             Text::contains($userAgent, 'facebook') ||
                             Text::contains($userAgent, 'wprocketbot') ||

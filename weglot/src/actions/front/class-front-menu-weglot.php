@@ -87,6 +87,7 @@ class Front_Menu_Weglot implements Hooks_Interface_Weglot {
 
 		$new_items = array();
 		$offset    = 0;
+		$wg_original_no_follow     = apply_filters( 'weglot_autoredirect_no_follow', false );
 
 		foreach ( $items as $key => $item ) {
 
@@ -195,6 +196,9 @@ class Front_Menu_Weglot implements Hooks_Interface_Weglot {
 				$language_item->lang        = $language->getInternalCode();
 				$language_item->classes     = array_merge( $classes, $add_classes );
 				$language_item->menu_order += $offset + $i++;
+				if($wg_original_no_follow && strpos( $link_button, 'wg-choose-original' ) !== false){
+					$language_item->xfn .= 'nofollow';
+				}
 				if ( $dropdown ) {
 					$language_item->menu_item_parent = $item->db_id;
 					$language_item->db_id            = 0;

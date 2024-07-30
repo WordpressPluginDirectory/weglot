@@ -206,7 +206,7 @@ class Translate_Service_Weglot {
 			switch ( $type ) {
 				case 'json':
 					$extra_keys         = apply_filters( 'weglot_add_json_keys', array() );
-					$translated_content = $parser->translate( $content, $this->original_language, $this->current_language, $extra_keys );
+					$translated_content = $parser->translate( $content, $this->original_language,$this->current_language, $extra_keys );
 					$translated_content = wp_json_encode( $this->replace_url_services->replace_link_in_json( json_decode( $translated_content, true ) ) );
 
 					return apply_filters( 'weglot_json_treat_page', $translated_content );

@@ -1,13 +1,13 @@
 <?php
 /*
-Plugin Name: Weglot Translate
-Plugin URI: http://wordpress.org/plugins/weglot/
-Description: Translate your website into multiple languages in minutes without doing any coding. Fully SEO compatible.
-Author: Weglot Translate team
-Author URI: https://weglot.com/
-Text Domain: weglot
-Domain Path: /languages/
-Version: 4.2.7
+*Plugin Name: Weglot Translate
+*Plugin URI: http://wordpress.org/plugins/weglot/
+*Description: Translate your website into multiple languages in minutes without doing any coding. Fully SEO compatible.
+*Author: Weglot Translate team
+*Author URI: https://weglot.com/
+*Text Domain: weglot
+*Domain Path: /languages/
+*Version: 4.2.8
 */
 
 /**
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WEGLOT_NAME', 'Weglot' );
 define( 'WEGLOT_SLUG', 'weglot-translate' );
 define( 'WEGLOT_OPTION_GROUP', 'group-weglot-translate' );
-define( 'WEGLOT_VERSION', '4.2.7' );
+define( 'WEGLOT_VERSION', '4.2.8' );
 define( 'WEGLOT_PHP_MIN', '5.6' );
 define( 'WEGLOT_BNAME', plugin_basename( __FILE__ ) );
 define( 'WEGLOT_DIR', __DIR__ );
@@ -39,6 +39,9 @@ define( 'WEGLOT_TEMPLATES', WEGLOT_DIR . '/templates' );
 define( 'WEGLOT_TEMPLATES_ADMIN', WEGLOT_TEMPLATES . '/admin' );
 define( 'WEGLOT_TEMPLATES_ADMIN_NOTICES', WEGLOT_TEMPLATES_ADMIN . '/notices' );
 define( 'WEGLOT_TEMPLATES_ADMIN_PAGES', WEGLOT_TEMPLATES_ADMIN . '/pages' );
+/* Start editing Weglot X WooCommerce */
+define('WEGLOT_WOOCOMMERCE', false);
+/* Stop editing Weglot X WooCommerce */
 
 if ( ! function_exists( 'is_plugin_active' ) ) {
 	include_once ABSPATH . 'wp-admin/includes/plugin.php';

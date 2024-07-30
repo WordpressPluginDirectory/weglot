@@ -67,6 +67,7 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 		add_filter( 'woocommerce_payment_successful_result', array( $this, 'woocommerce_filter_url_array' ) );
 		add_filter( 'woocommerce_get_checkout_order_received_url', array( $this, 'woocommerce_filter_order_received_url' ) );
 		add_action( 'woocommerce_reset_password_notification', array( $this, 'woocommerce_filter_reset_password' ), 999 );
+		add_action( 'wp_head', array( $this, 'woocommerce_translate_cart_checkout_block' ), 999 );
 
 		add_filter( 'woocommerce_login_redirect', array( '\WeglotWP\Helpers\Helper_Filter_Url_Weglot', 'filter_url_log_redirect' ) );
 		add_filter( 'woocommerce_registration_redirect', array( '\WeglotWP\Helpers\Helper_Filter_Url_Weglot', 'filter_url_log_redirect' ) );
@@ -170,5 +171,107 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 
 		wp_redirect( $url_redirect->getForLanguage( $this->request_url_services->get_current_language() ) ); //phpcs:ignore
 		exit;
+	}
+
+	/**
+	 * Translate WooCommerce cart and checkout Block
+	 *
+	 *
+	 * @return void
+	 * @throws Exception
+	 * @since 4.2.7
+	 */
+	public function woocommerce_translate_cart_checkout_block() {
+
+		$translate_block_cart_checkout = apply_filters( 'weglot_translate_block_cart_checkout', false );
+
+		if( $translate_block_cart_checkout ){
+
+			if ( is_cart() || is_checkout() || $this->wg_is_custom_checkout_page() || $this->wg_is_custom_cart_page() ) {
+				$checkout_url = wc_get_checkout_url();
+				$request_url_service = weglot_get_request_url_service();
+				$replaced_url        = $request_url_service->create_url_object( $checkout_url )->getForLanguage( $request_url_service->get_current_language() );
+				$api_key = weglot_get_option( 'api_key' );
+				?>
+				<script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script>
+				<script>
+					Weglot.on("initialized", () => Weglot.switchTo( "<?php echo esc_js(weglot_get_current_language()); ?>"))
+
+					Weglot.initialize({
+						api_key: '<?php echo esc_js($api_key); ?>',
+						whitelist: [{ value: '.wp-block-woocommerce-cart'}, { value: '.wc-block-checkout'}],
+						dynamics: [{ value: '.wp-block-woocommerce-cart' }, { value: '.wc-block-checkout'}],
+						hide_switcher: true
+					});
+
+					document.addEventListener('DOMContentLoaded', function() {
+
+						// Create a MutationObserver to watch for changes in the DOM
+						const observer = new MutationObserver(function(mutations) {
+							mutations.forEach(function(mutation) {
+								if (mutation.type === 'childList') {
+									modifyCheckoutButton();
+								}
+							});
+						});
+
+						function modifyCheckoutButton() {
+							const checkoutButton = document.querySelector('.wc-block-cart__submit-button');
+							if (checkoutButton !== null) {
+								checkoutButton.setAttribute('href', "<?php echo esc_js($replaced_url); ?>");
+								// Disconnect the observer once the button is found and modified
+								observer.disconnect();
+							}
+						}
+
+						// Configure the observer to watch for changes in the entire document
+						observer.observe(document.body, {
+							childList: true,
+							subtree: true
+						});
+
+						// Initial check in case the element is already present
+						modifyCheckoutButton();
+					});
+				</script>
+				<?php
+			}
+		}
+	}
+	/**
+	 * Check custom checkout page
+	 *
+	 *
+	 * @return bool
+	 * @throws Exception
+	 * @since 4.2.7
+	 */
+	public function wg_is_custom_checkout_page() {
+		$checkout_slug = apply_filters('custom_checkout_slug', 'checkout');
+
+		if( isset($_SERVER['REQUEST_URI'])){
+			if (strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/' . $checkout_slug) !== false) {
+				return true;
+			}
+		}
+		return false;
+}
+
+	/**
+	 * Check custom cart page
+	 *
+	 *
+	 * @return bool
+	 * @throws Exception
+	 * @since 4.2.7
+	 */
+	public function wg_is_custom_cart_page() {
+		$cart_slug = apply_filters('custom_cart_slug', 'cart');
+		if( isset($_SERVER['REQUEST_URI'])){
+			if (strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/' . $cart_slug) !== false) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

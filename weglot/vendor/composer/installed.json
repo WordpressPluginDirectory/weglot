@@ -187,17 +187,17 @@
         },
         {
             "name": "weglot/weglot-php",
-            "version": "1.7.1",
-            "version_normalized": "1.7.1.0",
+            "version": "1.7.2",
+            "version_normalized": "1.7.2.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:weglot/weglot-php.git",
-                "reference": "c99f9094a087220ba711aefc743fc7d0f8f9eee1"
+                "reference": "aaecd227e48ce2e168adb72fcbfe9d9df76daea9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/weglot/weglot-php/zipball/c99f9094a087220ba711aefc743fc7d0f8f9eee1",
-                "reference": "c99f9094a087220ba711aefc743fc7d0f8f9eee1",
+                "url": "https://api.github.com/repos/weglot/weglot-php/zipball/aaecd227e48ce2e168adb72fcbfe9d9df76daea9",
+                "reference": "aaecd227e48ce2e168adb72fcbfe9d9df76daea9",
                 "shasum": ""
             },
             "require": {
@@ -210,7 +210,7 @@
                 "phpstan/phpstan-deprecation-rules": "^1.1",
                 "vlucas/phpdotenv": "^2.4"
             },
-            "time": "2024-01-18T12:41:47+00:00",
+            "time": "2024-07-17T13:43:40+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

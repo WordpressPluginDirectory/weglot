@@ -148,7 +148,10 @@ class Button_Service_Weglot {
 	 */
 	public function get_html( $add_class = '', $switcher = array(), $add_attr_target = '', $add_attr_sibling = '', $pos = '') {
 
-		$this->option_services->validate_button_option();
+		$force_validate_button_option = apply_filters( 'weglot_validate_button_option', true );
+		if($force_validate_button_option ){
+			$this->option_services->validate_button_option();
+		}
 
 		$weglot_url                = $this->request_url_services->get_weglot_url();
 		$amp_regex                 = $this->amp_services->get_regex( true );
@@ -183,10 +186,18 @@ class Button_Service_Weglot {
 		$add_class .= ' wg-'.$pos;
 		$button_html = sprintf( '<!--Weglot %s-->', WEGLOT_VERSION );
 
+		$accessibility_tag     = apply_filters( 'weglot_change_open_close_tag_switcher', false );
+		$open_switcher_tag = '<aside ';
+		$close_switcher_tag = '</aside>';
+		if($accessibility_tag){
+			$open_switcher_tag = '<div role=listbox ';
+			$close_switcher_tag = '</div>';
+		}
+
 		if ( ! empty( $add_attr_target ) ) {
-			$button_html .= sprintf( '<aside data-wg-notranslate="" class="country-selector %s" tabindex="0" aria-expanded="false" aria-label="Language selected: ' . $current_language->getEnglishName() . '" data-wg-target="%s" data-wg-sibling="%s">', $class_aside . $add_class, $add_attr_target, $add_attr_sibling );
+			$button_html .= sprintf( $open_switcher_tag.'data-wg-notranslate="" class="country-selector %s" tabindex="0" aria-expanded="false" aria-label="Language selected: ' . $current_language->getEnglishName() . '" data-wg-target="%s" data-wg-sibling="%s">', $class_aside . $add_class, $add_attr_target, $add_attr_sibling );
 		} else {
-			$button_html .= sprintf( '<aside data-wg-notranslate="" class="country-selector %s" tabindex="0" aria-expanded="false" aria-label="Language selected: ' . $current_language->getEnglishName() . '">', $class_aside . $add_class );
+			$button_html .= sprintf( $open_switcher_tag.'data-wg-notranslate="" class="country-selector %s" tabindex="0" aria-expanded="false" aria-label="Language selected: ' . $current_language->getEnglishName() . '">', $class_aside . $add_class );
 		}
 
 		$name = $this->get_name_with_language_entry( $current_language, $switcher );
@@ -237,19 +248,28 @@ class Button_Service_Weglot {
 					}
 				}
 
-				$button_html .= sprintf(
-					'<a title="Language switcher : ' . $language->getEnglishName() . '" class="weglot-language-' . $language->getExternalCode() . '" role="option" data-wg-notranslate="" href="%s">%s</a>',
-					esc_url( $link_button ),
-					esc_html( $name )
-				);
+				$wg_original_no_follow     = apply_filters( 'weglot_autoredirect_no_follow', false );
 
+				if(strpos( $link_button, 'wg-choose-original' ) !== false && $wg_original_no_follow){
+					$button_html .= sprintf(
+						'<a rel="nofollow" title="Language switcher : ' . $language->getEnglishName() . '" class="weglot-language-' . $language->getExternalCode() . '" role="option" data-wg-notranslate="" href="%s">%s</a>',
+						esc_url( $link_button ),
+						esc_html( $name )
+					);
+				}else{
+					$button_html .= sprintf(
+						'<a title="Language switcher : ' . $language->getEnglishName() . '" class="weglot-language-' . $language->getExternalCode() . '" role="option" data-wg-notranslate="" href="%s">%s</a>',
+						esc_url( $link_button ),
+						esc_html( $name )
+					);
+				}
 				$button_html .= '</li>';
 			}
 		}
 
 		$button_html .= '</ul>';
 
-		$button_html .= '</aside>';
+		$button_html .= $close_switcher_tag;
 
 		return apply_filters( 'weglot_button_html', $button_html, $add_class );
 	}

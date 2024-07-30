@@ -60,11 +60,11 @@ class Translate
         $response = $this->getResponse();
 
         $params = [
-            'language_from' => $response['l_from'],
-            'language_to' => $response['l_to'],
-            'bot' => $response['bot'],
-            'request_url' => $response['request_url'],
-            'title' => $response['title']
+            'language_from' => isset($response['l_from']) ? $response['l_from'] : null,
+            'language_to' => isset($response['l_to']) ? $response['l_to'] : null,
+            'bot' => isset($response['bot']) ? $response['bot'] : null,
+            'request_url' => isset($response['request_url']) ? $response['request_url'] : null,
+            'title' => isset($response['title']) ? $response['title'] : null
         ];
         $translate = new TranslateEntry($params);
 

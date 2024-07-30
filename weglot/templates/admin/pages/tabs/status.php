@@ -145,7 +145,7 @@ $options = weglot_get_options();
 				</tr>
 				<tr>
 					 <td><?php esc_html_e( 'Exclude Blocks', 'weglot' ); ?></td>
-					 <td><?php echo esc_html( implode( $options['exclude_blocks'], ' - ' ) ); ?></td>
+					 <td><?php echo esc_html( implode( ' - ', $options['exclude_blocks'] ) ); ?></td>
 				</tr>
 		  </tbody>
 	 </table>

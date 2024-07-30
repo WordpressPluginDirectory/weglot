@@ -4,9 +4,9 @@ Tags: translate, multilingual, language, translation, localization, multilingual
 Requires at least: 4.5
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 4.2.7
+Stable tag: 4.2.8
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Translate your WordPress website in 110+ languages within minutes with Weglot Translate, without any coding.
 
@@ -251,18 +251,16 @@ See changelog for upgrade changes.
 
 == Changelog ==
 
-= 4.2.7 (27/05/2024) =
-*Improvement: Compatibility with FlyingPress achieved by adding the do_action('weglot_treat_page_hook', $this->current_language) hook.
-*Improvement: Added compatibility with Algolia.
-*Improvement: Button style settings are now always visible, even if custom switchers exist.
-*Improvement: Enhanced JavaScript to improve switcher placement when location data is unavailable.
-*Improvement: Implemented the validate_button_option() method to validate default settings.
-*Improvement: Introduced the reverseTranslate() method to optimize search functionality.
-*Bug: Fixed a bug to prevent multiple redirects to incorrect URLs during rebuilding.
-*Bug: Resolved a bug related to CodeMirror by implementing a check for element existence before use.
-*Bug: Implemented a check for simplexml_load_string() availability before usage to handle XML processing.
-*Bug: Fix an issue about mail translation for WooCommerce
-
+= 4.2.8 (30/07/2024) =
+*Improvement: Add filter to prevent validation button check: Implemented a new filter to disable the validation button check.
+*Improvement: Add rel=nofollow to URLs containing Weglot parameters for auto-redirect: Enhanced SEO by adding rel=nofollow to URLs that include Weglot parameters.
+*Improvement: Improve detection of checkout and cart URLs: Enhanced the detection mechanism for checkout and cart URLs for better accuracy.
+*Improvement: Enhance Algolia compatibility: Improved integration and compatibility with Algolia search functionality.
+*Improvement: Add filter to change home directory to translated URL: Introduced a new filter to modify the home directory to its translated URL.
+*Bug: Fix underscore template parsing: Resolved issues with the parsing of underscore templates.
+*Bug: Fix deprecated preg_match() usage: Corrected the deprecated use of preg_match() to comply with the latest PHP standards.
+*Bug: Fix deprecated strpos() usage: Addressed the deprecated use of strpos() to prevent warnings in the latest PHP versions.
+*Bug: Fix deprecated json_decode() usage: Fixed the deprecated use of json_decode() to ensure compatibility with current PHP versions.
 = Older versions =
 
 Our complete changelog is located in the `changelog.md` file in the plugin folder.

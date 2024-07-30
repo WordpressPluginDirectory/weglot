@@ -73,12 +73,12 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 
 		$redirect_url = admin_url( 'admin.php?page=' . Helper_Pages_Weglot::SETTINGS );
 		if ( ! isset( $_GET['tab'] ) || ! isset( $_GET['_wpnonce'] ) ) { //phpcs:ignore
-			wp_redirect( $redirect_url );
+			wp_safe_redirect( $redirect_url );
 			exit;
 		}
 
 		if ( ! wp_verify_nonce( $_GET[ '_wpnonce' ], 'weglot_save_settings' ) ) { //phpcs:ignore
-			wp_redirect( $redirect_url );
+			wp_safe_redirect( $redirect_url );
 			exit;
 		}
 
@@ -196,6 +196,10 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 		$options['custom_settings']['translate_search'] = isset( $options['custom_settings']['translate_search'] );
 		$options['custom_settings']['translate_amp']    = isset( $options['custom_settings']['translate_amp'] );
 		$options['custom_settings']['wp_user_version']  = $options['custom_settings']['wp_user_version'] ?? '';
+
+		if(WEGLOT_WOOCOMMERCE){
+			$options['custom_settings']['woocommerce_integration'] = true;
+		}
 
 		$options['auto_switch'] = isset( $options['auto_switch'] );
 

@@ -114,6 +114,7 @@ abstract class Context_Weglot {
 			'\WeglotWP\Third\Woocommercepdf\WCPDF_Weglot',
 			'\WeglotWP\Third\UnderConstructionPage\Ucp_Tracking',
 			'\WeglotWP\Third\Maintenance\Maintenance_Tracking',
+			'\WeglotWP\Third\Woocommerce\Wc_Tracking_Weglot',
 			'\WeglotWP\Third\TheEventsCalendar\Theeventscalendar_Words',
 			'\WeglotWP\Third\Contactform7\Contactform7_Json_Keys',
 			'\WeglotWP\Third\WpOptimize\Wp_Optimize_Cache',

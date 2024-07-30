@@ -23,7 +23,11 @@ class Text {
      * @return bool
      */
     public static function contains( $haystack, $search ) {
-        return strpos( $haystack, $search ) !== false;
+        if (is_string($haystack) && strpos($haystack, $search) !== false) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -50,7 +54,10 @@ class Text {
     }
 
     public static function isJSON( $string ) {
-        json_decode( $string );
+        if (!is_string($string) || empty($string)) {
+            return false;
+        }
+        json_decode($string);
         return ( json_last_error() == JSON_ERROR_NONE && in_array( substr( $string, 0, 1 ), array( '{', '[' ) ) );
     }
 

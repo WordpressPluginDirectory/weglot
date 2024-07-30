@@ -30,7 +30,7 @@ abstract class AbstractDomChecker
     /**
      * Type of content returned by DOM property
      *
-     * @var string
+     * @var int
      */
     const WORD_TYPE = WordType::TEXT;
 

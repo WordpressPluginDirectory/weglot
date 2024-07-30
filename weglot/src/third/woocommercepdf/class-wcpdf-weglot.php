@@ -93,7 +93,12 @@ class WCPDF_Weglot implements Hooks_Interface_Weglot {
 			return $engine;
 		}
 
+
 		$translated_pdf = $this->pdf_translate_services->translate_pdf( $html, $woocommerce_order_language );
+
+		if (!isset($translated_pdf['content'])) {
+			return $engine;
+		}
 
 		switch ( true ) {
 			case $engine instanceof \Dompdf\Dompdf:

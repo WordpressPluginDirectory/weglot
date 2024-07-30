@@ -23,7 +23,7 @@ function weglot_autoload( $class_name ) {
 			$file_load = $dir_file . $prefix . $string . '.php';
 
 			if ( file_exists( $file_load ) ) {
-				include_once $file_load;
+				include_once $file_load; // nosemgrep: audit.php.lang.security.file.inclusion-arg
 			}
 		}
 	}

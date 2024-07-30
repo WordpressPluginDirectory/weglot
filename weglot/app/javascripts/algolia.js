@@ -1,60 +1,70 @@
-document.addEventListener('DOMContentLoaded', function () {
-	let debounceTimers = new Map();
+function parseAlgoliaQueryValue(queryValue, replaceFn) {
+	return () => {
+		reverseTranslate(weglotData.api_key, weglotData.current_language, weglotData.original_language, 'https://' + window.location.hostname, queryValue, 1)
+			.then(data => {
+				if (data && data.to_words[0] !== undefined) {
+					replaceFn(data.to_words[0]);
+				}
+			})
+	};
+}
 
-	xhook.before(function (request, sendRequest) {
-		if (request.url && request.url.includes('x-algolia-agent') && weglotData.original_language !== weglotData.current_language) {
-
-			let parsedBody;
-			try {
-				parsedBody = JSON.parse(request.body);
-			} catch (error) {
-				console.error('Failed to parse request.body:', error);
-				sendRequest();
-				return;
-			}
-
-			let queryValue;
-			if (parsedBody.requests && parsedBody.requests.length > 0) {
-				queryValue = parsedBody.requests[0].params.match(/(?:^|&)query=([^&]*)/)[1];
-			} else if (parsedBody.query) {
-				queryValue = parsedBody.query;
-			} else {
-				console.error('Unexpected parsedBody structure:', parsedBody);
-				sendRequest();
-				return;
-			}
-
-			// Extract a unique identifier for the request type (e.g., index name)
-			let requestType = request.url.match(/indexes\/([^\/?]+)/)[1];
-
-			if (debounceTimers.has(requestType)) {
-				clearTimeout(debounceTimers.get(requestType));
-			}
-
-			debounceTimers.set(requestType, setTimeout(() => {
-				reverseTranslate(weglotData.api_key, weglotData.current_language, weglotData.original_language, 'https://' + window.location.hostname, queryValue, 1)
-					.then(data => {
-						if (data.to_words[0] !== undefined) {
-							const reverseWord = data.to_words[0];
-							if (parsedBody.requests && parsedBody.requests.length > 0) {
-								parsedBody.requests[0].params = parsedBody.requests[0].params.replace(/query=[^&]*/, 'query=' + reverseWord);
-							} else if (parsedBody.query) {
-								parsedBody.query = reverseWord;
-							}
-							request.body = JSON.stringify(parsedBody);
-							let url = request.url;
-							let apiKey = weglotData.api_key.replace('wg_', '');
-							url = url.replace(/^https?:\/\//, '');
-							request.url = 'https://proxy.weglot.com/' + apiKey + '/' + weglotData.original_language + '/' + weglotData.current_language + '/' + url;
-							sendRequest();
-						}
-					});
-				debounceTimers.delete(requestType); // Clean up the timer
-			}, 300)); // Adjust the debounce delay as needed (e.g., 300ms)
-
-		} else {
-			sendRequest();
+function parseAlgoliaRequest(algoliaRequest) {
+	try {
+		const params = new URLSearchParams(algoliaRequest?.params);
+		if (params.has("query")) {
+			return parseAlgoliaQueryValue(params.get("query"), reverseWord => {
+				params.set("query", reverseWord);
+				algoliaRequest.params = params.toString();
+			});
 		}
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+	xhook.before(function (request, sendRequest) {
+		if (!request.url || !request.url.includes('x-algolia-agent') || weglotData.original_language === weglotData.current_language) {
+			return sendRequest();
+		}
+
+		let parsedBody;
+		try {
+			parsedBody = JSON.parse(request.body);
+		} catch (error) {
+			console.error('Failed to parse request.body:', error);
+			return sendRequest();
+		}
+
+		const callbacks = [];
+		if (parsedBody.query) {
+			callbacks.push(parseAlgoliaQueryValue(parsedBody.query, reverseWord => {
+				parsedBody.query = reverseWord;
+			}));
+		}
+
+		if (parsedBody.requests) {
+			for (const algoliaRequest of parsedBody.requests) {
+				callbacks.push(parseAlgoliaRequest(algoliaRequest));
+			}
+		}
+
+		let promise = Promise.resolve();
+		for (const cb of callbacks) {
+			promise = promise.then(() => {
+				cb && cb();
+				return new Promise(resolve => setTimeout(resolve, 300));
+			});
+		}
+		promise.then(() => {
+			request.body = JSON.stringify(parsedBody);
+			const apiKey = weglotData.api_key.replace('wg_', '');
+			const url = request.url.replace(/^https?:\/\//, '');
+			request.url = 'https://proxy.weglot.com/' + apiKey + '/' + weglotData.original_language + '/' + weglotData.current_language + '/' + url;
+
+			sendRequest();
+		});
 	});
 
 	xhook.after(function (request, response) {

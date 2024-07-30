@@ -139,6 +139,10 @@ class RegexCheckerProvider
         $regexes = [];
         foreach ($checkers as $class) {
             list($regex, $type, $varNumber, $extraKeys, $callback, $revert_callback) = $class->toArray();
+            // Ensure revert_callback is always initialized
+            if (!isset($revert_callback)) {
+                $revert_callback = null; // or any default value that makes sense in your context
+            }
             preg_match_all($regex, $domString, $matches);
             if(isset($matches[$varNumber])) {
                 $matches0 = $matches[0];
@@ -159,14 +163,11 @@ class RegexCheckerProvider
                     }
                     if($type === SourceType::SOURCE_HTML) {
                         $regex = $this->getParser()->parseHTML($new_match);
-                        //if(isset($regex['source_before_callback'])){
-                            $regex['source_before_callback'] = $match;
-                        //}
+                        $regex['source_before_callback'] = $match;
                     }
-                    //if(isset( $regex['revert_callback'])){
-                        $regex['revert_callback'] = $revert_callback;
-                    //}
-                    array_push($regexes, $regex);
+
+                    $regex['revert_callback'] = $revert_callback;
+                    $regexes[]                = $regex;
                 }
             }
         }

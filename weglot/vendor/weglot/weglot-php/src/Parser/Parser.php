@@ -551,7 +551,7 @@ class Parser {
                     continue;
                 }
                 $translatedRegex = $this->formatters( $regex['source'], $translateEntry, $regex, $index );
-                if ( $regex['revert_callback'] ) {
+                if ( isset($regex['revert_callback']) &&  $regex['revert_callback']) {
                     $translatedRegex = call_user_func( $regex['revert_callback'], $translatedRegex );
                 }
 

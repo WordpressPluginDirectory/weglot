@@ -3,6 +3,18 @@
 
 # Change Log
 
+##4.2.7 (27/05/2024) =
+*Improvement: Compatibility with FlyingPress achieved by adding the do_action('weglot_treat_page_hook', $this->current_language) hook.
+*Improvement: Added compatibility with Algolia.
+*Improvement: Button style settings are now always visible, even if custom switchers exist.
+*Improvement: Enhanced JavaScript to improve switcher placement when location data is unavailable.
+*Improvement: Implemented the validate_button_option() method to validate default settings.
+*Improvement: Introduced the reverseTranslate() method to optimize search functionality.
+*Bug: Fixed a bug to prevent multiple redirects to incorrect URLs during rebuilding.
+*Bug: Resolved a bug related to CodeMirror by implementing a check for element existence before use.
+*Bug: Implemented a check for simplexml_load_string() availability before usage to handle XML processing.
+*Bug: Fix an issue about mail translation for WooCommerce
+
 ##4.2.6 (15/03/2024) =
 * Security: sanitization fixes; thank you Wordfence (CVE-2024-2124)
 

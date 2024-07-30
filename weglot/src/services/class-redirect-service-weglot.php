@@ -218,14 +218,14 @@ class Redirect_Service_Weglot {
 				$_SERVER['REQUEST_URI'] = preg_replace(
 					'/([&?])wg-choose-original=[^&]*(&|$)/',
 					'$1',
-					$_SERVER['REQUEST_URI']
+					esc_url_raw( $_SERVER['REQUEST_URI'] )
 				);
 
 				// Remove any trailing '&' or '?' left in the query string
-				$_SERVER['REQUEST_URI'] = rtrim( $_SERVER['REQUEST_URI'], '&?' );
+				$_SERVER['REQUEST_URI'] = rtrim( esc_url_raw( $_SERVER['REQUEST_URI'] ), '&?' );
 
 				// Ensure the URL doesn't end with a '?' if no other query parameters are present
-				$_SERVER['REQUEST_URI'] = preg_replace( '/\?$/', '', $_SERVER['REQUEST_URI'] );
+				$_SERVER['REQUEST_URI'] = preg_replace( '/\?$/', '', esc_url_raw( $_SERVER['REQUEST_URI'] ) );
 
 				// Sanitize the URL
 				$_SERVER['REQUEST_URI'] = esc_url_raw( $_SERVER['REQUEST_URI'] );

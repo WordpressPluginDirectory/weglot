@@ -257,7 +257,7 @@ class Translate_Page_Weglot implements Hooks_Interface_Weglot {
 
 		if ( $redirect ) {
 			if ( ! $this->request_url_services->get_weglot_url()->getForLanguage( $this->current_language ) && ! strpos( $this->request_url_services->get_weglot_url()->getForLanguage( $this->language_services->get_original_language() ), 'wp-comments-post.php' ) !== false ) {
-				wp_redirect( $this->request_url_services->get_weglot_url()->getForLanguage( $this->language_services->get_original_language() ), 301 );
+				wp_safe_redirect( $this->request_url_services->get_weglot_url()->getForLanguage( $this->language_services->get_original_language() ), 301 );
 				exit;
 			}
 		}
@@ -265,7 +265,7 @@ class Translate_Page_Weglot implements Hooks_Interface_Weglot {
 		// If we receive a not translated slug we return a 301. For example if we have /fr/products but should have /fr/produits we should redirect to /fr/produits.
 		if ( $this->request_url_services->get_weglot_url()->getRedirect() !== null ) {
 			$redirect_to = $this->request_url_services->get_weglot_url()->getRedirect();
-			wp_redirect( '/' . $this->current_language->getExternalCode() . $redirect_to, 301 );
+			wp_safe_redirect( '/' . $this->current_language->getExternalCode() . $redirect_to, 301 );
 			exit;
 		}
 		$_SERVER['REQUEST_URI'] = sanitize_url($this->request_url_services->get_weglot_url()->getPathPrefix() .
