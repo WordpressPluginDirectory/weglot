@@ -7,7 +7,7 @@
 *Author URI: https://weglot.com/
 *Text Domain: weglot
 *Domain Path: /languages/
-*Version: 4.2.8
+*Version: 4.2.9
 */
 
 /**
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WEGLOT_NAME', 'Weglot' );
 define( 'WEGLOT_SLUG', 'weglot-translate' );
 define( 'WEGLOT_OPTION_GROUP', 'group-weglot-translate' );
-define( 'WEGLOT_VERSION', '4.2.8' );
+define( 'WEGLOT_VERSION', '4.2.9' );
 define( 'WEGLOT_PHP_MIN', '5.6' );
 define( 'WEGLOT_BNAME', plugin_basename( __FILE__ ) );
 define( 'WEGLOT_DIR', __DIR__ );
@@ -82,6 +82,7 @@ wpml_is_active();
 
 /**
  * Check compatibility this Weglot with WordPress config.
+ * @return bool
  */
 function weglot_is_compatible() {
 	// Check php version.
@@ -95,6 +96,7 @@ function weglot_is_compatible() {
 
 /**
  * Check if GTranslate is active.
+ * @return void
  */
 function gtranslate_is_active() {
 	// Check gtranslate is active.
@@ -106,6 +108,7 @@ function gtranslate_is_active() {
 
 /**
  * Check if Polylang is active.
+ * @return void
  */
 function polylang_is_active() {
 	// Check polylang is active.
@@ -116,6 +119,7 @@ function polylang_is_active() {
 
 /**
  * Check if TranslatePress is active.
+ * @return void
  */
 function translatepress_is_active() {
 	// Check TranslatePress is active.
@@ -126,6 +130,7 @@ function translatepress_is_active() {
 
 /**
  * Check if TranslatePress is active.
+ * @return void
  */
 function wpml_is_active() {
 	// Check WPML is active.
@@ -200,7 +205,8 @@ function weglot_php_min_compatibility() {
 
 /**
  * Activate Weglot.
- *
+ * @return void
+ * @throws Exception
  * @since 2.0
  */
 function weglot_plugin_activate() {
@@ -229,7 +235,8 @@ function weglot_plugin_activate() {
 
 /**
  * Deactivate Weglot.
- *
+ * @return void
+ * @throws Exception
  * @since 2.0
  */
 function weglot_plugin_deactivate() {
@@ -253,7 +260,7 @@ function weglot_plugin_deactivate() {
 
 /**
  * Uninstall Weglot.
- *
+ * @return void
  * @since 2.0
  */
 function weglot_plugin_uninstall() {
@@ -286,7 +293,7 @@ function weglot_rollback() {
 
 /**
  * Load Weglot.
- *
+ * @return void
  * @since 2.0
  */
 function weglot_plugin_loaded() {

@@ -56,7 +56,7 @@ class Amp_Enqueue_Weglot implements Hooks_Interface_Weglot {
 
 
 	/**
-	 * @param $html
+	 * @param string $html
 	 * @return string
 	 * @throws Exception
 	 * @since 3.1.7
@@ -71,7 +71,7 @@ class Amp_Enqueue_Weglot implements Hooks_Interface_Weglot {
 		$amp_service = weglot_get_service( 'Amp_Service_Weglot' );
 		$amp_regex   = $amp_service->get_regex( true );
 
-		if ( ! $this->option_services->get_option_custom_settings( 'translate_amp' ) || ! preg_match( '#' . $amp_regex . '#', $weglot_url->getUrl() ) === 1 ) {
+		if ( ! $this->option_services->get_option_custom_settings( 'translate_amp' ) || ! preg_match( '#' . $amp_regex . '#', $weglot_url->getUrl() ) === true ) {
 			return $html;
 		}
 
@@ -112,6 +112,11 @@ class Amp_Enqueue_Weglot implements Hooks_Interface_Weglot {
 		return $html;
 	}
 
+	/**
+	 * @return array<array<string, int>>
+	 * @throws Exception
+	 * @since 3.1.7
+	 */
 	public function weglot_get_flags_positions() {
 		return array(
 			array(

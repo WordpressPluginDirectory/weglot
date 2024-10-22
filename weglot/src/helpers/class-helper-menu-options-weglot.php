@@ -25,7 +25,7 @@ abstract class Helper_Menu_Options_Weglot {
 	/**
 	 * @since 2.4.0
 	 * @static
-	 * @return array
+	 * @return array<int,mixed>
 	 */
 	public static function get_menu_switcher_list_options() {
 		return apply_filters(
@@ -42,7 +42,7 @@ abstract class Helper_Menu_Options_Weglot {
 	/**
 	 * @since 2.4.0
 	 * @static
-	 * @return array
+	 * @return array<int,mixed>
 	 */
 	public static function get_keys() {
 		return apply_filters(

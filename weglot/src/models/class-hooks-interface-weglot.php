@@ -14,5 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  */
 interface Hooks_Interface_Weglot {
+	/**
+	 * @return mixed
+	 */
 	public function hooks();
 }

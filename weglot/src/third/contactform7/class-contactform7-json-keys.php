@@ -40,13 +40,14 @@ class Contactform7_Json_Keys implements Hooks_Interface_Weglot {
 			return;
 		}
 
-		add_filter( 'weglot_add_json_keys', array( $this, 'weglot_contactform7_keys' ) ); // @phpstan-ignore-line
+		add_filter( 'weglot_add_json_keys', array( $this, 'weglot_contactform7_keys' ) );
 	}
 
 
 	/**
 	 * @since 3.1.2
-	 * @return void
+	 * @param array<string,mixed>$keys
+	 * @return array<string,mixed>
 	 */
 	public function weglot_contactform7_keys( $keys ) {
 		$keys[] = 'message';

@@ -14,20 +14,14 @@ use WeglotWP\Helpers\Helper_Menu_Options_Weglot;
  */
 class Menu_Options_Service_Weglot {
 	/**
-	 * @var Option_Service_Weglot
-	 */
-	private $option_services;
-
-	/**
 	 * @since 2.4.0
 	 */
 	public function __construct() {
-		$this->option_services = weglot_get_service( 'Option_Service_Weglot' );
 	}
 
 	/**
 	 * @since 2.4.0
-	 * @return array
+	 * @return array<int|string,mixed>
 	 */
 	public function get_options_default() {
 		$keys = Helper_Menu_Options_Weglot::get_keys();
@@ -45,7 +39,7 @@ class Menu_Options_Service_Weglot {
 
 	/**
 	 * @since 2.4.0
-	 * @return array
+	 * @return array<int|string,mixed>
 	 */
 	public function get_list_options_menu_switcher() {
 		return Helper_Menu_Options_Weglot::get_menu_switcher_list_options();

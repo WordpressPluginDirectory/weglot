@@ -46,7 +46,8 @@ class Theeventscalendar_Words implements Hooks_Interface_Weglot {
 
 
 	/**
-	 * @return array
+	 * @param array<string,string> $words
+	 * @return array<string,string>
 	 * @since 3.1.2
 	 */
 	public function weglot_theeventscalendar_words( $words ) {

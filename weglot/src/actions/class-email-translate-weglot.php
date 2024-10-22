@@ -60,9 +60,11 @@ class Email_Translate_Weglot implements Hooks_Interface_Weglot {
 	/**
 	 * Translate emails
 	 *
+	 * @param array<int|string,mixed> $args
+	 *
+	 * @return array<int|string,mixed>
+	 * @throws \Exception
 	 * @since 2.0
-	 * @param array $args
-	 * @return array
 	 */
 	public function weglot_translate_emails( $args ) {
 

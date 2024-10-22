@@ -11,14 +11,7 @@ use WeglotWP\Services\Option_Service_Weglot;
 
 class Clean_Options implements Hooks_Interface_Weglot {
 
-
-	/**
-	 * @var Option_Service_Weglot
-	 */
-	private $option_services;
-
 	public function __construct() {
-		$this->option_services = weglot_get_service( 'Option_Service_Weglot' );
 	}
 
 	/**

@@ -29,6 +29,9 @@ class Replace_Url_Service_Weglot {
 	 * @var Multisite_Service_Weglot
 	 */
 	private $multisite_service;
+	/**
+	 * @var null|array<string,mixed>
+	 */
 	private $multisite_other_paths;
 	/**
 	 * @var Language_Service_Weglot
@@ -108,6 +111,13 @@ class Replace_Url_Service_Weglot {
 		return apply_filters( 'weglot_replace_link', $dom );
 	}
 
+	/**
+	 * @param array<string,mixed> $json
+	 *
+	 * @return array<string,mixed>
+	 * @since 2.3.0
+	 *
+	 */
 	public function replace_link_in_json( $json ) {
 		$replace_urls = apply_filters( 'weglot_ajax_replace_urls', [ 'redirecturl', 'url', 'link' ] );
 		foreach ( $json as $key => $val ) {
@@ -266,7 +276,7 @@ class Replace_Url_Service_Weglot {
 	 * @param string $sometags
 	 * @param string $sometags2
 	 *
-	 * @return string
+	 * @return bool
 	 * @since 2.0
 	 */
 	public function check_link( $current_url, $sometags = '', $sometags2 = '' ) {
@@ -336,6 +346,7 @@ class Replace_Url_Service_Weglot {
 			'xlsx',
 			'txt',
 			'eps',
+			'vcf',
 		];
 
 		foreach ( $files as $file ) {

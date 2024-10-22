@@ -14,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  */
 interface Third_Active_Interface_Weglot {
+	/**
+	 * @return bool
+	 */
 	public function is_active();
 }
 

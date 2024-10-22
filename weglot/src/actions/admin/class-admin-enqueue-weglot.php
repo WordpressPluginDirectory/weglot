@@ -129,7 +129,7 @@ class Admin_Enqueue_Weglot implements Hooks_Interface_Weglot {
 
 	/**
 	 * Print in admin head
-	 *
+	 * @return void
 	 * @since 3.1.6
 	 */
 	public function weglot_admin_print_head() {

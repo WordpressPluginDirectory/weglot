@@ -21,7 +21,7 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 	 * @see HooksInterface
 	 */
 	public function hooks() {
-		add_action( 'widgets_init', array( $this, 'register_a_widget_weglot' ) ); // @phpstan-ignore-line
+		add_action( 'widgets_init', array( $this, 'register_a_widget_weglot' ) );
 		add_action( 'init', array( $this, 'weglot_widget_block' ) );
 		add_action( 'init', array( $this, 'weglot_menu_block' ) );
 
@@ -30,16 +30,17 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 	}
 
 	/**
-	 * @return string
+	 * @return void
 	 * @since 2.0
 	 */
 	public function register_a_widget_weglot() {
-		register_widget( 'WeglotWP\Widgets\Widget_Selector_Weglot' ); // @phpstan-ignore-line
+		register_widget( 'WeglotWP\Widgets\Widget_Selector_Weglot' );
 	}
 
 
 	/**
 	 * Enqueue block JavaScript and CSS for the editor
+	 * @return void
 	 */
 	public function my_block_plugin_editor_scripts() {
 		// Enqueue block editor styles.
@@ -48,10 +49,11 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 
 	/**
 	 * @return string
+	 * @param array<string|int,mixed> $block_attributes
 	 * @throws \Exception
 	 * @since 2.0
 	 */
-	public function weglot_widget_block_render_callback( $block_attributes, $content ) {
+	public function weglot_widget_block_render_callback( $block_attributes ) {
 
 		$type_block = sanitize_text_field( $block_attributes['type'] );
 		/** @var Button_Service_Weglot $button_service */
@@ -78,6 +80,7 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 
 	/**
 	 * @return string
+	 * @param string $button_html
 	 * @since 2.0
 	 */
 	public function sanitize_switcher($button_html){
@@ -150,7 +153,7 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 		register_block_type(
 			WEGLOT_DIR . '/blocks/weglot-widget/build',
 			array(
-				'api_version'     => 2,
+				'api_version'     => '2',
 				'attributes'      => array(
 					'type' => array(
 						'default' => 'widget',
@@ -170,7 +173,7 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 		register_block_type(
 			WEGLOT_DIR . '/blocks/weglot-menu/build',
 			array(
-				'api_version'     => 2,
+				'api_version'     => '2',
 				'attributes'      => array(
 					'type' => array(
 						'default' => 'menu',

@@ -11,48 +11,165 @@ use WeglotWP\Helpers\Helper_Flag_Type;
 
 class Schema_Option_V3 {
 
+	/**
+	 * @var string
+	 */
 	public $api_key;
+	/**
+	 * @var string
+	 */
 	public $api_key_private;
+	/**
+	 * @var bool
+	 */
 	public $allowed;
+	/**
+	 * @var string
+	 */
 	public $original_language;
+	/**
+	 * @var string
+	 */
 	public $language_from_custom_flag;
+	/**
+	 * @var string
+	 */
 	public $language_from_custom_name;
+	/**
+	 * @var string
+	 */
 	public $translation_engine;
+	/**
+	 * @var string
+	 */
 	public $destination_language;
+	/**
+	 * @var string
+	 */
 	public $private_mode;
+	/**
+	 * @var string
+	 */
 	public $auto_redirect;
+	/**
+	 * @var string
+	 */
 	public $autoswitch_fallback;
+	/**
+	 * @var string
+	 */
 	public $exclude_urls;
+	/**
+	 * @var string
+	 */
 	public $exclude_blocks;
+	/**
+	 * @var string
+	 */
 	public $custom_settings;
+	/**
+	 * @var string
+	 */
 	public $is_dropdown;
+	/**
+	 * @var string
+	 */
 	public $is_fullname;
+	/**
+	 * @var string
+	 */
 	public $with_name;
+	/**
+	 * @var string
+	 */
 	public $with_flags;
+	/**
+	 * @var string
+	 */
 	public $type_flags;
+	/**
+	 * @var string
+	 */
 	public $override_css;
+	/**
+	 * @var string
+	 */
 	public $email_translate;
+	/**
+	 * @var string
+	 */
 	public $active_search;
+	/**
+	 * @var string
+	 */
 	public $translate_amp;
+	/**
+	 * @var string
+	 */
 	public $wp_user_version;
+	/**
+	 * @var string
+	 */
 	public $has_first_settings;
+	/**
+	 * @var string
+	 */
 	public $show_box_first_settings;
+	/**
+	 * @var string
+	 */
 	public $custom_urls;
+	/**
+	 * @var string
+	 */
 	public $media_enabled;
+	/**
+	 * @var string
+	 */
 	public $external_enabled;
+	/**
+	 * @var string
+	 */
 	public $page_views_enabled;
+	/**
+	 * @var string
+	 */
 	public $flag_css;
+	/**
+	 * @var string
+	 */
 	public $menu_switcher;
+	/**
+	 * @var string
+	 */
 	public $active_wc_reload;
+	/**
+	 * @var string
+	 */
 	public $versions;
+	/**
+	 * @var string
+	 */
 	public $slugTranslation;
+	/**
+	 * @var string
+	 */
 	public $translation;
+	/**
+	 * @var string
+	 */
 	public $category;
+	/**
+	 * @var string
+	 */
 	public $organization_slug;
+	/**
+	 * @var string
+	 */
 	public $project_slug;
 
 	/**
-	 * @return array
+	 * @return array<string,mixed>
 	 * @since 3.0.0
 	 */
 	public static function get_schema_options_v3_compatible() {

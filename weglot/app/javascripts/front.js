@@ -172,7 +172,7 @@ document.addEventListener( "DOMContentLoaded", function ( event ) {
 				}
 			});
 
-			aside.addEventListener("mousedown", event => {
+			function handleMouseDown(event) {
 				if (focusedLang) {
 					const destinationLanguage = focusedLang.getAttribute("data-l");
 					setAriaLabel(destinationLanguage);
@@ -180,7 +180,9 @@ document.addEventListener( "DOMContentLoaded", function ( event ) {
 				}
 				toggleSwitcher();
 				return;
-			});
+			}
+
+			aside.addEventListener("mousedown", handleMouseDown);
 
 			if(aside.className.includes("open_hover")){
 				aside.addEventListener("mouseenter", event => {

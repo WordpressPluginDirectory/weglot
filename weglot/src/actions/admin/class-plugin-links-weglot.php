@@ -30,8 +30,8 @@ class Plugin_Links_Weglot implements Hooks_Interface_Weglot {
 	 *
 	 * @see plugin_action_links_WEGLOT_BNAME
 	 *
-	 * @param array $links
-	 * @return array
+	 * @param array<string|int,string> $links
+	 * @return array<string|int,string>
 	 */
 	public function weglot_plugin_action_links( $links ) {
 		$url  = get_admin_url( null, sprintf( 'admin.php?page=%s', Helper_Pages_Weglot::SETTINGS ) );

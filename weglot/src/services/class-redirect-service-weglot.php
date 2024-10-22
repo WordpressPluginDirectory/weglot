@@ -85,7 +85,7 @@ class Redirect_Service_Weglot {
 	/**
 	 * Return an array of navigator languages
 	 *
-	 * @return array
+	 * @return array<int,string>
 	 */
 	protected function get_navigator_languages() {
 		$navigator_languages = array();
@@ -108,9 +108,9 @@ class Redirect_Service_Weglot {
 	/**
 	 * Return the best language available based on the navigator language.
 	 *
-	 * @param  array $navigator_languages The list of navigator languages.
-	 * @param  array $available_languages The list of available languages.
-	 * @return string
+	 * @param  array<int,string> $navigator_languages The list of navigator languages.
+	 * @param  array<int,string> $available_languages The list of available languages.
+	 * @return string|null
 	 */
 	public function get_best_available_language( $navigator_languages, $available_languages ) {
 
@@ -148,7 +148,7 @@ class Redirect_Service_Weglot {
 	}
 
 	/**
-	 *
+	 * @return void
 	 * Redirect the visitor
 	 *
 	 * @version 2.3.0
@@ -206,7 +206,7 @@ class Redirect_Service_Weglot {
 		if ( isset( $_GET["wg-choose-original"] ) ) { //phpcs:ignore
 			$wg_choose_original = $_GET["wg-choose-original"]; //phpcs:ignore
 			if ( 'true' === $wg_choose_original ) {
-				setcookie( "WG_CHOOSE_ORIGINAL", true, time() + 86400 * 2, '/' ); //phpcs:ignore
+				setcookie( "WG_CHOOSE_ORIGINAL", 'true', time() + 86400 * 2, '/' ); //phpcs:ignore
 			} elseif ( 'false' === $wg_choose_original ) {
 				setcookie( "WG_CHOOSE_ORIGINAL", '', - 1, '/' ); //phpcs:ignore
 			} else {

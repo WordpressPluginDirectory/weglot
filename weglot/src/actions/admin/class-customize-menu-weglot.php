@@ -32,7 +32,6 @@ class Customize_Menu_Weglot implements Hooks_Interface_Weglot {
 	public function __construct() {
 		$this->option_services       = weglot_get_service( 'Option_Service_Weglot' );
 		$this->menu_options_services = weglot_get_service( 'Menu_Options_Service_Weglot' );
-		return $this;
 	}
 
 	/**
@@ -122,10 +121,11 @@ class Customize_Menu_Weglot implements Hooks_Interface_Weglot {
 	/**
 	 * Output menu links.
 	 * @since 2.0
+	 * @return void
 	 * @see add_meta_box weglot_nav_link
 	 */
 	public function nav_menu_links() {
-		global $_nav_menu_placeholder, $nav_menu_selected_id; ?>
+		global $_nav_menu_placeholder; ?>
 		<div id="posttype-weglot-languages" class="posttypediv">
 			<div id="tabs-panel-weglot-endpoints" class="tabs-panel tabs-panel-active">
 				<ul id="weglot-endpoints-checklist" class="categorychecklist form-no-clear">

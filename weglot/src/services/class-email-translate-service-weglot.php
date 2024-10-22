@@ -40,9 +40,9 @@ class Email_Translate_Service_Weglot {
 	/**
 	 * Translate email with parser
 	 * @version 2.3.0
-	 * @param array $args
+	 * @param array<string,mixed> $args
 	 * @param string $language
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function translate_email( $args, $language ) {
 		$api_key = $this->option_services->get_option( 'api_key' );

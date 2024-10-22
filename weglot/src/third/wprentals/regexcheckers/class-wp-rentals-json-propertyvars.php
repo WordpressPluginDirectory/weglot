@@ -20,6 +20,9 @@ class Wp_Rentals_Json_Propertyvars {
 	const TYPE = SourceType::SOURCE_JSON;
 
 	const VAR_NUMBER = 1;
-
+	/**
+	 * @var string[] Array of string keys
+	 * @since 2.0.7
+	 */
 	public static $KEYS = array( 'plsfill', 'sending', 'logged_in', 'notlog', 'viewless', 'viewmore', 'nostart', 'noguest', 'guestoverload', 'use_gdpr', 'gdpr_terms', 'guests', 'allDayText', 'clickandragtext', 'reserved', 'processing', 'book_now', 'instant_booking', 'send_mess' );
 }

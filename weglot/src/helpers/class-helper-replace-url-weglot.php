@@ -15,7 +15,7 @@ class Helper_Replace_Url_Weglot {
 
 	/**
 	 * @since 2.3.0
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public static function get_replace_modify_link() {
 		$data = array(
@@ -36,7 +36,7 @@ class Helper_Replace_Url_Weglot {
 
 	/**
 	 * @since 2.3.0
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public static function get_replace_modify_link_in_xml() {
 		$data = array(

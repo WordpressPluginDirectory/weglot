@@ -34,7 +34,7 @@ abstract class Helper_Tabs_Admin_Weglot {
 	 * @static
 	 * @since 2.0
 	 *
-	 * @return array
+	 * @return array<int|string,mixed>
 	 */
 	public static function get_full_tabs() {
 		return array(

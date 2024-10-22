@@ -22,15 +22,27 @@ use WeglotWP\Helpers\Helper_API;
  * @since 2.0
  */
 class Option_Service_Weglot {
+	/**
+	 * @var string|null|array<string, mixed>
+	 */
 	protected $options_cdn = null;
+	/**
+	 * @var null|mixed
+	 */
 	protected $slugs_cache = null;
+	/**
+	 * @var null|array<string, mixed>
+	 */
 	protected $options_from_api = null;
+	/**
+	 * @var null|array<string, mixed>
+	 */
 	protected $slugs_from_api = null;
 
 	const NO_OPTIONS = 'OPTIONS_NOT_FOUND';
 
 	/**
-	 * @var array
+	 * @var array<string,mixed>
 	 */
 	protected $options_default = array(
 		'api_key_private'         => '',
@@ -68,7 +80,7 @@ class Option_Service_Weglot {
 	);
 
 	/**
-	 * @var array
+	 * @var array<string,mixed>
 	 */
 	protected $options_bdd_default = array(
 		'has_first_settings'      => true,
@@ -91,7 +103,7 @@ class Option_Service_Weglot {
 	/**
 	 * Get options default
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 * @since 2.0
 	 */
 	public function get_options_default() {
@@ -101,7 +113,7 @@ class Option_Service_Weglot {
 	/**
 	 * @param string $api_key
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 * @since 3.0.0
 	 */
 	protected function get_options_from_cdn_with_api_key( $api_key ) {
@@ -171,9 +183,9 @@ class Option_Service_Weglot {
 
 	/**
 	 * @param string $api_key
-	 * @param array $destinations_languages
+	 * @param array<int|string,mixed> $destinations_languages
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 * @since 3.0.0
 	 */
 	protected function get_slugs_from_cache_with_api_key( $api_key, $destinations_languages ) {
@@ -205,7 +217,7 @@ class Option_Service_Weglot {
 	/**
 	 * @param string $api_key
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 * @since 3.0.0
 	 */
 	public function get_options_from_api_with_api_key( $api_key ) {
@@ -264,9 +276,9 @@ class Option_Service_Weglot {
 
 	/**
 	 * @param string $api_key
-	 * @param $destinations_languages
+	 * @param array<int|string,mixed>$destinations_languages
 	 *
-	 * @return array
+	 * @return array<int|string,mixed>
 	 * @since 3.0.0
 	 */
 	public function get_slugs_from_api_with_api_key( $api_key, $destinations_languages ) {
@@ -330,7 +342,7 @@ class Option_Service_Weglot {
 	}
 
 	/**
-	 * @return array
+	 * @return array<string,mixed>
 	 * @throws Exception
 	 * @since 3.0.0
 	 */
@@ -406,7 +418,7 @@ class Option_Service_Weglot {
 	}
 
 	/**
-	 * @return array
+	 * @return array<int|string,mixed>
 	 * @throws Exception
 	 * @since 2.0
 	 * @version 3.0.0
@@ -414,7 +426,6 @@ class Option_Service_Weglot {
 	public function get_options() {
 		$api_key         = $this->get_api_key();
 		$api_key_private = $this->get_api_key_private();
-		$options         = null;
 
 		$is_weglot_settings_page = isset( $_GET['page'] ) && strpos( $_GET['page'], 'weglot-settings' ) !== false; //phpcs:ignore
 
@@ -461,6 +472,14 @@ class Option_Service_Weglot {
 		return $options;
 	}
 
+	/**
+	 * @param array<int|string,mixed> $array1
+	 * @param array<int|string,mixed> $array2
+	 * @return array<string,mixed>
+	 * @throws Exception
+	 * @since 2.0
+	 * @version 3.0.0
+	 */
 	public function array_merge_recursive_ex( array $array1, array $array2 ) {
 		$merged = $array1;
 
@@ -489,13 +508,12 @@ class Option_Service_Weglot {
 
 
 	/**
-	 * @param array $options
+	 * @param array<string,mixed> $options
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 * @since 3.0.0
 	 */
 	public function save_options_to_weglot( $options ) {
-
 
 		$response = wp_remote_post( // phpcs:ignore
 			sprintf( '%s/projects/settings?api_key=%s', Helper_API::get_api_url(), $options['api_key_private'] ),
@@ -545,7 +563,7 @@ class Option_Service_Weglot {
 	/**
 	 * @param string $key
 	 *
-	 * @return array|string
+	 * @return mixed
 	 * @throws Exception
 	 * @since 2.0
 	 */
@@ -561,7 +579,7 @@ class Option_Service_Weglot {
 	/**
 	 * @param string $key
 	 *
-	 * @return string|boolean|int
+	 * @return mixed
 	 * @throws Exception
 	 * @since 3.0.0
 	 */
@@ -587,7 +605,8 @@ class Option_Service_Weglot {
 	 *
 	 * Returns the array "button_style" and validate it to avoid empty option button
 	 *
-	 * @return array|boolean|int
+	 * @return void
+	 * @throws Exception
 	 * @since 3.0.0
 	 */
 	public function validate_button_option() {
@@ -629,7 +648,7 @@ class Option_Service_Weglot {
 	 *
 	 * Returns the array "switchers" from the custom_settings or an empty array
 	 *
-	 * @return array|boolean|int
+	 * @return array<string,mixed>|boolean|int
 	 * @since 3.0.0
 	 */
 	public function get_switchers_editor_button() {
@@ -647,9 +666,9 @@ class Option_Service_Weglot {
 
 	/**
 	 * @param string $key
-	 * @param array $switcher
+	 * @param array<string,mixed> $switcher
 	 *
-	 * @return string|boolean|int
+	 * @return mixed
 	 * @throws Exception
 	 * @since 3.0.0
 	 */
@@ -667,7 +686,7 @@ class Option_Service_Weglot {
 	}
 
 	/**
-	 * @return array
+	 * @return array<int,string>
 	 * @throws Exception
 	 * @since 2.0
 	 */
@@ -719,7 +738,7 @@ class Option_Service_Weglot {
 	}
 
 	/**
-	 * @return array
+	 * @return array<string,mixed>
 	 * @throws Exception
 	 * @version 3.0.0
 	 * @since 3.2.1
@@ -732,7 +751,7 @@ class Option_Service_Weglot {
 	}
 
 	/**
-	 * @return array
+	 * @return array<int,mixed>
 	 * @throws Exception
 	 * @since 2.0
 	 */
@@ -809,7 +828,7 @@ class Option_Service_Weglot {
 
 
 	/**
-	 * @param array $options
+	 * @param array<string,mixed> $options
 	 *
 	 * @return Option_Service_Weglot
 	 * @since 2.0
@@ -826,7 +845,7 @@ class Option_Service_Weglot {
 	}
 
 	/**
-	 * @return array|false
+	 * @return array<string,mixed>|false
 	 * @since 3.0.0
 	 */
 	public function get_options_bdd_v3() {

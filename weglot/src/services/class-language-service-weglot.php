@@ -17,6 +17,9 @@ use Weglot\Client\Endpoint\LanguagesList;
  * @since 2.0
  */
 class Language_Service_Weglot {
+	/**
+	 * @var LanguageCollection|null
+	 */
 	protected $languages = null;
 	/**
 	 * @var Option_Service_Weglot
@@ -31,10 +34,10 @@ class Language_Service_Weglot {
 	}
 
 	/**
-	 * @param array $a
-	 * @param array $b
+	 * @param array<string,mixed> $a
+	 * @param array<string,mixed> $b
 	 *
-	 * @return bool
+	 * @return int
 	 * @since 2.0.6
 	 */
 	protected function compare_language( $a, $b ) {
@@ -44,7 +47,7 @@ class Language_Service_Weglot {
 	/**
 	 * Get defaults languages available from API
 	 *
-	 * @param array $params
+	 * @param array<string|int,mixed> $params
 	 *
 	 * @return LanguageCollection
 	 * @since 2.0
@@ -83,13 +86,13 @@ class Language_Service_Weglot {
 	/**
 	 * Adds a language to the language collection
 	 *
-	 * @param $internal_code
-	 * @param $external_code
-	 * @param $english_name
-	 * @param $local_name
+	 * @param string $internal_code
+	 * @param string $external_code
+	 * @param LanguageEntry|string $english_name
+	 * @param LanguageEntry|string $local_name
 	 * @param bool $is_rtl
 	 *
-	 * @return array
+	 * @return LanguageCollection|null
 	 */
 	public function add_language( $internal_code, $external_code, $english_name, $local_name, $is_rtl = false ) {
 		$entry = new LanguageEntry( $internal_code, $external_code, $english_name, $local_name, $is_rtl );
@@ -101,7 +104,8 @@ class Language_Service_Weglot {
 	/**
 	 * Get all languages : list of 109 default languages merged with custom languages taken from options
 	 *
-	 * @return array|LanguageCollection|null
+	 * @return array<int|string,mixed>|LanguageCollection|null
+	 * @throws \Exception
 	 */
 	public function get_all_languages() {
 		if ( null !== $this->languages ) {
@@ -117,14 +121,15 @@ class Language_Service_Weglot {
 		}
 
 		foreach ( $destination_languages as $d ) {
+			/** @var LanguageEntry $language_data */
 			$language_data = $this->languages->getCode( $d['language_to'] );
 			if ( ! $language_data ) {
 				$this->languages = $this->add_language( $d['language_to'], $d['custom_code'], $d['custom_name'], $d['custom_local_name'] );
 			} else {
-				$external_code     = isset( $d['custom_code'] ) ? $d['custom_code'] : $language_data->getExternalCode();
-				$custom_local_name = isset( $d['custom_name'] ) ? $d['custom_name'] : $language_data->getLocalName(); // TODO: remove after core fixes bug.
-				$custom_local_name = isset( $d['custom_local_name'] ) ? $d['custom_local_name'] : $custom_local_name;
-				$custom_name       = isset( $d['custom_name'] ) ? $d['custom_name'] : $language_data->getEnglishName();
+				$external_code = $d['custom_code'] ?? $language_data->getExternalCode();
+				$custom_local_name = $d['custom_name'] ?? $language_data->getLocalName(); // TODO: remove after core fixes bug.
+				$custom_local_name = $d['custom_local_name'] ?? $custom_local_name;
+				$custom_name       = $d['custom_name'] ?? $language_data->getEnglishName();
 				$this->languages   = $this->add_language( $d['language_to'], $external_code, $custom_name, $custom_local_name, $language_data->isRtl() ); // côté core : il faut que le nom qui change soit le custom_local_name.
 			}
 		}
@@ -149,7 +154,7 @@ class Language_Service_Weglot {
 	 *
 	 * @param string $external_code
 	 *
-	 * @return LanguageEntry
+	 * @return LanguageEntry|null
 	 * @since 3.2.1
 	 */
 	public function get_language_from_external( $external_code ) {

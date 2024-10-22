@@ -4,7 +4,7 @@ Tags: translate, multilingual, language, translation, localization, multilingual
 Requires at least: 4.5
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 4.2.8
+Stable tag: 4.2.9
 License: GPLv2 or later
 URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -232,6 +232,22 @@ For example, if your website is website.com, then the French version would be we
 
 Weglot offers the same high quality of automatic translations throughout all plans, from free to enterprise. We use leading providers like DeepL, Google Translate, and Microsoft Translator to bring you the most accurate translations for your language pairs. You can also refine these translations, have team members edit them, or professionally translate them throughout all plans.
 
+== Plugin Dependency on Weglot ==
+
+This plugin relies on Weglot, a third-party translation service, to provide multilingual support for your website. Weglot allows you to translate your website content into multiple languages seamlessly and efficiently. By using this plugin, your content will be sent to Weglot's servers for translation and then delivered back to your site.
+
+== Important Links ==
+
+- [Weglot Service](https://www.weglot.com/)
+- [Weglot Terms of Service](https://www.weglot.com/terms)
+- [Weglot Security Policy](https://www.weglot.com/security)
+
+By using this plugin, you agree to Weglot's terms and policies. Please review these documents to understand how your data and content are managed and protected.
+
+== Impact of Discontinuing Weglot ==
+
+If you decide to stop using Weglot, your website will no longer be translated. All translations are stored on Weglot's servers. However, you can export all your translations using our import/export feature before discontinuing the service to save your translations. More details on how to do this can be found [here](https://support.weglot.com/article/206-can-i-export-my-translations). If you do not have access to this feature, you can request support from Weglot to assist with the export before you leave.
+
 == Screenshots ==
 
 1. Become visible on search engines with multilingual SEO
@@ -251,16 +267,25 @@ See changelog for upgrade changes.
 
 == Changelog ==
 
-= 4.2.8 (30/07/2024) =
-*Improvement: Add filter to prevent validation button check: Implemented a new filter to disable the validation button check.
-*Improvement: Add rel=nofollow to URLs containing Weglot parameters for auto-redirect: Enhanced SEO by adding rel=nofollow to URLs that include Weglot parameters.
-*Improvement: Improve detection of checkout and cart URLs: Enhanced the detection mechanism for checkout and cart URLs for better accuracy.
-*Improvement: Enhance Algolia compatibility: Improved integration and compatibility with Algolia search functionality.
-*Improvement: Add filter to change home directory to translated URL: Introduced a new filter to modify the home directory to its translated URL.
-*Bug: Fix underscore template parsing: Resolved issues with the parsing of underscore templates.
-*Bug: Fix deprecated preg_match() usage: Corrected the deprecated use of preg_match() to comply with the latest PHP standards.
-*Bug: Fix deprecated strpos() usage: Addressed the deprecated use of strpos() to prevent warnings in the latest PHP versions.
-*Bug: Fix deprecated json_decode() usage: Fixed the deprecated use of json_decode() to ensure compatibility with current PHP versions.
+2024-09-30 - version 4.2.9
+* Dev - PHPStan level 6 improvement.
+* Update - named mousedown eventlistener to allow to remove it.
+* Added - Filter to prevent access to specific role.
+
+= 4.2.9 (22/10/2024) =
+* Feature: Add filter to enable dynamic features from Weglot.
+* Fix: Resolve dynamic declaration deprecation warning.
+* Quality: Improve PHPStan to level 6.
+* Improvement: Named mousedown event listener for proper removal.
+* Improvement: Add filter to restrict access for specific roles.
+* Improvement: Add translate="no" attribute to disable browser translation.
+* Improvement: Enable translation of video src attribute by default.
+* Improvement: Remove "URL Translate" banner in WP Admin.
+* Improvement: Support adding tel: links as external links.
+* Improvement: Add option to return 404 for excluded pages.
+* Improvement: Add check for weglot-private header in requests.
+* Improvement: Wrap pageviews scripts in a function to avoid conflicts with other scripts.
+
 = Older versions =
 
 Our complete changelog is located in the `changelog.md` file in the plugin folder.

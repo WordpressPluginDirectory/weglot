@@ -86,7 +86,7 @@ $plans     = $this->user_api_services->get_plans();
 				if ( ! empty( get_option( 'WPLANG' ) ) ) {
 					$wplang = substr( get_option( 'WPLANG' ), 0, 2 );
 				}
-				$original_languages_possible = $this->language_services->get_languages_available( [ 'sort' => true ] );
+				$original_languages_possible = $language_services->get_languages_available( [ 'sort' => true ] );
 				foreach ( $original_languages_possible as $language ) {
 					if ( $language->getInternalCode() !== 'br' ) {
 						?>
@@ -130,8 +130,8 @@ $plans     = $this->user_api_services->get_plans();
 				required
 			>
 				<?php
-				$languages             = $this->language_services->get_all_languages();
-				$destination_languages = $this->language_services->get_destination_languages( true );
+				$languages             = $language_services->get_all_languages();
+				$destination_languages = $language_services->get_destination_languages( true );
 				foreach ( $destination_languages as $language ) :
 					?>
 					<option
@@ -189,7 +189,7 @@ $plans     = $this->user_api_services->get_plans();
 
 
 <?php if ( ! $this->options['has_first_settings'] && $this->options['show_box_first_settings'] ) : ?>
-	<?php $this->option_services->set_option_by_key( 'show_box_first_settings', false ); ?>
+	<?php $option_services->set_option_by_key( 'show_box_first_settings', false ); ?>
 	<div id="weglot-box-first-settings" class="weglot-box-overlay">
 		<div class="weglot-box">
 			<a class="weglot-btn-close"><?php esc_html_e( 'Close', 'weglot' ); ?></a>

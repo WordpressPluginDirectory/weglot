@@ -28,7 +28,7 @@ class Multisite_Service_Weglot {
 	/**
 	 * @since 2.0
 	 *
-	 * @return array
+	 * @return array<int|string,mixed>
 	 */
 	public function get_list_of_network_path() {
 		$paths = array();

@@ -49,7 +49,6 @@ class Translate_Service_Weglot {
 	 * @var Generate_Switcher_Service_Weglot
 	 */
 	private $generate_switcher_service;
-	private $href_lang_services;
 
 
 	/**
@@ -179,7 +178,6 @@ class Translate_Service_Weglot {
 		// No need to translate but prepare new dom with button.
 		if (
 			$this->current_language === $this->original_language
-			|| ! $active_translation
 			|| $this->check_404_exclusion_before_treat()
 			|| ! $this->request_url_services->get_weglot_url()->getForLanguage( $this->request_url_services->get_current_language(), false )
 		) {
@@ -222,6 +220,7 @@ class Translate_Service_Weglot {
 					$translated_content = $parser->translate( $content, $this->original_language, $this->current_language, array(), $canonical );
 					$translated_content = apply_filters( 'weglot_html_treat_page', $translated_content );
 					$translated_content = $this->replace_url_services->proxify_url( $translated_content );
+					$translated_content = $this->disable_automated_translation_services( $translated_content );
 
 					return $this->weglot_render_dom( $translated_content, $canonical );
 				default:
@@ -279,11 +278,12 @@ class Translate_Service_Weglot {
 			$parser = $this->parser_services->get_parser();
 			$current_language = $this->request_url_services->create_url_object( wp_get_referer() )->getCurrentLanguage();
 			if($current_language->getInternalCode() != $this->original_language){
-				$translated_content = $parser->translate( $content, $this->original_language, $current_language->getInternalCode(), array(), $canonical );
+				$translated_content = $parser->translate( $content, $this->original_language, $current_language->getInternalCode() );
 				$translated_content = apply_filters( 'weglot_html_treat_page', $translated_content );
-				return $this->weglot_render_dom( $translated_content, $canonical );
+				return $this->weglot_render_dom( $translated_content );
 			}
 		}
+		return $content;
 	}
 
 	/**
@@ -303,7 +303,7 @@ class Translate_Service_Weglot {
 			$dom = $this->replace_url_services->replace_link_in_dom( $dom );
 		}
 
-		// Remove hreflangs if non canonical page.
+		// Remove hreflangs if non-canonical page.
 		if ( '' !== $canonical ) {
 			$canonical   = urldecode( $canonical );
 			$current_url = $this->request_url_services->get_weglot_url();
@@ -318,6 +318,25 @@ class Translate_Service_Weglot {
 		}
 
 		return apply_filters( 'weglot_render_dom', $dom );
+	}
+
+	/**
+	 * Disable automated translation services adding translate="no" attributes.
+	 *
+	 * @param string $html the HTML string.
+	 *
+	 * @return string
+	 * @since 2.3.0
+	 */
+	private function disable_automated_translation_services( $html ) {
+		$remove_auto_service_translate = apply_filters( 'weglot_remove_google_translate', true );
+		if($remove_auto_service_translate){
+			$pattern = '/<html(\s*>|\s+)/i';
+			$replacement = '<html translate="no"$1';
+			return preg_replace($pattern, $replacement, $html);
+		}
+
+		return $html;
 	}
 }
 

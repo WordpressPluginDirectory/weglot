@@ -13,11 +13,15 @@ use WeglotWP\Helpers\Helper_API;
  * @since 2.0
  */
 class User_Api_Service_Weglot {
+	/**
+	 * @var array<string,mixed>|null $user_info Information about the user.
+	 */
 	protected $user_info = null;
 
 	/**
-	 * @since 2.0
-	 * @return array
+	 * Get the plans and their details.
+	 *
+	 * @return array<string, array<string, int|array<int>>>
 	 */
 	public function get_plans() {
 		return array(
@@ -39,7 +43,7 @@ class User_Api_Service_Weglot {
 	/**
 	 * @since 2.0
 	 * @version 3.0.0
-	 * @return array
+	 * @return array<string,mixed>
 	 * @param null|string $api_key
 	 */
 	public function get_user_info( $api_key = null ) {
@@ -52,7 +56,7 @@ class User_Api_Service_Weglot {
 		}
 
 		try {
-			$results = $this->do_request( Helper_API::get_api_url() . '/projects/owner?api_key=' . $api_key, null );
+			$results = $this->do_request( Helper_API::get_api_url() . '/projects/owner?api_key=' . $api_key );
 			$json    = \json_decode( $results, true );
 
 			if ( \json_last_error() !== JSON_ERROR_NONE ) {
@@ -85,11 +89,11 @@ class User_Api_Service_Weglot {
 	/**
 	 *
 	 * @param string $url
-	 * @param array $parameters
-	 * @return array
+	 * @param array<string,mixed> $parameters
+	 * @return array<string,mixed>|string
 	 * @throws \Exception
 	 */
-	public function do_request( $url, $parameters ) {
+	public function do_request( $url, $parameters = []) {
 		$active_sslverify = apply_filters( 'weglot_active_sslverify', true );
 		if ( $parameters ) {
 			$payload = json_encode( $parameters ); //phpcs:ignore
@@ -123,7 +127,7 @@ class User_Api_Service_Weglot {
 					'headers'     => array(
 						'Content-type' => 'application/json',
 					),
-					'body'        => null,
+					'body'        => '',
 					'cookies'     => array(),
 					'sslverify'   => $active_sslverify,
 				)

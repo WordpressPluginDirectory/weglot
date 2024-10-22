@@ -852,7 +852,7 @@ class simple_html_dom_node
             if ((strcasecmp($targetCharset, 'UTF-8') == 0) && ($this->is_utf8($text))) {
                 $converted_text = $text;
             } else {
-                $converted_text = iconv($sourceCharset, $targetCharset, $text);
+                $converted_text = @iconv($sourceCharset, $targetCharset, $text);
             }
         }
 

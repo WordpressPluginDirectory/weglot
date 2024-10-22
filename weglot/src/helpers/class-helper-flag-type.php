@@ -40,8 +40,6 @@ class Helper_Flag_Type {
 	 */
 	public static function get_flag_type_with_number( $number ) {
 		switch ( (int) $number ) {
-			case 0:
-				return self::RECTANGLE_MAT;
 			case 1:
 				return self::SHINY;
 			case 2:
@@ -56,12 +54,10 @@ class Helper_Flag_Type {
 	/**
 	 * @param string $type
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public static function get_flag_number_with_type( $type ) {
 		switch ( $type ) {
-			case self::RECTANGLE_MAT:
-				return 0;
 			case self::SHINY:
 				return 1;
 			case self::SQUARE:

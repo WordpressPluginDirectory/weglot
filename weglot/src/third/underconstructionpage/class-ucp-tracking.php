@@ -48,8 +48,8 @@ class UCP_Tracking implements Hooks_Interface_Weglot {
 
 
 	/**
-	 * @param $options_available
-	 * @return mixed
+	 * @param array<string,mixed>$options_available
+	 * @return array<string,mixed>
 	 * @since 3.1.1
 	 */
 	public function weglot_ucp_tracking( $options_available ) {

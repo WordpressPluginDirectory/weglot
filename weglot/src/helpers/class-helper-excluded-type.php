@@ -15,7 +15,7 @@ use Weglot\Util\Regex\RegexEnum;
 class Helper_Excluded_Type {
 	/**
 	 * @since 3.0.0
-	 * @return array
+	 * @return array<int,string>
 	 */
 	public static function get_excluded_type() {
 		return array(

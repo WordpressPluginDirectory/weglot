@@ -19,6 +19,9 @@ class Ninja_Form_Json_Fields {
 	const TYPE = SourceType::SOURCE_JSON;
 
 	const VAR_NUMBER = 1;
-
+	/**
+	 * @var string[] Array of string keys
+	 * @since 2.0.7
+	 */
 	public static $KEYS = array( 'label', 'help_text' );
 }

@@ -53,6 +53,11 @@ class Wprocket_Cache implements Hooks_Interface_Weglot {
 		}
 	}
 
+	/**
+	 * @return void
+	 * @throws Exception
+	 * @since 3.1.4
+	 */
 	public function set_weglot_wp_rocket_cache(){
 		setcookie( 'weglot_wp_rocket_cache', 'true' ); //phpcs:ignore
 	}

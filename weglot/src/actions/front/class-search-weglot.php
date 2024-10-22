@@ -19,17 +19,18 @@ use WP_Query;
  * @since 2.4.0
  */
 class Search_Weglot implements Hooks_Interface_Weglot {
+	/**
+	 * @var string
+	 */
 	protected $old_search = null;
-
+	/**
+	 * @var string
+	 */
 	protected $new_search = null;
 	/**
 	 * @var Option_Service_Weglot
 	 */
 	private $option_services;
-	/**
-	 * @var Parser_Service_Weglot
-	 */
-	private $parser_services;
 	/**
 	 * @var Request_Url_Service_Weglot
 	 */
@@ -44,7 +45,6 @@ class Search_Weglot implements Hooks_Interface_Weglot {
 	 */
 	public function __construct() {
 		$this->option_services      = weglot_get_service( 'Option_Service_Weglot' );
-		$this->parser_services      = weglot_get_service( 'Parser_Service_Weglot' );
 		$this->request_url_services = weglot_get_service( 'Request_Url_Service_Weglot' );
 		$this->language_services    = weglot_get_service( 'Language_Service_Weglot' );
 	}
@@ -117,6 +117,17 @@ class Search_Weglot implements Hooks_Interface_Weglot {
 		return ( $this->old_search ) ? $this->old_search : $string;
 	}
 
+	/**
+	 * @param string $api_key
+	 * @param string $l_from
+	 * @param string $l_to
+	 * @param string $request_url
+	 * @param string $word
+	 * @param int $t
+	 *
+	 * @return string
+	 * @since 2.4.0
+	 */
 	function reverseTranslate($api_key, $l_from, $l_to, $request_url, $word, $t) {
 		// Construct the request body.
 		$requestBody = wp_json_encode(array(

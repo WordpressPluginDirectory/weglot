@@ -5,10 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-/**
- * Compatibility WP < 4.7.0
- */
+
 if ( ! function_exists( 'wp_doing_ajax' ) ) {
+	/**
+	 * Compatibility WP < 4.7.0
+	 * @return bool
+	 */
 	function wp_doing_ajax() {
 		/**
 		 * Filters whether the current request is a WordPress Ajax request.
@@ -32,7 +34,7 @@ if ( ! function_exists( 'is_rest' ) ) {
 	 * Case #3: URL Path begins with wp-json/ (your REST prefix)
 	 * Also supports WP installations in subfolders
 	 *
-	 * @returns boolean
+	 * @return boolean
 	 * @author matzeeable
 	 */
 	function is_rest() {
@@ -55,10 +57,16 @@ if ( ! function_exists( 'is_rest' ) ) {
 	}
 }
 
-/**
- * Compatibility for library weglot-php PHP 5.4
- */
 if ( ! function_exists( 'array_column' ) ) {
+	/**
+	 * Compatibility for library weglot-php PHP 5.4
+	 *
+	 * @param array<string,mixed> $input
+	 * @param int|string $column_key
+	 * @param int|string $index_key
+	 *
+	 * @return bool|array<string,mixed>
+	 */
 	function array_column( array $input, $column_key, $index_key = null ) {
 		$array = array();
 		foreach ( $input as $value ) {

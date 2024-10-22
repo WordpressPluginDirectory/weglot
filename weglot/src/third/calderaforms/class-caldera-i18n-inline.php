@@ -28,6 +28,7 @@ class Caldera_I18n_Inline implements Hooks_Interface_Weglot {
 	}
 
 	/**
+	 * @return void
 	 * @since 3.0.0
 	 */
 	public function hooks() {

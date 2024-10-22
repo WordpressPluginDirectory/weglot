@@ -19,6 +19,9 @@ class Ninja_Form_Json_Nfi18n {
 	const TYPE = SourceType::SOURCE_JSON;
 
 	const VAR_NUMBER = 1;
-
+	/**
+	 * @var string[] Array of string keys
+	 * @since 2.0.7
+	 */
 	public static $KEYS = array( 'title', 'changeEmailErrorMsg', 'changeDateErrorMsg', 'confirmFieldErrorMsg', 'fieldNumberNumMinError', 'fieldNumberNumMaxError', 'fieldNumberIncrementBy', 'fieldTextareaRTEInsertLink', 'fieldTextareaRTEInsertMedia', 'fieldTextareaRTESelectAFile', 'formErrorsCorrectErrors', 'validateRequiredField', 'honeypotHoneypotError', 'fileUploadOldCodeFileUploadInProgress', 'previousMonth', 'nextMonth', 'fieldsMarkedRequired', 'fileUploadOldCodeFileUpload' );
 }

@@ -19,18 +19,13 @@ class Replace_Link_Service_Weglot {
 	 */
 	private $multisite_service;
 	/**
-	 * @var Option_Service_Weglot
-	 */
-	private $option_service;
-	/**
-	 * @var Language_Service_Weglot
-	 */
-	private $language_services;
-	/**
 	 * @var Request_Url_Service_Weglot
 	 */
 	private $request_url_services;
 
+	/**
+	 * @var array<string,mixed>|null
+	 */
 	private $multisite_other_paths;
 
 	/**
@@ -38,8 +33,6 @@ class Replace_Link_Service_Weglot {
 	 */
 	public function __construct() {
 		$this->multisite_service     = weglot_get_service( 'Multisite_Service_Weglot' );
-		$this->option_service        = weglot_get_service( 'Option_Service_Weglot' );
-		$this->language_services     = weglot_get_service( 'Language_Service_Weglot' );
 		$this->request_url_services  = weglot_get_service( 'Request_Url_Service_Weglot' );
 		$this->multisite_other_paths = null;
 		if ( is_multisite() ) {
@@ -93,11 +86,12 @@ class Replace_Link_Service_Weglot {
 			return $translated_page;
 		}
 		$replace_multisite_link = apply_filters( 'replace_multisite_link', false );
+		$replace_url_other_site = '';
 		if ( $replace_multisite_link ) {
 			$parsed_url         = wp_parse_url( $current_url );
 			$parsed_url['host'] = ! empty( $parsed_url['host'] ) ? $parsed_url['host'] : '';
 			if ( isset( $parsed_url['path'] ) ) {
-				$current_home_path    = wp_parse_url( home_url( '/', get_current_blog_id() ), PHP_URL_PATH );
+				$current_home_path    = wp_parse_url( get_home_url( get_current_blog_id(), '/' ), PHP_URL_PATH );
 				$found_dynamic_string = false;
 				$index_to_remove      = array_search( "/", $this->multisite_other_paths );
 				if ( $index_to_remove !== false ) {

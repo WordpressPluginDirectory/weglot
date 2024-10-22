@@ -19,14 +19,14 @@ class Bootstrap_Weglot {
 	/**
 	 * List actions WordPress
 	 * @since 2.0
-	 * @var array
+	 * @var array<int,string>
 	 */
 	protected $actions = array();
 
 	/**
 	 * List class services
 	 * @since 2.0
-	 * @var array
+	 * @var array<int|string,mixed>
 	 */
 	protected $services = array();
 
@@ -34,7 +34,7 @@ class Bootstrap_Weglot {
 	 * Set actions
 	 *
 	 * @since 2.0
-	 * @param array $actions
+	 * @param array<int|string,mixed> $actions
 	 * @return Bootstrap_Weglot
 	 */
 	public function set_actions( $actions ) {
@@ -45,7 +45,7 @@ class Bootstrap_Weglot {
 	/**
 	 * Set services
 	 * @since 2.0
-	 * @param array $services
+	 * @param array<int|string,mixed> $services
 	 * @return Bootstrap_Weglot
 	 */
 	public function set_services( $services ) {

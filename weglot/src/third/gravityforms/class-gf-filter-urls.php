@@ -43,9 +43,9 @@ class GF_Filter_Urls implements Hooks_Interface_Weglot {
 	}
 
 	/**
-	 * @param array $data
+	 * @param array<string,mixed> $data
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 * @since 3.0.0
 	 */
 	public function weglot_gform_confirmation( $data ) {

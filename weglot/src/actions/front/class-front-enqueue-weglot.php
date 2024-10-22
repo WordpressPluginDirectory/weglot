@@ -49,16 +49,17 @@ class Front_Enqueue_Weglot implements Hooks_Interface_Weglot {
 		$options = $this->option_services->get_options();
 		if ( $options['page_views_enabled'] ) { ?>
 			<script>
-				let request = new XMLHttpRequest();
-				let url = 'ht' + 'tps:' + '//' + 'api.weglot.com/' + 'pageviews?api_key=' + '<?= esc_js( $options['api_key'] ); ?>';
-				let data = JSON.stringify({
-						url: location.protocol + '//' + location.host + location.pathname,
-						language: document.getElementsByTagName('html')[0].getAttribute('lang'),
-						browser_language: (navigator.language || navigator.userLanguage)
-					}
-				);
-				request.open('POST', url, true);
-				request.send(data);
+				(function(){let request = new XMLHttpRequest();
+					let url = 'ht' + 'tps:' + '//' + 'api.weglot.com/' + 'pageviews?api_key=' + '<?= esc_js( $options['api_key'] ); ?>';
+					let data = JSON.stringify({
+							url: location.protocol + '//' + location.host + location.pathname,
+							language: document.getElementsByTagName('html')[0].getAttribute('lang'),
+							browser_language: (navigator.language || navigator.userLanguage)
+						}
+					);
+					request.open('POST', url, true);
+					request.send(data);
+				})();
 			</script>
 		<?php }
 	}
@@ -70,15 +71,15 @@ class Front_Enqueue_Weglot implements Hooks_Interface_Weglot {
 	 * @see wp_enqueue_scripts
 	 */
 	public function weglot_wp_enqueue_scripts() {
-// Add JS.
-		wp_register_script( 'wp-weglot-js', WEGLOT_URL_DIST . '/front-js.js', false, WEGLOT_VERSION, false );
+		// Add JS.
+		wp_register_script( 'wp-weglot-js', WEGLOT_URL_DIST . '/front-js.js', array(), WEGLOT_VERSION, false );
 		wp_enqueue_script( 'wp-weglot-js' );
 
-// Add CSS
-		wp_register_style( 'weglot-css', WEGLOT_URL_DIST . '/css/front-css.css', false, WEGLOT_VERSION, false );
+		// Add CSS
+		wp_register_style( 'weglot-css', WEGLOT_URL_DIST . '/css/front-css.css', array(), WEGLOT_VERSION, 'all' );
 		wp_enqueue_style( 'weglot-css' );
 
-//display new flags
+		//display new flags
 		if ( empty( $this->option_services->get_option( 'flag_css' ) )
 		     && strpos( $this->option_services->get_css_custom_inline(), 'background-position' ) == false
 		     && strpos( $this->option_services->get_css_custom_inline(), 'background-image' ) == false ) {

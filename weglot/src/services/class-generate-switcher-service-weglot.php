@@ -19,14 +19,6 @@ class Generate_Switcher_Service_Weglot {
 	 */
 	private $option_services;
 	/**
-	 * @var Request_Url_Service_Weglot
-	 */
-	private $request_url_services;
-	/**
-	 * @var Language_Service_Weglot
-	 */
-	private $language_services;
-	/**
 	 * @var Button_Service_Weglot
 	 */
 	private $button_services;
@@ -36,8 +28,6 @@ class Generate_Switcher_Service_Weglot {
 	 */
 	public function __construct() {
 		$this->option_services      = weglot_get_service( 'Option_Service_Weglot' );
-		$this->request_url_services = weglot_get_service( 'Request_Url_Service_Weglot' );
-		$this->language_services    = weglot_get_service( 'Language_Service_Weglot' );
 		$this->button_services      = weglot_get_service( 'Button_Service_Weglot' );
 	}
 
@@ -90,9 +80,10 @@ class Generate_Switcher_Service_Weglot {
 
 	/**
 	 * @param string $dom the final HTML.
-	 * @param array $switchers the array of switchers from settings.
+	 * @param array<int|string,mixed> $switchers the array of switchers from settings.
 	 *
-	 * @return string
+	 * @return string|bool
+	 * @throws \Exception
 	 * @since 2.3.0
 	 */
 	public function render_switcher_editor_button( $dom, $switchers ) {
@@ -155,11 +146,12 @@ class Generate_Switcher_Service_Weglot {
 	}
 
 	/**
-	 * @param array $switcher
-	 *
+	 * @param array<int|string,mixed> $switcher
+	 * @param string $pos
 	 * @return string
-	 * @since 2.3.0
+	 * @throws \Exception
 	 * @version 3.0.0
+	 * @since 2.3.0
 	 */
 	public function add_responsive_style( $switcher = array(), $pos='' ) {
 		$style = '';

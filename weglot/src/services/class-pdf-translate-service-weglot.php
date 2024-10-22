@@ -39,10 +39,13 @@ class Pdf_Translate_Service_Weglot {
 
 	/**
 	 * Translate pdf with parser
-	 * @version 3.7
+	 *
 	 * @param string $content
 	 * @param string $language
-	 * @return array
+	 *
+	 * @return string|array<string,mixed>
+	 * @throws \Exception
+	 * @version 3.7
 	 */
 	public function translate_pdf( $content, $language ) {
 		$api_key = $this->option_services->get_option( 'api_key' );

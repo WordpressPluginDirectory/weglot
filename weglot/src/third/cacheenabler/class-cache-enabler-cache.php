@@ -53,8 +53,10 @@ class Cache_Enabler_Cache implements Hooks_Interface_Weglot {
 	}
 
 	/**
-	 * @param $bypass_cache
+	 * @param bool $bypass_cache
+	 *
 	 * @return bool
+	 * @throws \Exception
 	 * @since 3.1.4
 	 */
 	public function bypass_cache( $bypass_cache ) {
@@ -80,7 +82,7 @@ class Cache_Enabler_Cache implements Hooks_Interface_Weglot {
 	}
 
 	/**
-	 * @param $dom
+	 * @param string $dom
 	 * @return string
 	 * @since 3.1.4
 	 */

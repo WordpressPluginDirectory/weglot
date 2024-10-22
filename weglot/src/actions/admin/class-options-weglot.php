@@ -159,9 +159,9 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 	/**
 	 * @since 2.0
 	 * @version 2.0.6
-	 * @param array $options
+	 * @param array<string|int,mixed> $options
 	 * @param mixed $has_first_settings
-	 * @return array
+	 * @return array<string|int,mixed>
 	 */
 	public function sanitize_options_settings( $options, $has_first_settings = false ) {
 		$user_info = $this->user_api_services->get_user_info( $options['api_key_private'] );

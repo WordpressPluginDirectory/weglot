@@ -24,8 +24,9 @@ class Wp_Optimize_Cache implements Hooks_Interface_Weglot {
 	private $wp_optimize_active_services;
 
 	/**
-	 * @since 3.1.4
 	 * @return void
+	 * @throws \Exception
+	 * @since 3.1.4
 	 */
 	public function __construct() {
 		$this->wp_optimize_active_services = weglot_get_service( 'Wp_Optimize_Active' );
@@ -47,8 +48,10 @@ class Wp_Optimize_Cache implements Hooks_Interface_Weglot {
 
 
 	/**
-	 * @param $can_cache_page
+	 * @param bool $can_cache_page
+	 *
 	 * @return bool
+	 * @throws \Exception
 	 * @since 3.1.4
 	 */
 	public function weglot_wpo_can_cache_page( $can_cache_page ) {

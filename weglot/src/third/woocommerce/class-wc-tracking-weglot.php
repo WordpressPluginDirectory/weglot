@@ -49,8 +49,8 @@ class Wc_Tracking_Weglot implements Hooks_Interface_Weglot {
 
 
 	/**
-	 * @param $options_available
-	 * @return mixed
+	 * @param array<string,string>$options_available
+	 * @return array<string,string>
 	 * @since 3.1.4
 	 */
 	public function weglot_wc_tracking( $options_available ) {

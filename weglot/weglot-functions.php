@@ -22,7 +22,7 @@ function weglot_get_service( $service ) {
 
 /**
  * Get all options
- * @return array
+ * @return array<string, mixed>
  * @throws Exception
  * @since 2.0
  *
@@ -113,9 +113,12 @@ function weglot_get_languages_available() {
 
 /**
  * Get button selector HTML
- * @since 2.0
+ *
  * @param string $add_class
+ *
  * @return string
+ * @throws Exception
+ * @since 2.0
  */
 function weglot_get_button_selector_html( $add_class = '' ) {
 	return Context_Weglot::weglot_get_context()->get_service( 'Button_Service_Weglot' )->get_html( $add_class );
@@ -124,8 +127,9 @@ function weglot_get_button_selector_html( $add_class = '' ) {
 
 /**
  * Get exclude urls
+ * @return array<string, mixed>
+ * @throws Exception
  * @since 2.0
- * @return array
  */
 function weglot_get_exclude_urls() {
 	return Context_Weglot::weglot_get_context()->get_service( 'Option_Service_Weglot' )->get_exclude_urls();
@@ -133,8 +137,9 @@ function weglot_get_exclude_urls() {
 
 /**
  * Get translate AMP option
- * @since 2.0
  * @return bool
+ * @throws Exception
+ * @since 2.0
  */
 function weglot_get_translate_amp_translation() {
 	return Context_Weglot::weglot_get_context()->get_service( 'Option_Service_Weglot' )->get_option_custom_settings( 'translate_amp' );
@@ -151,9 +156,12 @@ function weglot_get_current_full_url() {
 
 /**
  * Is eligible url
- * @since 2.0
+ *
  * @param string $url
+ *
  * @return boolean
+ * @throws Exception
+ * @since 2.0
  */
 function weglot_is_eligible_url( $url ) {
 	return Context_Weglot::weglot_get_context()->get_service( 'Request_Url_Service_Weglot' )->is_eligible_url( $url );
@@ -161,9 +169,10 @@ function weglot_is_eligible_url( $url ) {
 
 /**
  * Get API KEY Weglot
+ * @return string
+ * @throws Exception
  * @since 2.0
  * @version 3.0.0
- * @return string
  */
 function weglot_get_api_key() {
 	return weglot_get_option( 'api_key_private' );
@@ -171,8 +180,9 @@ function weglot_get_api_key() {
 
 /**
  * Get auto redirect option
- * @since 2.0
  * @return boolean
+ * @throws Exception
+ * @since 2.0
  */
 function weglot_has_auto_redirect() {
 	return weglot_get_option( 'auto_redirect' );
@@ -187,10 +197,22 @@ function weglot_create_url_object( $url ) {
 	return weglot_get_request_url_service()->create_url_object( $url );
 }
 
+/**
+ * @return bool|string
+ * @throws Exception
+ * @since 2.0.4
+ *
+ */
 function weglot_get_full_url_no_language() {
 	return weglot_create_url_object( weglot_get_request_url_service()->get_full_url() )->getForLanguage( weglot_get_service('Language_Service_Weglot')->get_original_language() );
 }
 
+/**
+ * @return int
+ * @throws Exception
+ * @since 2.0.4
+ *
+ */
 function weglot_get_postid_from_url() {
 	return url_to_postid( weglot_get_full_url_no_language() ); //phpcs:ignore
 }
@@ -199,7 +221,6 @@ function weglot_get_postid_from_url() {
  * @return string
  */
 function weglot_get_rest_current_url_path() {
-	$prefix      = rest_get_url_prefix();
 	$current_url = wp_parse_url( add_query_arg( array() ) );
 	return apply_filters( 'weglot_get_rest_current_url_path', $current_url['path'] );
 }

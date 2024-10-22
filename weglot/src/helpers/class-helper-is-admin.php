@@ -17,7 +17,7 @@ abstract class Helper_Is_Admin {
 	 * @return bool
 	 */
 	public static function is_wp_admin() {
-
+		/** @phpstan-ignore-next-line */
 		return is_admin() && ( ! wp_doing_ajax() || ( wp_doing_ajax() && isset( $_SERVER['HTTP_REFERER'] )
 					&& strpos( esc_url_raw( $_SERVER['HTTP_REFERER'] ), 'wp-admin' ) !== false ) );
 	}

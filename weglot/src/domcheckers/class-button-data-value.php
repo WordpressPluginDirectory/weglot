@@ -23,7 +23,7 @@ class Button_Data_Value extends AbstractDomChecker {
 	 */
 	const PROPERTY = 'data-value';
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const WORD_TYPE = WordType::VALUE;
 }

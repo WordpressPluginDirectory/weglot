@@ -20,6 +20,9 @@ class Wp_Rentals_Json_Calendar_Rangepicker {
 	const TYPE = SourceType::SOURCE_JSON;
 
 	const VAR_NUMBER = 1;
-
+	/**
+	 * @var string[] Array of string keys
+	 * @since 2.0.7
+	 */
 	public static $KEYS = array( 'pls_select', 'start_date', 'end_date', 'to' );
 }

@@ -34,17 +34,13 @@ class Request_Url_Service_Weglot {
 	 * @var Option_Service_Weglot
 	 */
 	private $option_services;
-	/**
-	 * @var Amp_Service_Weglot
-	 */
-	private $amp_services;
+
 
 	/**
 	 * @since 2.0
 	 */
 	public function __construct() {
 		$this->option_services   = weglot_get_service( 'Option_Service_Weglot' );
-		$this->amp_services      = weglot_get_service( 'Amp_Service_Weglot' );
 		$this->language_services = weglot_get_service( 'Language_Service_Weglot' );
 	}
 
@@ -164,6 +160,7 @@ class Request_Url_Service_Weglot {
 	}
 
 	/**
+	 * @param string|null $allow_custom_path
 	 * @return string|null
 	 * @since 2.0
 	 *
@@ -247,11 +244,18 @@ class Request_Url_Service_Weglot {
 		return $url;
 	}
 
+	/**
+	 *
+	 * @return bool
+	 * @since 2.0
+	 */
 	public function is_allowed_private() {
+		$headers = getallheaders();
 		if ( current_user_can( 'administrator' )
 		     || strpos( $this->get_full_url(), 'weglot-private=1' ) !== false
 		     || isset( $_COOKIE['weglot_allow_private'] )
 		     || ( isset( $_SERVER['HTTP_USER_AGENT'] ) && strpos( sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ), "Weglot Visual Editor" ) !== false ) //phpcs:ignore
+		     || ( isset( $headers['weglot-private'] ) && $headers['weglot-private'] == 1 ) //phpcs:ignore
 		) {
 			return true;
 		}

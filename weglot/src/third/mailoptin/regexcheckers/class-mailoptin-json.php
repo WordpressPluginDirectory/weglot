@@ -19,7 +19,10 @@ class Mailoptin_Json {
 	const TYPE = SourceType::SOURCE_JSON;
 
 	const VAR_NUMBER = 1;
-
+	/**
+	 * @var string[] Array of string keys
+	 * @since 2.0.7
+	 */
 	public static $KEYS = array(
 		'success_message',
 		'unexpected_error',

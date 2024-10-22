@@ -48,6 +48,7 @@ class Wprentals_translate_calendar implements Hooks_Interface_Weglot {
 
 	/**
 	 * @return string
+	 * @throws \Exception
 	 * @since 3.1.4
 	 */
 	public function wg_wpestate_datepicker_language( ) {

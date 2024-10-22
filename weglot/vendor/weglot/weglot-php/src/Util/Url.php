@@ -224,6 +224,8 @@ class Url
                             return true;
                         }elseif($url[$option] == "NOT_TRANSLATED"){
                             return false;
+                        }elseif($url[$option] == "NOT_FOUND"){
+                            return 'NOT_FOUND';
                         }
                         break;
                 }

@@ -34,11 +34,6 @@ class Migration_Weglot implements Hooks_Interface_Weglot {
 	public function hooks() {
 		if ( ! defined( 'WEGLOT_LATEST_VERSION' ) && ! defined( 'WEGLOT_VERSION' ) ) {
 			return;
-
-			if(1 == 1)
-			{
-
-			}
 		}
 
 		$weglot_version = get_option( 'weglot_version' );

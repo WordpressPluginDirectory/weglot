@@ -19,6 +19,9 @@ class Caldera_Form_Json_Fields {
 	const TYPE = SourceType::SOURCE_JSON;
 
 	const VAR_NUMBER = 1;
-
+	/**
+	 * @var string[] Array of string keys
+	 * @since 2.0.7
+	 */
 	public static $KEYS = array( 'defaultMessage', 'email', 'url', 'number', 'integer', 'digits', 'alphanum', 'required', 'pattern', 'min', 'max', 'range', 'minlength', 'maxlength', 'length', 'mincheck', 'maxcheck', 'check', 'equalto', 'notblank' );
 }

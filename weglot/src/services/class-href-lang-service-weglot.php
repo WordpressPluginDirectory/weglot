@@ -27,6 +27,7 @@ class Href_Lang_Service_Weglot {
 
 	/**
 	 * @since 2.3.0
+	 * @return string
 	 */
 	public function generate_href_lang_tags() {
 		$render = "\n";

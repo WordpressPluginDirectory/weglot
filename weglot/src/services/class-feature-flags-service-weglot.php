@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Feature_Flags_Service_Weglot {
 
 	/**
+	 * @param array<string,mixed>$settings
+	 * @return array<string,mixed> $settings
 	 * @since 2.3.0
 	 */
 	public function generate_feature_flags($settings) {

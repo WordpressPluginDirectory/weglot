@@ -30,17 +30,16 @@ class Ajax_User_Info implements Hooks_Interface_Weglot {
 			return;
 		}
 
-		add_action( 'wp_ajax_get_user_info', array( $this, 'get_user_info' ) ); // @phpstan-ignore-line
+		add_action( 'wp_ajax_get_user_info', array( $this, 'get_user_info' ) );
 	}
 
 	/**
 	 * @since 3.0.0
-	 * @return array
+	 * @return void
 	 */
 	public function get_user_info() {
 		if ( ! isset( $_POST['api_key'] ) ) { //phpcs:ignore
 			wp_send_json_error();
-			return;
 		}
 
 		$api_key = sanitize_title( $_POST['api_key'] ); //phpcs:ignore
@@ -49,7 +48,6 @@ class Ajax_User_Info implements Hooks_Interface_Weglot {
 
 		if ( array_key_exists( 'not_exist', $response ) && ! $response['not_exist'] ) {
 			wp_send_json_error();
-			return;
 		}
 
 		wp_send_json_success( $response );

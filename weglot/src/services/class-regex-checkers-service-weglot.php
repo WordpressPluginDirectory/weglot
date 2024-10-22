@@ -27,8 +27,9 @@ class Regex_Checkers_Service_Weglot {
 	}
 
 	/**
+	 * @return array<string,mixed>
+	 * @throws \Exception
 	 * @since 2.0
-	 * @return array
 	 */
 	public function get_regex_checkers() {
 
@@ -60,7 +61,7 @@ class Regex_Checkers_Service_Weglot {
 								$filename = str_replace( 'class-', '', $filename );
 								$filename = implode( '_', array_map( 'ucfirst', explode( '-', $filename ) ) );
 								$class    = '\\WeglotWP\\Third\\' . implode( '', array_map( 'ucfirst', explode( '-', $third ) ) ) . '\\Regexcheckers\\' . $filename;
-								array_push( $checkers, new RegexChecker( $class::REGEX, $class::TYPE, $class::VAR_NUMBER, $class::$KEYS ) );
+								$checkers[] = new RegexChecker( $class::REGEX, $class::TYPE, $class::VAR_NUMBER, $class::$KEYS );
 							}
 						}
 					}

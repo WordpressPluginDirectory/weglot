@@ -5,11 +5,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use WeglotWP\Helpers\Helper_Tabs_Admin_Weglot;
+use WeglotWP\Services\Button_Service_Weglot;
+use WeglotWP\Services\Language_Service_Weglot;
 use WeglotWP\Services\Option_Service_Weglot;
 
-$this->option_services    = weglot_get_service( 'Option_Service_Weglot' );
-$organization_slug = $this->option_services->get_option('organization_slug');
-$project_slug = $this->option_services->get_option('project_slug');
+$option_services    = weglot_get_service( 'Option_Service_Weglot' );
+$language_services    = weglot_get_service( 'Language_Service_Weglot' );
+$button_services    = weglot_get_service( 'Button_Service_Weglot' );
+$organization_slug = $option_services->get_option('organization_slug');
+$project_slug = $option_services->get_option('project_slug');
 $project_dashboard_url = esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/languages/', 'weglot' );
 $project_slug_url = esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/slugs/', 'weglot' );
 $project_url_exclusions = esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/settings/exclusions#excluded-urls', 'weglot' );
@@ -22,7 +26,7 @@ $url_form = wp_nonce_url(
 	add_query_arg(
 		[
 			'action' => 'weglot_save_settings',
-			'tab'    => $this->tab_active,
+			'tab'    => $tab_active,
 		],
 		admin_url( 'admin-post.php' )
 	),
@@ -71,7 +75,7 @@ $url_form = wp_nonce_url(
 		<form method="post" id="mainform" action="<?php echo esc_url( $url_form ); ?>">
 			<?php
 
-			switch ( $this->tab_active ) {
+			switch ( $tab_active ) {
 				case Helper_Tabs_Admin_Weglot::SETTINGS:
 				default:
 					include_once WEGLOT_TEMPLATES_ADMIN_PAGES . '/tabs/settings.php';
@@ -89,11 +93,11 @@ $url_form = wp_nonce_url(
 					break;
 			}
 
-			if ( ! in_array( $this->tab_active, [ Helper_Tabs_Admin_Weglot::STATUS ], true ) ) {
+			if ( ! in_array( $tab_active, [ Helper_Tabs_Admin_Weglot::STATUS ], true ) ) {
 				submit_button();
 			}
 			?>
-			<input type="hidden" name="tab" value="<?php echo esc_attr( $this->tab_active ); ?>">
+			<input type="hidden" name="tab" value="<?php echo esc_attr( $tab_active ); ?>">
 		</form>
 		<?php if ( ! $this->options['has_first_settings'] ) : ?>
 			<hr>
@@ -107,7 +111,7 @@ $url_form = wp_nonce_url(
 				echo sprintf( esc_html__( 'If you need any help, you can contact us via email us at %1$ssupport@weglot.com%2$s.', 'weglot' ), '<a href="mailto:support@weglot.com?subject=Need help from WP plugin admin" target="_blank">', '</a>' );
 				echo ' ';
 				// translators: 1 HTML Tag, 2 HTML Tag
-				echo sprintf( esc_html__( 'You can also check our %1$sFAQ%2$s.', 'weglot' ), '<a href="http://support.weglot.com/" target="_blank">', '</a>' ); ?>
+				echo sprintf( esc_html__( 'You can also check our %1$sFAQ%2$s.', 'weglot' ), '<a href="https://support.weglot.com/" target="_blank">', '</a>' ); ?>
 			</p>
 			<hr>
 		<?php endif; ?>
