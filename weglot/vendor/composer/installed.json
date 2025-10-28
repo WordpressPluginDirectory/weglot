@@ -93,25 +93,112 @@
             "install-path": "../psr/cache"
         },
         {
-            "name": "weglot/simplehtmldom",
-            "version": "0.8.1",
-            "version_normalized": "0.8.1.0",
+            "name": "symfony/polyfill-php80",
+            "version": "v1.33.0",
+            "version_normalized": "1.33.0.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:weglot/simple_html_dom.git",
-                "reference": "2e76bfd5cd19e12c41f55767a49ccc19438f0313"
+                "url": "https://github.com/symfony/polyfill-php80.git",
+                "reference": "0cc9dd0f17f61d8131e7df6b84bd344899fe2608"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/weglot/simple_html_dom/zipball/2e76bfd5cd19e12c41f55767a49ccc19438f0313",
-                "reference": "2e76bfd5cd19e12c41f55767a49ccc19438f0313",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/0cc9dd0f17f61d8131e7df6b84bd344899fe2608",
+                "reference": "0cc9dd0f17f61d8131e7df6b84bd344899fe2608",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "time": "2025-01-02T08:10:11+00:00",
+            "type": "library",
+            "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php80\\": ""
+                },
+                "classmap": [
+                    "Resources/stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ion Bazan",
+                    "email": "ion.bazan@gmail.com"
+                },
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill backporting some PHP 8.0+ features to lower PHP versions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.33.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "../symfony/polyfill-php80"
+        },
+        {
+            "name": "weglot/simplehtmldom",
+            "version": "0.8.4",
+            "version_normalized": "0.8.4.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:weglot/simple_html_dom.git",
+                "reference": "e0d2aeaeac88734ca8bbd8ee5a71d2597652dcf0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/weglot/simple_html_dom/zipball/e0d2aeaeac88734ca8bbd8ee5a71d2597652dcf0",
+                "reference": "e0d2aeaeac88734ca8bbd8ee5a71d2597652dcf0",
                 "shasum": ""
             },
             "require": {
                 "ext-iconv": "*",
                 "php": ">=5.3.0"
             },
-            "time": "2024-10-15T13:40:48+00:00",
+            "time": "2025-06-03T09:06:26+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -139,7 +226,7 @@
                 "simple"
             ],
             "support": {
-                "source": "https://github.com/weglot/simple_html_dom/tree/0.8.1"
+                "source": "https://github.com/weglot/simple_html_dom/tree/0.8.4"
             },
             "install-path": "../weglot/simplehtmldom"
         },
@@ -188,38 +275,60 @@
         },
         {
             "name": "weglot/weglot-php",
-            "version": "1.7.3",
-            "version_normalized": "1.7.3.0",
+            "version": "1.9.2",
+            "version_normalized": "1.9.2.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:weglot/weglot-php.git",
-                "reference": "b2df18e4249488161a1c30412657aca9aafda795"
+                "reference": "d39f6db76eb90e58d2f48349f75d7c149c6ef611"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/weglot/weglot-php/zipball/b2df18e4249488161a1c30412657aca9aafda795",
-                "reference": "b2df18e4249488161a1c30412657aca9aafda795",
+                "url": "https://api.github.com/repos/weglot/weglot-php/zipball/d39f6db76eb90e58d2f48349f75d7c149c6ef611",
+                "reference": "d39f6db76eb90e58d2f48349f75d7c149c6ef611",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6",
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=7.2",
                 "psr/cache": "^1.0 || ^2.0 || ^3.0",
+                "symfony/polyfill-php80": "^1.31",
                 "weglot/simplehtmldom": "^0.8",
                 "weglot/translation-definitions": "^2.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2 || ^3.64",
                 "phpstan/phpstan": "^1.11",
                 "phpstan/phpstan-deprecation-rules": "^1.1",
-                "vlucas/phpdotenv": "^2.4"
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.5 || ^9.6 || ^10.5 || ^11.4",
+                "symfony/cache": "^3.4 || 4.4 || ^5.4 || ^6.4 || ^7.1",
+                "symfony/dotenv": "^3.4 || 4.4 || ^5.4 || ^6.4 || ^7.1"
             },
-            "time": "2024-09-13T15:19:53+00:00",
+            "time": "2025-06-24T07:28:00+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Weglot\\": "src/",
-                    "Languages\\": "node_modules/@weglot/languages/dist/"
+                    "WeglotLanguages\\": "node_modules/@weglot/languages/dist/"
                 }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Weglot\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "cs": [
+                    "vendor/bin/php-cs-fixer fix"
+                ],
+                "phpstan": [
+                    "vendor/bin/phpstan"
+                ],
+                "test": [
+                    "vendor/bin/phpunit tests"
+                ]
             },
             "license": [
                 "MIT"

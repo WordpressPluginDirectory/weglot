@@ -40,9 +40,9 @@ class Admin_Enqueue_Weglot implements Hooks_Interface_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->language_services = weglot_get_service( 'Language_Service_Weglot' );
-		$this->option_services   = weglot_get_service( 'Option_Service_Weglot' );
-		$this->user_api_services = weglot_get_service( 'User_Api_Service_Weglot' );
+		$this->language_services = weglot_get_service( Language_Service_Weglot::class );
+		$this->option_services   = weglot_get_service( Option_Service_Weglot::class );
+		$this->user_api_services = weglot_get_service( User_Api_Service_Weglot::class );
 	}
 
 	/**

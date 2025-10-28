@@ -30,7 +30,7 @@ class Amp_Enqueue_Weglot implements Hooks_Interface_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->option_services = weglot_get_service( 'Option_Service_Weglot' );
+		$this->option_services = weglot_get_service( Option_Service_Weglot::class );
 	}
 
 	/**
@@ -64,11 +64,11 @@ class Amp_Enqueue_Weglot implements Hooks_Interface_Weglot {
 	public function weglot_amp_css( $html ) {
 
 		/** @var Request_Url_Service_Weglot $request_url_service */
-		$request_url_service = weglot_get_service( 'Request_Url_Service_Weglot' );
+		$request_url_service = weglot_get_service( Request_Url_Service_Weglot::class );
 		$weglot_url          = $request_url_service->get_weglot_url();
 
 		/** @var Amp_Service_Weglot $amp_service */
-		$amp_service = weglot_get_service( 'Amp_Service_Weglot' );
+		$amp_service = weglot_get_service( Amp_Service_Weglot::class );
 		$amp_regex   = $amp_service->get_regex( true );
 
 		if ( ! $this->option_services->get_option_custom_settings( 'translate_amp' ) || ! preg_match( '#' . $amp_regex . '#', $weglot_url->getUrl() ) === true ) {
@@ -76,14 +76,18 @@ class Amp_Enqueue_Weglot implements Hooks_Interface_Weglot {
 		}
 
 		/** @var Language_Service_Weglot $language_service */
-		$language_service = weglot_get_service( 'Language_Service_Weglot' );
+		$language_service = weglot_get_service( Language_Service_Weglot::class );
 
 		$languages_configured = $language_service->get_original_and_destination_languages( $request_url_service->is_allowed_private() );
 		$flags_positions      = $this->weglot_get_flags_positions();
 		$type_flags           = weglot_get_option( 'type_flags' );
 		$type_flags           = Helper_Flag_Type::get_flag_number_with_type( $type_flags );
 		$with_flags           = weglot_get_option( 'with_flags' );
-		$css                  = str_replace( '../images/', WEGLOT_URL_DIST . '/images/', file_get_contents( WEGLOT_DIR_DIST . '/css/front-amp-css.css' ) );
+		$amp_css_custom = file_get_contents( WEGLOT_DIR_DIST . '/css/front-amp-css.css' );
+		$css = "";
+		if( is_string($amp_css_custom)){
+			$css                  = str_replace( '../images/', WEGLOT_URL_DIST . '/images/', $amp_css_custom);
+		}
 
 		$s = array(
 			'!important',

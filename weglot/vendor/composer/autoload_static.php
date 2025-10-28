@@ -4,9 +4,10 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite82c3bddc85956592d04af02f25675a9
+class ComposerStaticInit9e2619f92d599f1d2459f4fe3278f69f
 {
     public static $files = array (
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '6c200413eed8aeea54dbaf934a31b127' => __DIR__ . '/..' . '/weglot/simplehtmldom/src/simple_html_dom.php',
     );
 
@@ -14,6 +15,11 @@ class ComposerStaticInite82c3bddc85956592d04af02f25675a9
         'W' => 
         array (
             'Weglot\\' => 7,
+            'WeglotLanguages\\' => 16,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
         ),
         'P' => 
         array (
@@ -23,16 +29,20 @@ class ComposerStaticInite82c3bddc85956592d04af02f25675a9
         array (
             'Morphism\\' => 9,
         ),
-        'L' => 
-        array (
-            'Languages\\' => 10,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Weglot\\' => 
         array (
             0 => __DIR__ . '/..' . '/weglot/weglot-php/src',
+        ),
+        'WeglotLanguages\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/weglot/weglot-php/node_modules/@weglot/languages/dist',
+        ),
+        'Symfony\\Polyfill\\Php80\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
         'Psr\\Cache\\' => 
         array (
@@ -41,10 +51,6 @@ class ComposerStaticInite82c3bddc85956592d04af02f25675a9
         'Morphism\\' => 
         array (
             0 => __DIR__ . '/..' . '/gmulti/morphism-php/lib',
-        ),
-        'Languages\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/weglot/weglot-php/node_modules/@weglot/languages/dist',
         ),
     );
 
@@ -59,17 +65,22 @@ class ComposerStaticInite82c3bddc85956592d04af02f25675a9
     );
 
     public static $classMap = array (
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
         'Weglot\\TranslationDefinitions' => __DIR__ . '/..' . '/weglot/translation-definitions/index.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite82c3bddc85956592d04af02f25675a9::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite82c3bddc85956592d04af02f25675a9::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInite82c3bddc85956592d04af02f25675a9::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInite82c3bddc85956592d04af02f25675a9::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9e2619f92d599f1d2459f4fe3278f69f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9e2619f92d599f1d2459f4fe3278f69f::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit9e2619f92d599f1d2459f4fe3278f69f::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit9e2619f92d599f1d2459f4fe3278f69f::$classMap;
 
         }, null, ClassLoader::class);
     }

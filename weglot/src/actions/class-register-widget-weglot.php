@@ -57,7 +57,7 @@ class Register_Widget_Weglot implements Hooks_Interface_Weglot {
 
 		$type_block = sanitize_text_field( $block_attributes['type'] );
 		/** @var Button_Service_Weglot $button_service */
-		$button_service = weglot_get_service( 'Button_Service_Weglot' );
+		$button_service = weglot_get_service( Button_Service_Weglot::class );
 		$class_name = '';
 		$button = $button_service->get_html( 'weglot-widget weglot-widget-block' );
 

@@ -5,10 +5,6 @@ namespace Weglot\Parser\Formatter;
 use Weglot\Client\Api\TranslateEntry;
 use Weglot\Parser\Parser;
 
-/**
- * Class AbstractFormatter
- * @package Weglot\Parser\Formatter
- */
 abstract class AbstractFormatter
 {
     /**
@@ -21,11 +17,6 @@ abstract class AbstractFormatter
      */
     protected $translated;
 
-    /**
-     * DomChecker constructor.
-     * @param Parser $parser
-     * @param TranslateEntry $translated
-     */
     public function __construct(Parser $parser, TranslateEntry $translated)
     {
         $this
@@ -34,7 +25,6 @@ abstract class AbstractFormatter
     }
 
     /**
-     * @param Parser $parser
      * @return $this
      */
     public function setParser(Parser $parser)
@@ -53,7 +43,6 @@ abstract class AbstractFormatter
     }
 
     /**
-     * @param TranslateEntry $translated
      * @return $this
      */
     public function setTranslated(TranslateEntry $translated)
@@ -72,8 +61,8 @@ abstract class AbstractFormatter
     }
 
     /**
-     * @param array $array
      * @param int $index
+     *
      * @return void
      */
     abstract public function handle(array $array, &$index);

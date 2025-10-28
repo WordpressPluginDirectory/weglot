@@ -25,7 +25,7 @@ abstract class Context_Weglot {
 	 * Create context if not exist
 	 *
 	 * @static
-	 * @return object
+	 * @return Bootstrap_Weglot
 	 * @since 2.0
 	 */
 	public static function weglot_get_context() {
@@ -101,7 +101,7 @@ abstract class Context_Weglot {
 			'\WeglotWP\Actions\Front\Search_Weglot',
 			'\WeglotWP\Actions\Front\Redirect_Comment',
 			'\WeglotWP\Actions\Admin\Ajax_User_Info',
-			'\WeglotWP\Actions\Front\Clean_Options',
+			'\WeglotWP\Actions\Rest\Cache_Purge_Rest_Weglot',
 
 			'\WeglotWP\Third\Amp\Amp_Enqueue_Weglot',
 			'\WeglotWP\Third\Calderaforms\Caldera_I18n_Inline',
@@ -143,6 +143,19 @@ function weglot_init() {
 
 	if ( $cancel_init ) {
 		return;
+	}
+
+	if (version_compare(PHP_VERSION, '7.4', '<')) {
+		add_action( 'admin_notices', array( '\WeglotWP\Notices\Php_Weglot', 'admin_notice' ) );
+	}
+
+	if (version_compare(PHP_VERSION, '7.4', '<')) {
+		add_action('admin_notices', function () {
+			if (!get_transient('weglot_php_version_notice')) {
+				add_action('admin_notices', array('\WeglotWP\Notices\Php_Weglot', 'admin_notice'));
+				set_transient('weglot_php_version_notice', true, DAY_IN_SECONDS);
+			}
+		});
 	}
 
 	if ( ! function_exists( 'curl_version' ) || ! function_exists( 'curl_exec' ) ) {

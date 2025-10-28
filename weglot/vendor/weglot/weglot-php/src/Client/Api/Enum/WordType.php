@@ -4,9 +4,7 @@ namespace Weglot\Client\Api\Enum;
 
 /**
  * Enum WordType
- * Used to define where was the text we are parsing
- *
- * @package Weglot\Client\Api\Enum
+ * Used to define where was the text we are parsing.
  */
 abstract class WordType
 {

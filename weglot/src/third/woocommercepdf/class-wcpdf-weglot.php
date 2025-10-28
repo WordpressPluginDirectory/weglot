@@ -36,8 +36,8 @@ class WCPDF_Weglot implements Hooks_Interface_Weglot {
 	 * @since 3.7
 	 */
 	public function __construct() {
-		$this->wcpdf_active_services  = weglot_get_service( 'Wcpdf_Active' );
-		$this->pdf_translate_services = weglot_get_service( 'Pdf_Translate_Service_Weglot' );
+		$this->wcpdf_active_services  = weglot_get_service( Wcpdf_Active::class );
+		$this->pdf_translate_services = weglot_get_service( Pdf_Translate_Service_Weglot::class );
 	}
 
 	/**

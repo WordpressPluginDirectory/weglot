@@ -2,25 +2,19 @@
 
 namespace Weglot\Parser\Check;
 
-use Weglot\Parser\Check\Regex\RegexChecker;
-use Weglot\Util\SourceType;
-use WGSimpleHtmlDom\simple_html_dom;
-use WGSimpleHtmlDom\simple_html_dom_node;
 use Weglot\Client\Api\Exception\InvalidWordTypeException;
-use Weglot\Client\Api\WordEntry;
-use Weglot\Parser\Check\Dom\AbstractDomChecker;
+use Weglot\Parser\Check\Regex\RegexChecker;
 use Weglot\Parser\Parser;
-use Weglot\Util\Text;
+use Weglot\Util\SourceType;
 
 class RegexCheckerProvider
 {
-
     const DEFAULT_CHECKERS_NAMESPACE = '\\Weglot\\Parser\\Check\\Regex\\';
 
     /**
      * @var Parser
      */
-    protected $parser = null;
+    protected $parser;
 
     /**
      * @var array
@@ -32,12 +26,6 @@ class RegexCheckerProvider
      */
     protected $discoverCaching = [];
 
-
-    /**
-     * DomChecker constructor.
-     * @param Parser $parser
-     * @param int $translationEngine
-     */
     public function __construct(Parser $parser)
     {
         $this->setParser($parser);
@@ -45,7 +33,6 @@ class RegexCheckerProvider
     }
 
     /**
-     * @param Parser $parser
      * @return $this
      */
     public function setParser(Parser $parser)
@@ -63,9 +50,9 @@ class RegexCheckerProvider
         return $this->parser;
     }
 
-
     /**
-     * @param $checker
+     * @param RegexChecker $checker
+     *
      * @return $this
      */
     public function addChecker($checker)
@@ -76,7 +63,6 @@ class RegexCheckerProvider
     }
 
     /**
-     * @param array $checkers
      * @return $this
      */
     public function addCheckers(array $checkers)
@@ -95,42 +81,55 @@ class RegexCheckerProvider
     }
 
     /**
-     * Load default checkers
+     * Load default checkers.
+     *
+     * @return void
      */
     protected function loadDefaultCheckers()
     {
+        $jsonKeys = ['description', 'name', 'headline', 'articleSection', 'text'];
+
+        // Dynamically extend keys for WordPress
+        if (\function_exists('apply_filters')) {
+            $jsonKeys = apply_filters('list_json_ld_keys', $jsonKeys);
+        }
+
         /* Add JSON LD checker */
-        if(strpos(implode("," , $this->parser->getExcludeBlocks()), 'application/ld+json') === false &&
-           strpos(implode("," , $this->parser->getExcludeBlocks()), '.wg-ldjson') === false
+        if (!str_contains(implode(',', $this->parser->getExcludeBlocks()), 'application/ld+json')
+           && !str_contains(implode(',', $this->parser->getExcludeBlocks()), '.wg-ldjson')
         ) {
-            $this->addChecker(new RegexChecker("#<script type=('|\")application\/ld\+json('|\")([^\>]+?)?>(.*?)<\/script>#s" , SourceType::SOURCE_JSON, 4 , array( "description" ,  "name" , "headline" , "articleSection", "text"  )));
+            $this->addChecker(new RegexChecker("#<script type=('|\")application\/ld\+json('|\")([^\>]+?)?>(.*?)<\/script>#s", SourceType::SOURCE_JSON, 4, $jsonKeys));
         }
 
         /* Add HTML template checker */
-        if(strpos(implode("," , $this->parser->getExcludeBlocks()), 'text/html') === false  &&
-           strpos(implode("," , $this->parser->getExcludeBlocks()), '.wg-texthtml') === false
+        if (!str_contains(implode(',', $this->parser->getExcludeBlocks()), 'text/html')
+           && !str_contains(implode(',', $this->parser->getExcludeBlocks()), '.wg-texthtml')
         ) {
             $this->addChecker(new RegexChecker("#<script type=('|\")text/html('|\")([^\>]+?)?>(.+?)<\/script>#s", SourceType::SOURCE_HTML, 4));
         }
     }
 
     /**
-     * @param string $checker   Class of the Checker to add
+     * @param mixed $checker Class of the Checker to add
+     *
      * @return bool
      */
     public function register($checker)
     {
         if ($checker instanceof RegexChecker) {
             $this->addChecker($checker);
+
             return true;
         }
+
         return false;
     }
 
-
     /**
      * @param string $domString
+     *
      * @return array
+     *
      * @throws InvalidWordTypeException
      */
     public function handle($domString)
@@ -144,35 +143,34 @@ class RegexCheckerProvider
                 $revert_callback = null; // or any default value that makes sense in your context
             }
             preg_match_all($regex, $domString, $matches);
-            if(isset($matches[$varNumber])) {
+            if (isset($matches[$varNumber])) {
                 $matches0 = $matches[0];
                 $matches1 = $matches[$varNumber];
                 foreach ($matches1 as $k => $match) {
                     $new_match = $match;
-                    if($callback) {
-                        $new_match = call_user_func($callback, $match);
+                    if ($callback) {
+                        $new_match = \call_user_func($callback, $match);
                     }
 
-                    if($type === SourceType::SOURCE_JSON) {
+                    if (SourceType::SOURCE_JSON === $type) {
                         $regex = $this->getParser()->parseJSON($new_match, $extraKeys);
                         $regex['source_before_callback'] = $match;
                     }
-                    if($type === SourceType::SOURCE_TEXT) {
+                    if (SourceType::SOURCE_TEXT === $type) {
                         $regex = $this->getParser()->parseText($new_match, $matches0[$k]);
                         $regex['source_before_callback'] = $matches0[$k];
                     }
-                    if($type === SourceType::SOURCE_HTML) {
+                    if (SourceType::SOURCE_HTML === $type) {
                         $regex = $this->getParser()->parseHTML($new_match);
                         $regex['source_before_callback'] = $match;
                     }
 
                     $regex['revert_callback'] = $revert_callback;
-                    $regexes[]                = $regex;
+                    $regexes[] = $regex;
                 }
             }
         }
+
         return $regexes;
     }
-
-
 }

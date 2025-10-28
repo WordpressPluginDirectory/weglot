@@ -5,15 +5,10 @@ namespace Weglot\Parser\ConfigProvider;
 use Weglot\Client\Api\Enum\BotType;
 use Weglot\Util\Server;
 
-/**
- * Class ServerConfigProvider
- * @package Weglot\Parser\ConfigProvider
- */
 class ServerConfigProvider extends AbstractConfigProvider
 {
     /**
-     * ServerConfigProvider constructor.
-     * @param null|string $title    Don't set this title if you want the Parser to parse title from DOM
+     * @param string|null $title Don't set this title if you want the Parser to parse title from DOM
      */
     public function __construct($title = null)
     {
@@ -22,13 +17,17 @@ class ServerConfigProvider extends AbstractConfigProvider
 
     /**
      * Is used to load server data, you have to run it manually !
+     *
+     * @param string $canonical
+     *
+     * @return void
      */
     public function loadFromServer($canonical = '')
     {
-        if(!empty($canonical)){
+        if (!empty($canonical)) {
             $url = $canonical;
-        }else{
-            if (http_response_code() !== 200) {
+        } else {
+            if (200 !== http_response_code()) {
                 $url = Server::urlOrigin($_SERVER).'/404';
             } else {
                 $url = Server::fullUrl($_SERVER);

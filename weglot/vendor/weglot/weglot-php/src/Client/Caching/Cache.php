@@ -6,16 +6,12 @@ use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
 
-/**
- * Class Cache
- * @package Weglot\Client\Caching\Cache
- */
 class Cache implements CacheInterface
 {
     /**
      * @var CacheItemPoolInterface|null
      */
-    protected $itemPool = null;
+    protected $itemPool;
 
     /**
      * @var int
@@ -23,7 +19,6 @@ class Cache implements CacheInterface
     protected $expire = 604800; // 7 days (= 60 * 60 * 24 * 7)
 
     /**
-     * Cache constructor.
      * @param null $itemPool
      */
     public function __construct($itemPool = null)
@@ -32,7 +27,8 @@ class Cache implements CacheInterface
     }
 
     /**
-     * @param null|CacheItemPoolInterface $itemPool
+     * @param CacheItemPoolInterface|null $itemPool
+     *
      * @return $this
      */
     public function setItemPool($itemPool)
@@ -43,7 +39,7 @@ class Cache implements CacheInterface
     }
 
     /**
-     * @return null|CacheItemPoolInterface
+     * @return CacheItemPoolInterface|null
      */
     public function getItemPool()
     {
@@ -52,6 +48,7 @@ class Cache implements CacheInterface
 
     /**
      * @param int $expire
+     *
      * @return $this
      */
     public function setExpire($expire)
@@ -74,21 +71,22 @@ class Cache implements CacheInterface
      */
     public function enabled()
     {
-        return $this->itemPool !== null;
+        return null !== $this->itemPool;
     }
 
     /**
-     * @param array $data
      * @return string
      */
     public function generateKey(array $data)
     {
-        return 'wg_' .sha1(json_encode($data));
+        return 'wg_'.sha1(json_encode($data));
     }
 
     /**
      * @param string $key
+     *
      * @return CacheItemInterface
+     *
      * @throws InvalidArgumentException
      */
     public function get($key)
@@ -97,23 +95,24 @@ class Cache implements CacheInterface
     }
 
     /**
-     * @param array $data
      * @return CacheItemInterface
+     *
      * @throws InvalidArgumentException
      */
     public function getWithGenerate(array $data)
     {
         $key = $this->generateKey($data);
+
         return $this->get($key);
     }
 
     /**
-     * @param CacheItemInterface $item
      * @return bool
      */
     public function save(CacheItemInterface $item)
     {
         $item->expiresAfter($this->getExpire());
+
         return $this->getItemPool()->save($item);
     }
 }

@@ -24,7 +24,7 @@ class Shortcode_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->button_services      = weglot_get_service( 'Button_Service_Weglot' );
+		$this->button_services      = weglot_get_service( Button_Service_Weglot::class );
 		add_shortcode( 'weglot_switcher', array( $this, 'weglot_switcher_callback' ) );
 	}
 

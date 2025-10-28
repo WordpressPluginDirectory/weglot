@@ -14,6 +14,10 @@ class Schema_Option_V3 {
 	/**
 	 * @var string
 	 */
+	public $definitions;
+	/**
+	 * @var string
+	 */
 	public $api_key;
 	/**
 	 * @var string
@@ -110,6 +114,10 @@ class Schema_Option_V3 {
 	/**
 	 * @var string
 	 */
+	public $translate_inside_exclusions;
+	/**
+	 * @var string
+	 */
 	public $has_first_settings;
 	/**
 	 * @var string
@@ -169,6 +177,21 @@ class Schema_Option_V3 {
 	public $project_slug;
 
 	/**
+	 * Overrides the "language_to" value in each language array based on a provided mapping.
+	 * @param array<string, mixed> $languages An array of language configurations, each containing a "language_to" key.
+	 * @param array<string, string> $overrides An associative array mapping original "language_to" values to their custom replacements.
+	 * @return array<string, mixed> The modified array of language configurations with updated "language_to" values.
+	 */
+	public static function overrideLanguageTo(array $languages, array $overrides) {
+		foreach ($languages as &$language) {
+			if (isset($language['language_to']) && isset($overrides[$language['language_to']])) {
+				$language['language_to'] = $overrides[$language['language_to']];
+			}
+		}
+		return $languages;
+	}
+
+	/**
 	 * @return array<string,mixed>
 	 * @since 3.0.0
 	 */
@@ -188,14 +211,16 @@ class Schema_Option_V3 {
 					if ( ! $languages ) {
 						return $destinations;
 					}
+
 					foreach ( $languages as $item ) {
 						$destinations[] = array(
-							'language_to'       => $item['language_to'],
-							'custom_code'       => $item['custom_code'],
-							'custom_name'       => $item['custom_name'],
-							'custom_local_name' => $item['custom_local_name'],
-							'public'            => $item['enabled'],
+							'language_to'       => isset($item['language_to']) ? $item['language_to'] : null,
+							'custom_code'       => isset($item['custom_code']) ? $item['custom_code'] : null,
+							'custom_name'       => isset($item['custom_name']) ? $item['custom_name'] : null,
+							'custom_local_name' => isset($item['custom_local_name']) ? $item['custom_local_name'] : null,
+							'public'            => isset($item['enabled']) ? $item['enabled'] : null,
 						);
+
 					}
 
 					return $destinations;
@@ -234,6 +259,7 @@ class Schema_Option_V3 {
 				},
 			),
 			'custom_settings'           => 'custom_settings',
+			'definitions'               => 'custom_settings.definitions',
 			'is_dropdown'               => 'custom_settings.button_style.is_dropdown',
 			'is_fullname'               => 'custom_settings.button_style.full_name',
 			'with_name'                 => 'custom_settings.button_style.with_name',
@@ -253,6 +279,7 @@ class Schema_Option_V3 {
 			'active_search'             => 'custom_settings.translate_search',
 			'translate_amp'             => 'custom_settings.translate_amp',
 			'wp_user_version'           => 'custom_settings.wp_user_version',
+			'translate_inside_exclusions'           => 'custom_settings.translate_inside_exclusions',
 			'has_first_settings'        => 'has_first_settings',
 			'show_box_first_settings'   => 'show_box_first_settings',
 			'custom_urls'               => (object) array(

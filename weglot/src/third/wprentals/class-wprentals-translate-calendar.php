@@ -30,7 +30,7 @@ class Wprentals_translate_calendar implements Hooks_Interface_Weglot {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->wprentals_active      = weglot_get_service( 'Wprentals_Active' );
+		$this->wprentals_active      = weglot_get_service( Wprentals_Active::class );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class Wprentals_translate_calendar implements Hooks_Interface_Weglot {
 	public function wg_wpestate_datepicker_language( ) {
 
 		/** @var Request_Url_Service_Weglot $request_url_services */
-		$request_url_services = weglot_get_service( 'Request_Url_Service_Weglot' );
+		$request_url_services = weglot_get_service( Request_Url_Service_Weglot::class );
 		return $request_url_services->get_current_language()->getInternalCode();
 
 	}

@@ -26,7 +26,7 @@ class WC_Cart_Reload_Weglot implements Hooks_Interface_Weglot {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->wc_active_services = weglot_get_service( 'Wc_Active' );
+		$this->wc_active_services = weglot_get_service( Wc_Active::class );
 	}
 
 	/**

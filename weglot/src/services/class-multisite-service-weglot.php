@@ -22,7 +22,7 @@ class Multisite_Service_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->request_url_services = weglot_get_service( 'Request_Url_Service_Weglot' );
+		$this->request_url_services = weglot_get_service( Request_Url_Service_Weglot::class );
 	}
 
 	/**

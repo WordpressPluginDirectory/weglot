@@ -24,7 +24,7 @@ class Replace_Link_Service_Weglot {
 	private $request_url_services;
 
 	/**
-	 * @var array<string,mixed>|null
+	 * @var array<int|string,mixed>|null
 	 */
 	private $multisite_other_paths;
 
@@ -32,8 +32,8 @@ class Replace_Link_Service_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->multisite_service     = weglot_get_service( 'Multisite_Service_Weglot' );
-		$this->request_url_services  = weglot_get_service( 'Request_Url_Service_Weglot' );
+		$this->multisite_service     = weglot_get_service( Multisite_Service_Weglot::class );
+		$this->request_url_services  = weglot_get_service( Request_Url_Service_Weglot::class );
 		$this->multisite_other_paths = null;
 		if ( is_multisite() ) {
 			$this->multisite_other_paths = array_filter(
@@ -55,13 +55,40 @@ class Replace_Link_Service_Weglot {
 	 * @return string
 	 * @since 2.0
 	 */
-	public function replace_url( $url, $language, $evenExcluded = true ) {
-		$replaced_url = apply_filters( 'weglot_replace_url', $this->request_url_services->create_url_object( $url )->getForLanguage( $language, $evenExcluded ), $url, $language );
-		if ( $replaced_url ) {
-			return $replaced_url;
-		} else {
-			return $url;
+	public function replace_url($url, $language, $evenExcluded = true) {
+		$replaced_url = apply_filters('weglot_replace_url', $this->request_url_services->create_url_object($url)->getForLanguage($language, $evenExcluded), $url, $language);
+
+		// Parse the URL to separate the path, query, and fragment
+		$parsed_url = wp_parse_url($replaced_url);
+
+		if (!empty($parsed_url['path'])) {
+			// Check if the path ends without a trailing slash
+
+			$should_add_trailing_slash = apply_filters( 'weglot_add_trailing_slash', true );
+			if ( $should_add_trailing_slash && substr( $parsed_url['path'], -1 ) !== '/' ) {
+				$parsed_url['path'] .= '/';
+			}
 		}
+
+		// Rebuild the URL with all parts (path, query, fragment, etc.)
+		$replaced_url = '';
+		if (isset($parsed_url['scheme']) && isset($parsed_url['host'])) {
+			$replaced_url .= $parsed_url['scheme'] . '://' . $parsed_url['host'];
+		}
+
+		if (!empty($parsed_url['path'])) {
+			$replaced_url .= $parsed_url['path'];
+		}
+
+		if (!empty($parsed_url['query'])) {
+			$replaced_url .= '?' . $parsed_url['query'];
+		}
+
+		if (!empty($parsed_url['fragment'])) {
+			$replaced_url .= '#' . $parsed_url['fragment'];
+		}
+
+		return $replaced_url;
 	}
 
 	/**
@@ -89,7 +116,6 @@ class Replace_Link_Service_Weglot {
 		$replace_url_other_site = '';
 		if ( $replace_multisite_link ) {
 			$parsed_url         = wp_parse_url( $current_url );
-			$parsed_url['host'] = ! empty( $parsed_url['host'] ) ? $parsed_url['host'] : '';
 			if ( isset( $parsed_url['path'] ) ) {
 				$current_home_path    = wp_parse_url( get_home_url( get_current_blog_id(), '/' ), PHP_URL_PATH );
 				$found_dynamic_string = false;
@@ -101,7 +127,9 @@ class Replace_Link_Service_Weglot {
 					if ( strpos( $this->replace_url( $current_url, $current_language ), trim( $dynamic_string, '/' ) ) !== false && $dynamic_string != '/' ) {
 						$found_dynamic_string   = true;
 						$replace_url_other_site = str_replace( trim( $dynamic_string, '/' ), "", $this->replace_url( $current_url, $current_language ) );
-						$replace_url_other_site = str_replace( $current_home_path, $dynamic_string, $replace_url_other_site );
+						if(is_string($current_home_path)){
+							$replace_url_other_site = str_replace( $current_home_path, $dynamic_string, $replace_url_other_site );
+						}
 						break; // Exit the loop once a match is found
 					}
 				}
@@ -144,8 +172,31 @@ class Replace_Link_Service_Weglot {
 	 */
 	public function replace_datalink( $translated_page, $current_url, $quote1, $quote2, $sometags = null, $sometags2 = null ) {
 		$current_language = $this->request_url_services->get_current_language();
-		$translated_page  = preg_replace( '/<' . preg_quote( $sometags, '/' ) . 'data-link=' . preg_quote( $quote1 . $current_url . $quote2, '/' ) . '/', '<' . $sometags . 'data-link=' . $quote1 . $this->replace_url( $current_url, $current_language ) . $quote2, $translated_page );
+		$regex_limit_default = 200000;
 
+		// Check if the filter exists.
+		if ( has_filter( 'weglot_regex_tags_limit' ) ) {
+			// Use the filtered limit.
+			$regex_limit = apply_filters( 'weglot_regex_tags_limit', $regex_limit_default );
+
+			// Check if $sometags exceeds the limit.
+			if ( strlen( $sometags ) > $regex_limit ) {
+				// Skip the preg_replace; leave $translated_page as is.
+			} else {
+				$translated_page = preg_replace(
+					'/<' . preg_quote( $sometags, '/' ) . 'data-link=' . preg_quote( $quote1 . $current_url . $quote2, '/' ) . '/',
+					'<' . $sometags . 'data-link=' . $quote1 . $this->replace_url( $current_url, $current_language ) . $quote2,
+					$translated_page
+				);
+			}
+		} else {
+			// No filter exists; use the default behavior.
+			$translated_page = preg_replace(
+				'/<' . preg_quote( $sometags, '/' ) . 'data-link=' . preg_quote( $quote1 . $current_url . $quote2, '/' ) . '/',
+				'<' . $sometags . 'data-link=' . $quote1 . $this->replace_url( $current_url, $current_language ) . $quote2,
+				$translated_page
+			);
+		}
 		return $translated_page;
 	}
 

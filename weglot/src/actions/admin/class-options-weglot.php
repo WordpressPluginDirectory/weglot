@@ -34,8 +34,8 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->option_services   = weglot_get_service( 'Option_Service_Weglot' );
-		$this->user_api_services = weglot_get_service( 'User_Api_Service_Weglot' );
+		$this->option_services   = weglot_get_service( Option_Service_Weglot::class );
+		$this->user_api_services = weglot_get_service( User_Api_Service_Weglot::class );
 	}
 
 	/**
@@ -89,6 +89,10 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 		$options['custom_settings']['wp_user_version'] = WEGLOT_VERSION;
 		$options_bdd = $this->option_services->get_options_bdd_v3();
 
+		if ( ! is_array( $options_bdd ) ) {
+			$options_bdd = array();
+		}
+
 		switch ( $tab ) {
 			case Helper_Tabs_Admin_Weglot::SETTINGS:
 				$has_first_settings = $this->option_services->get_has_first_settings();
@@ -127,10 +131,13 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 					if ( is_array( $options_menu ) ) {
 						if ( ! empty( $options_menu ) ) {
 							foreach ( $options_menu as $key => $menu ) {
-								if ( $options['custom_settings']['button_style']['is_dropdown'] ) {
-									$options_menu[ $key ]['dropdown'] = 1;
-								} else {
-									$options_menu[ $key ]['dropdown'] = 0;
+								// Ensure $menu is an array before modifying
+								if ( is_array( $menu ) ) {
+									if ( $options['custom_settings']['button_style']['is_dropdown'] ) {
+										$options_menu[ $key ]['dropdown'] = 1;
+									} else {
+										$options_menu[ $key ]['dropdown'] = 0;
+									}
 								}
 							}
 						}
@@ -161,11 +168,13 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 	 * @version 2.0.6
 	 * @param array<string|int,mixed> $options
 	 * @param mixed $has_first_settings
-	 * @return array<string|int,mixed>
+	 * @return array<string,mixed>
 	 */
+
 	public function sanitize_options_settings( $options, $has_first_settings = false ) {
 		$user_info = $this->user_api_services->get_user_info( $options['api_key_private'] );
 		$switchers = $this->option_services->get_switchers_editor_button();
+		$definitions = $this->option_services->get_option('definitions');
 
 		// Limit language.
 		$limit = 30;
@@ -188,7 +197,19 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 			$options['custom_settings']['button_style']['with_name']   = $default_options['custom_settings']['button_style']['with_name'];
 		}
 
-		$options['custom_settings']['button_style']['custom_css'] = isset( $options['custom_settings']['button_style']['custom_css'] ) ? stripcslashes( $options['custom_settings']['button_style']['custom_css'] ) : '';
+		// Prioritize custom_css from options : custom_css, fallback to button_style : custom_css if needed
+		// Determine which key holds the custom CSS and remove escape slashes
+		if (!empty($options['custom_css'])) {
+			$css = stripcslashes($options['custom_css']);
+		} elseif (!empty($options['custom_settings']['button_style']['custom_css'])) {
+			$css = stripcslashes($options['custom_settings']['button_style']['custom_css']);
+		} else {
+			$css = '';
+		}
+
+		// Ensure both values are set to the same unescaped CSS code
+		$options['custom_css'] = $css;
+		$options['custom_settings']['button_style']['custom_css'] = $css;
 
 		$options['custom_settings']['button_style']['flag_type'] = isset( $options['custom_settings']['button_style']['flag_type'] ) ? $options['custom_settings']['button_style']['flag_type'] : Helper_Flag_Type::RECTANGLE_MAT;
 
@@ -203,11 +224,15 @@ class Options_Weglot implements Hooks_Interface_Weglot {
 
 		$options['auto_switch'] = isset( $options['auto_switch'] );
 
-		if(!empty($switchers)){
-			foreach ( $switchers as $switcher ) {
-				$options['custom_settings']['switchers'][] = $switcher;
-			}
+		// Ensure options:custom_settings:switchers is set correctly
+		$options['custom_settings']['switchers'] = !empty($switchers) ? $switchers : [];
+		$options['custom_settings']['definitions'] = !empty($definitions) ? $definitions : [];
+
+		// Ensure $options['switchers'] is also updated if it's empty but custom_settings['switchers'] is not
+		if (empty($options['switchers']) && !empty($options['custom_settings']['switchers'])) {
+			$options['switchers'] = $options['custom_settings']['switchers'];
 		}
+
 		return $options;
 	}
 }

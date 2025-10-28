@@ -1,42 +1,47 @@
 === Translate WordPress and go Multilingual - Weglot ===
 Contributors: remyb92, gmulti, wysija, wpr0ck, glx77
-Tags: translate, multilingual, language, translation, localization, multilingual SEO, languages, translator, website translation, multilanguage, international, traduction
+Tags: translate, translation, multilingual, AI translation, automatic translation
 Requires at least: 4.5
-Tested up to: 6.5
-Requires PHP: 7.0
-Stable tag: 4.2.9
+Tested up to: 6.8
+Requires PHP: 7.4
+Stable tag: 5.2
 License: GPLv2 or later
 URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Translate your WordPress website in 110+ languages within minutes with Weglot Translate, without any coding.
+Translate your website and manage translations effortlessly to go multilingual on WordPress. Designed to be user-friendly.
 
 == Description ==
 
-### The easy way to translate your website. Designed to be used by anyone.
+### Translate your website and manage translations effortlessly to go multilingual on WordPress. Designed to be user-friendly.
 
-Weglot Translate is an all-in-one WordPress translation plugin, trusted by 70,000+ users worldwide. Translate your WordPress website into 110+ languages and go multilingual within minutes, no coding required.
+Weglot Translate is an all-in-one [WordPress translation plugin](https://www.weglot.com/integrations/wordpress-translation-plugin), trusted by 70,000+ users worldwide. Translate your WordPress website into 110+ languages and go multilingual within minutes, no coding required.
 
-Increase visibility and boost conversions with ease by adding automatic translations to your website, with full editing control. Weglot Translate is fully optimized for multilingual SEO, with every translated page automatically indexed by Google. Say hello in multiple languages to millions of new visitors with high-quality translations, boosted by AI.
+**Get the first layer of translation powered by top-tier AI engines** (DeepL, Google, Microsoft), then refine with full human control through your Weglot Dashboard.
+
+✨ **Want your translations to reflect your brand voice instantly?**
+Build your own **[AI Language Model](https://www.weglot.com/blog/ai-language-model)** powered by OpenAI and Gemini, to generate more natural, accurate translations that are custom to your business using your glossary, past edits, and style preferences.
 
 Explore how Weglot makes website translation easy with a free trial. Keep using it for free once the trial ends, or upgrade to a plan that best fits your needs. Visit [https://weglot.com/](https://weglot.com/) to learn more!
 
 ### How Weglot Translate works
 
-[youtube https://www.youtube.com/watch?v=frzdb79qTrU]
+[youtube https://www.youtube.com/watch?v=shCB1didH8Q&ab_channel=Weglot]
 
-### Why Weglot Translate
+### Why Weglot Translate: AI Translation and Multilingual Easy for WordPress
 
-**It’s easy to install:** Weglot Translate is quick to set up to have a [multilingual WordPress website](https://weglot.com/best-practice-guide-for-wordpress-multilingual-websites/) ready, instantly. Just add the languages you want through your WordPress admin, and a language switcher will be added to your website right away. Reach millions of new visitors worldwide with a few clicks, without any coding. Website translation has never been simpler.
+**It’s easy to install:** Weglot Translate is quick to set up to have a [multilingual WordPress website](https://weglot.com/best-practice-guide-for-wordpress-multilingual-websites/) ready, instantly. Just add the languages you want through your WordPress admin, and a language switcher will be added to your website right away. Reach millions of new visitors worldwide with a few clicks, without any coding. AI website translation has never been simpler.
 
 **It’s built for maximum compatibility:** Weglot Translate is fully compatible with all platforms, WooCommerce, WordPress themes, and plugins, like Yoast SEO. From WooCommerce product descriptions to Elementor order forms, it translates everything into the languages of your choice from one interface. This way, you can focus on your content, not the technical details of translation.
 
 **It’s optimized for SEO:** Weglot Translate follows Google’s best practices for multilingual website translation (including translated metadata, language-specific URLs, and hreflang tags), serving all translated web pages with clean source code. Google will automatically index every translated page with dedicated URLs for each language.
 
-**It’s easy to set and forget:** Weglot Translate automatically detects all your website content for easy translation. No more time-consuming manual duplication of every single line of content to get a multilingual website. All translations are updated in real-time—no maintenance to worry about. Plus, any newly added content, regardless of language, is automatically translated.
+**It’s easy to set and forget:** Weglot Translate automatically detects all your website content for easy AI translation. No more time-consuming manual duplication of every single line of content to get a multilingual website. All translations are updated in real-time; no maintenance to worry about. Plus, any newly added content, regardless of language, is automatically translated.
 
-**It takes translation quality seriously:** Weglot Translate gives you an edge on your translation tasks with the first layer of automatic multilingual translation provided by the best machine learning providers on the market (DeepL, Google Translate, and Microsoft). You can also edit the translations, order professional translations, or collaborate with your team to work on bilingual or multilingual translations together directly within Weglot.
+**It takes translation quality seriously:** Weglot Translate gives you an edge on your translation tasks with a two-layer approach to quality. The first layer delivers fast, reliable machine translations from best-in-class providers like DeepL, Google Translate, and Microsoft. The second layer is your own: full control to edit, collaborate, or order professional translations right in the interface. Or, refine translations with AI suggestions or your custom language model.
 
-**It partners with the pros:**  Weglot Translate lets you order from vetted professional translators directly inside your Weglot dashboard. Set your preferred [translation quality](https://weglot.com/translation-quality/) with Weglot Translate.
+**It partners with the pros:** Weglot Translate lets you order from vetted professional translators directly inside your Weglot dashboard. Set your preferred [translation quality](https://weglot.com/translation-quality/) with Weglot Translate.
+
+**It’s brand-aware:** Generate AI translations that reflect your tone and terminology automatically and at scale with the glossary and the AI language model.
 
 
 “The biggest win for us is the time we’ve saved. It takes us about ten minutes twice a week to double-check everything is running how we want it. Everything else is done by Weglot.”
@@ -44,7 +49,7 @@ Explore how Weglot makes website translation easy with a free trial. Keep using 
 [Read the case study](https://www.weglot.com/customers/the-bradery)
 
 
-### Multilingual functionality like no other
+### Multilingual & AI Translation Features Like No Other
 
 **Increase visibility:** All translated pages are automatically indexed following Google’s best practices with dedicated URLs for each language. Get new traffic with your multilingual website through top-notch translations.
 
@@ -54,7 +59,7 @@ Explore how Weglot makes website translation easy with a free trial. Keep using 
 
 **Localize media assets:** You can even add different images and videos for various languages. Useful for images with text, Weglot Translate makes it easy to display “translated” images in your website translations. Media localization is an essential aspect of any multilingual project and Weglot Translate makes it simple to do so.
 
-**Boost content with AI:** Get translation suggestions generated by AI to refine and perfect your messages like a local.
+**Boost content with AI:** Instantly generate translations using industry-leading machine translation. Then take it further with a custom AI Language Model that adapts to your tone and brand, improving with every validation or glossary update for hands-off translation quality.
 
 
 “We really loved the localization features provided by Weglot, such as the ability to translate images and other types of media depending on the language the visitor is viewing the site in.”
@@ -62,13 +67,13 @@ Explore how Weglot makes website translation easy with a free trial. Keep using 
 [Read the case study](https://weglot.com/customers/the-challenge-initiative/)
 
 
-### An all-in-one language translation platform
+### An all-in-one language translation plugin
 
 - Manage and edit all of your translations through a user-friendly interface. Plus, the options to mark translations as pending so a team member can approve or deny them
-- Collaborate with team members and trusted translators to manage translations, directly inside Weglot.
+- Collaborate with team members and trusted translators to manage AI translations, directly inside Weglot.
 - Is it a title? Is it a link? No more guessing the context of the text. Weglot Translate’s visual in-context editor lets you translate directly on a live preview of your website.
 - Make it your own. The multilingual language switcher is fully customizable with multiple design choices. Choose what flags you want to represent a language in, or none at all.
-- Build your own glossary and avoid the repetitive task of editing the same terms. Define translation rules to be automatically applied throughout your content.
+- Build your own glossary and avoid the repetitive task of editing the same terms. Define translation rules to be automatically applied throughout your content. Or customize your AI language model to ensure your translations sound just like you out of the box.
 - Weglot Translate makes it easy to migrate from other WordPress multilingual plugins like Polylang or WPML. Simply deactivate your existing translation plugin and install Weglot Translate.
 
 "Weglot removed the pain of having to manage multiple stores for multiple locales. The integration was easy, and the support is incredibly helpful. I highly recommend Weglot to anyone looking for a simple and cost-effective solution to translate their stores!"
@@ -129,15 +134,27 @@ When you’re ready, you can edit your translations directly in [your account](h
 
 - Weglot Translate is free for small websites (under 2,000 words) with one translation language.
 - Our WordPress multilingual plugin is cost-effective like no other, with custom paid plans to suit your translation needs. [Check our pricing](https://weglot.com/pricing) for more information.
-- Weglot Translate also offers a [10-day free trial version](https://dashboard.weglot.com/register); try our multilingual website solution today!
+- Weglot Translate also offers a [14-day free trial version](https://dashboard.weglot.com/register); try our multilingual website solution today!
 
-= Is Weglot compatible with SEO? =
+= Does Weglot use AI Translation?
 
-Weglot Translate is 100% optimized for multilingual SEO. It creates a dedicated URL for each language to ensure the proper indexation of your translated multilingual content on search engines like Google. SEO tags are also translated and editable within your Weglot Translate account, for the ultimate control of your translations.
+Yes! Weglot uses AI-powered translation to provide fast, accurate initial translations. These translations can then be reviewed and edited manually to ensure the highest quality and brand consistency or use our AI Language Model to match your brand voice.*
+
+= What is Weglot translation plugin?
+
+Weglot is a WordPress translation plugin that allows you to translate your website into over 110 languages instantly, combining AI-powered automatic translation with manual editing for accuracy.*
+
+= Does Weglot translation plugin support SEO? (formerly “Is Weglot compatible with SEO?”) =
+
+Absolutely! Weglot automatically generates translated URLs, metadata, and hreflang tags, ensuring that your translations are SEO-friendly and visible in international search results.*
+
+= Can I customize the language switcher for my translations?
+
+Yes, you can fully customize the language switcher to fit your site’s design, helping users navigate your translated pages easily.*
 
 = Can I try Weglot before buying a plan? =
 
-Yes, we have a 10-day free trial—no commitment, no credit card required—that everyone can use to test Weglot on your site. After the trial, you can choose to stay on the free plan and keep your translations (if your word count is below 2,000).
+Yes, we have a 14-day free trial—no commitment, no credit card required—that everyone can use to test Weglot on your site. After the trial, you can choose to stay on the free plan and keep your translations (if your word count is below 2,000).
 
 = How many languages are supported? =
 
@@ -174,7 +191,6 @@ Weglot Translate is easy to set up to get a multilingual website in minutes:
 Refresh your web page. Your website is now multilingual and available in the selected translation languages. You can switch languages to see your live translated pages.
 
 When you’re ready, you can edit your translations directly in your Weglot dashboard.
-
 
 = Can I edit my translations or buy professional translations? =
 
@@ -251,13 +267,14 @@ If you decide to stop using Weglot, your website will no longer be translated. A
 == Screenshots ==
 
 1. Become visible on search engines with multilingual SEO
-2. Edit translations easily with the visual editor
-3. Integrate Weglot with your WordPress website and get started instantly
-4. Create your translation team and collaborate with members
-5. Customize your language switcher for your website and brand
-6. Get full editing control with machine, human and pro translation options
-7. Join +60k brand going multilingual with Weglot
-8. Create translation rules and avoid repetitive editing tasks
+2. Train your own AI Language Model for accurate, brand-specific translations tailored to your business.
+3. Get full editing control with machine, human and pro translation options
+4. Integrate Weglot with your WordPress website and get started instantly
+5. Create your translation team and collaborate with members
+6. Customize your language switcher for your website and brand
+7. Edit your translations directly on a live preview of your website
+8. See the impact of your translated pages and leverage new opportunities
+9. Create translation rules and avoid repetitive editing tasks
 
 
 == Upgrade Notice ==
@@ -266,25 +283,12 @@ See changelog for upgrade changes.
 
 
 == Changelog ==
-
-2024-09-30 - version 4.2.9
-* Dev - PHPStan level 6 improvement.
-* Update - named mousedown eventlistener to allow to remove it.
-* Added - Filter to prevent access to specific role.
-
-= 4.2.9 (22/10/2024) =
-* Feature: Add filter to enable dynamic features from Weglot.
-* Fix: Resolve dynamic declaration deprecation warning.
-* Quality: Improve PHPStan to level 6.
-* Improvement: Named mousedown event listener for proper removal.
-* Improvement: Add filter to restrict access for specific roles.
-* Improvement: Add translate="no" attribute to disable browser translation.
-* Improvement: Enable translation of video src attribute by default.
-* Improvement: Remove "URL Translate" banner in WP Admin.
-* Improvement: Support adding tel: links as external links.
-* Improvement: Add option to return 404 for excluded pages.
-* Improvement: Add check for weglot-private header in requests.
-* Improvement: Wrap pageviews scripts in a function to avoid conflicts with other scripts.
+= 5.2 (28/10/2025) =
+* Improvement: Introduces weglot/v1/cache/purge REST route with HMAC auth and idempotency to purge cache, replacing the old Clean_Options init-based cleaner.
+* Improvement: Renames the REST request helper from is_rest to wg_is_rest and updates its usage in the redirect logic.
+* Improvement: Introduce a filterable admin-context mechanism to skip Weglot initialization and wire it into weglot_is_compatible().
+* Improvement: Explicitly declares the definitions property on Schema_Option_V3 to replace deprecated dynamic property usage.
+* Fix: Prevents translation conflicts when using the Breakdance editor by excluding AJAX requests during editing sessions.
 
 = Older versions =
 

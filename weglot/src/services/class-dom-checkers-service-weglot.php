@@ -22,7 +22,8 @@ class Dom_Checkers_Service_Weglot {
 	 * @return array<string,string>
 	 */
 	public function get_dom_checkers() {
-		$files    = array_diff( scandir( __DIR__ . '/../domcheckers' ), array( '..', '.' ) );
+		$scanned_directory = scandir( __DIR__ . '/../domcheckers' );
+		$files             = is_array( $scanned_directory ) ? array_diff( $scanned_directory, array( '..', '.' ) ) : [];
 		$checkers = array_map(
 			function ( $filename ) {
 				// Thanks WPCS :)

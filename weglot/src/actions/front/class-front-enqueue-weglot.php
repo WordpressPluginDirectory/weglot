@@ -25,7 +25,7 @@ class Front_Enqueue_Weglot implements Hooks_Interface_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->option_services = weglot_get_service( 'Option_Service_Weglot' );
+		$this->option_services = weglot_get_service( Option_Service_Weglot::class );
 	}
 
 	/**
@@ -38,6 +38,7 @@ class Front_Enqueue_Weglot implements Hooks_Interface_Weglot {
 		add_action( 'wp_enqueue_scripts', array( $this, 'weglot_wp_enqueue_scripts' ) );
 		add_action( 'login_enqueue_scripts', array( $this, 'weglot_wp_enqueue_scripts' ) );
 		add_action( 'wp_footer', array( $this, 'weglot_pageviews_script' ) );
+		add_filter( 'style_loader_tag', array( $this, 'add_custom_inline_style_tag' ), 10, 2 );
 	}
 
 	/**
@@ -80,14 +81,27 @@ class Front_Enqueue_Weglot implements Hooks_Interface_Weglot {
 		wp_enqueue_style( 'weglot-css' );
 
 		//display new flags
-		if ( empty( $this->option_services->get_option( 'flag_css' ) )
-		     && strpos( $this->option_services->get_css_custom_inline(), 'background-position' ) == false
-		     && strpos( $this->option_services->get_css_custom_inline(), 'background-image' ) == false ) {
-			Helper_Flag_Type::get_new_flags();
-		}
-
+		Helper_Flag_Type::get_new_flags();
 		wp_add_inline_style( 'weglot-css', $this->option_services->get_flag_css() );
-		wp_add_inline_style( 'weglot-css', $this->option_services->get_css_custom_inline() );
 		wp_add_inline_style( 'weglot-css', $this->option_services->get_switcher_editor_css() );
+	}
+
+	/**
+	 * Adds custom inline CSS style tag to the provided HTML for a specific handle.
+	 *
+	 * @param string $html Existing HTML to which the custom inline style will be appended.
+	 * @param string $handle Identifier for the stylesheet, checks if it matches 'weglot-css'.
+	 *
+	 * @return string Updated HTML string with the custom inline style tag appended if applicable.
+	 */
+	public function add_custom_inline_style_tag( $html, $handle ) {
+		if ( 'weglot-css' === $handle ) {
+			$custom_css = $this->option_services->get_css_custom_inline();
+			if ( ! empty( $custom_css ) ) {
+				$custom_style_tag = sprintf( '<style id="weglot-custom-style">%s</style>', $custom_css );
+				$html .= $custom_style_tag;
+			}
+		}
+		return $html;
 	}
 }

@@ -3,22 +3,25 @@
 namespace Weglot\Client\Api\Shared;
 
 /**
- * Interface AbstractCollectionInterface
- * @package Weglot\Client\Api\Shared
+ * @phpstan-template T of AbstractCollectionEntry
  */
 interface AbstractCollectionInterface
 {
     /**
-     * Add one word at a time
+     * Add one word at a time.
      *
-     * @param AbstractCollectionEntry $entry
+     * @phpstan-param T $entry
+     *
+     * @return $this
      */
     public function addOne(AbstractCollectionEntry $entry);
 
     /**
-     * Add several words at once
+     * Add several words at once.
      *
-     * @param AbstractCollectionEntry[] $entries
+     * @phpstan-param array<T> $entries
+     *
+     * @return $this
      */
     public function addMany(array $entries);
 }

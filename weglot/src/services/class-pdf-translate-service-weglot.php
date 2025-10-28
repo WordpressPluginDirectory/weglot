@@ -31,9 +31,9 @@ class Pdf_Translate_Service_Weglot {
 	 * @since 3.7
 	 */
 	public function __construct() {
-		$this->option_services   = weglot_get_service( 'Option_Service_Weglot' );
-		$this->parser_services   = weglot_get_service( 'Parser_Service_Weglot' );
-		$this->language_services = weglot_get_service( 'Language_Service_Weglot' );
+		$this->option_services   = weglot_get_service( Option_Service_Weglot::class );
+		$this->parser_services   = weglot_get_service( Parser_Service_Weglot::class );
+		$this->language_services = weglot_get_service( Language_Service_Weglot::class );
 	}
 
 

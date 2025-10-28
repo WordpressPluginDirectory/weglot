@@ -24,7 +24,7 @@ class Caldera_I18n_Inline implements Hooks_Interface_Weglot {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->caldera_active_services = weglot_get_service( 'Caldera_Active' );
+		$this->caldera_active_services = weglot_get_service( Caldera_Active::class );
 	}
 
 	/**

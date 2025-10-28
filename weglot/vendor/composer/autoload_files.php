@@ -6,5 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'a4a119a56e50fbb293281d9a48007e0e' => $vendorDir . '/symfony/polyfill-php80/bootstrap.php',
     '6c200413eed8aeea54dbaf934a31b127' => $vendorDir . '/weglot/simplehtmldom/src/simple_html_dom.php',
 );

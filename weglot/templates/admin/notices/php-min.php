@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</p>
 	<p>
 		<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=weglot_rollback' ), 'weglot_rollback' ); //phpcs:ignore ?>" class="button">
-			<?php echo esc_html__( 'Re-install version 1.13.1', 'weglot' ); ?>
+			<?php echo esc_html__( 'Re-install version 4.3.3', 'weglot' ); ?>
 		</a>
 	</p>
 </div>

@@ -6,10 +6,6 @@ use Weglot\Client\Api\Enum\WordType;
 use Weglot\Client\Api\Exception\InvalidWordTypeException;
 use Weglot\Client\Api\Shared\AbstractCollectionEntry;
 
-/**
- * Class WordEntry
- * @package Weglot\Client\Api
- */
 class WordEntry extends AbstractCollectionEntry
 {
     /**
@@ -23,9 +19,9 @@ class WordEntry extends AbstractCollectionEntry
     protected $type = WordType::TEXT;
 
     /**
-     * WordEntry constructor.
-     * @param $word
-     * @param int $type
+     * @param string $word
+     * @param int    $type
+     *
      * @throws InvalidWordTypeException
      */
     public function __construct($word, $type = WordType::TEXT)
@@ -36,6 +32,7 @@ class WordEntry extends AbstractCollectionEntry
 
     /**
      * @param string $word
+     *
      * @return $this
      */
     public function setWord($word)
@@ -57,13 +54,15 @@ class WordEntry extends AbstractCollectionEntry
      * Set type of word you gonna translate.
      * Returns false if type is incorrect.
      *
-     * @param $type
+     * @param int $type
+     *
      * @return $this
+     *
      * @throws InvalidWordTypeException
      */
     public function setType($type)
     {
-        /**
+        /*
          * Thoses WordType::__MIN and WordType::__MAX values are
          * only used to check if given type is okay according to
          * what we have in WordType.
@@ -82,19 +81,17 @@ class WordEntry extends AbstractCollectionEntry
      * @return int
      */
     #[\ReturnTypeWillChange]
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [
             't' => $this->getType(),
-            'w' => $this->getWord()
+            'w' => $this->getWord(),
         ];
     }
 }

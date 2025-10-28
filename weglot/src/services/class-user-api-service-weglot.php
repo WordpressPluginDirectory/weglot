@@ -90,14 +90,14 @@ class User_Api_Service_Weglot {
 	 *
 	 * @param string $url
 	 * @param array<string,mixed> $parameters
-	 * @return array<string,mixed>|string
+	 * @return string
 	 * @throws \Exception
 	 */
 	public function do_request( $url, $parameters = []) {
 		$active_sslverify = apply_filters( 'weglot_active_sslverify', true );
 		if ( $parameters ) {
 			$payload = json_encode( $parameters ); //phpcs:ignore
-			if ( \json_last_error() === JSON_ERROR_NONE ) {
+			if ( \json_last_error() === JSON_ERROR_NONE && is_string( $payload )) {
 				$response = wp_remote_post(
 					$url,
 					array(

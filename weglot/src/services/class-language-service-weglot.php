@@ -30,7 +30,7 @@ class Language_Service_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->option_services = weglot_get_service( 'Option_Service_Weglot' );
+		$this->option_services = weglot_get_service( Option_Service_Weglot::class );
 	}
 
 	/**
@@ -58,7 +58,7 @@ class Language_Service_Weglot {
 			return $this->languages;
 		}
 
-		$client = weglot_get_service( 'Parser_Service_Weglot' )->get_client();
+		$client = weglot_get_service( Parser_Service_Weglot::class )->get_client();
 
 		$languages = new LanguagesList( $client );
 
@@ -95,6 +95,14 @@ class Language_Service_Weglot {
 	 * @return LanguageCollection|null
 	 */
 	public function add_language( $internal_code, $external_code, $english_name, $local_name, $is_rtl = false ) {
+		if ($english_name instanceof LanguageEntry) {
+			$english_name = $english_name->getEnglishName();
+		}
+
+		if ($local_name instanceof LanguageEntry) {
+			$local_name = $local_name->getLocalName();
+		}
+
 		$entry = new LanguageEntry( $internal_code, $external_code, $english_name, $local_name, $is_rtl );
 		$this->languages->addOne( $entry );
 
@@ -104,9 +112,10 @@ class Language_Service_Weglot {
 	/**
 	 * Get all languages : list of 109 default languages merged with custom languages taken from options
 	 *
-	 * @return array<int|string,mixed>|LanguageCollection|null
+	 * @return LanguageCollection|null
 	 * @throws \Exception
 	 */
+
 	public function get_all_languages() {
 		if ( null !== $this->languages ) {
 			return $this->languages;
@@ -116,7 +125,7 @@ class Language_Service_Weglot {
 		$destination_languages = $this->option_services->get_destination_languages();
 		$original_language     = $this->get_original_language();
 
-		if ( ! empty( $this->get_original_language_name_custom() ) ) {
+		if ( null !== $original_language && ! empty( $this->get_original_language_name_custom() ) ) {
 			$this->languages = $this->add_language( $original_language->getInternalCode(), $original_language->getExternalCode(), $this->get_original_language_name_custom(), $this->get_original_language_name_custom(), $original_language->isRtl() );
 		}
 
@@ -142,11 +151,16 @@ class Language_Service_Weglot {
 	 *
 	 * @param string $internal_code
 	 *
-	 * @return LanguageEntry
+	 * @return LanguageEntry|null
 	 * @since 3.2.1
 	 */
 	public function get_language_from_internal( $internal_code ) {
-		return $this->get_all_languages()[ $internal_code ];
+		$languages = $this->get_all_languages();
+		if ( ! $languages ) {
+			return null;
+		}
+
+		return $languages->getCode( $internal_code );
 	}
 
 	/**
@@ -178,9 +192,10 @@ class Language_Service_Weglot {
 		$destination_languages_as_array = $this->option_services->get_destination_languages();
 		$destination_languages          = array();
 		foreach ( $destination_languages_as_array as $destination_language_as_array ) {
-			if ( $destination_language_as_array['public'] || $allowed_private ) {
-				if ( $this->get_all_languages()[ $destination_language_as_array['language_to'] ] ) {
-					$destination_languages[] = $this->get_all_languages()[ $destination_language_as_array['language_to'] ];
+			if ( ! empty( $destination_language_as_array['public'] ) || $allowed_private ) {
+				$language = $this->get_language_from_internal( $destination_language_as_array['language_to'] );
+				if ( $language ) {
+					$destination_languages[] = $language;
 				}
 			}
 		}
@@ -207,7 +222,7 @@ class Language_Service_Weglot {
 	/**
 	 * Get original language as language entry
 	 *
-	 * @return LanguageEntry
+	 * @return LanguageEntry|null
 	 */
 	public function get_original_language() {
 		$original_language_code = $this->option_services->get_option( 'original_language' );

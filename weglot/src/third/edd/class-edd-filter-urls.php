@@ -20,7 +20,7 @@ class Edd_Filter_Urls implements Hooks_Interface_Weglot {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->edd_active_services = weglot_get_service( 'Edd_Active' );
+		$this->edd_active_services = weglot_get_service( Edd_Active::class );
 	}
 
 	/**

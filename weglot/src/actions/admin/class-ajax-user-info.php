@@ -16,7 +16,7 @@ class Ajax_User_Info implements Hooks_Interface_Weglot {
 	private $user_services;
 
 	public function __construct() {
-		$this->user_services = weglot_get_service( 'User_Api_Service_Weglot' );
+		$this->user_services = weglot_get_service( User_Api_Service_Weglot::class );
 	}
 
 	/**

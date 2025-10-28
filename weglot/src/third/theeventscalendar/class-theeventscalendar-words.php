@@ -27,7 +27,7 @@ class Theeventscalendar_Words implements Hooks_Interface_Weglot {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->theeventcalendar_active_services = weglot_get_service( 'Theeventscalendar_Active' );
+		$this->theeventcalendar_active_services = weglot_get_service( Theeventscalendar_Active::class );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Theeventscalendar_Words implements Hooks_Interface_Weglot {
 
 	/**
 	 * @param array<string,string> $words
-	 * @return array<string,string>
+	 * @return array<int|string,string>
 	 * @since 3.1.2
 	 */
 	public function weglot_theeventscalendar_words( $words ) {

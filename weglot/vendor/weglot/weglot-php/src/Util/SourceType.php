@@ -4,9 +4,7 @@ namespace Weglot\Util;
 
 /**
  * Enum SourceType
- * Used to define what the source type is
- *
- * @package
+ * Used to define what the source type is.
  */
 abstract class SourceType
 {

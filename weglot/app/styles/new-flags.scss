@@ -1,0 +1,168 @@
+// Define the style and width based on the flag level
+$flag-styles: (
+	3: circle,
+	2: square,
+	1: shiny,
+	0: rectangle_mat
+);
+
+$flag-widths: (
+	3: 24px,
+	2: 24px,
+	1: 27px,
+	0: 27px
+);
+
+// Map of language codes to country codes (flag image filename)
+$weglot-flags: (
+	"af": "za",
+	"xh": "za",
+	"zu": "za",
+	"am": "et",
+	"ar": "sa",
+	"az": "az",
+	"ba": "ru",
+	"ru": "ru",
+	"be": "by",
+	"bg": "bg",
+	"bn": "bd",
+	"br": "br",
+	"pt-br": "br",
+	"bs": "ba",
+	"ca": "es-ca",
+	"co": "co",
+	"cs": "cz",
+	"cy": "gb-wls",
+	"da": "dk",
+	"de": "de",
+	"el": "gr",
+	"en": "gb",
+	"eo": "eo",
+	"es": "es",
+	"et": "ee",
+	"eu": "eu",
+	"fa": "ir",
+	"fi": "fi",
+	"fj": "fj",
+	"cb": "ph",
+	"ceb": "ph",
+	"fl": "ph",
+	"fr": "fr",
+	"fy": "nl",
+	"nl": "nl",
+	"ga": "ie",
+	"gd": "gb-sct",
+	"gl": "es-ga",
+	"as": "in",
+	"gu": "in",
+	"hi": "in",
+	"kn": "in",
+	"ml": "in",
+	"mr": "in",
+	"or": "in",
+	"pa": "in",
+	"ta": "in",
+	"te": "in",
+	"tl": "in",
+	"ha": "ne",
+	"ig": "ne",
+	"he": "il",
+	"yi": "il",
+	"hr": "hr",
+	"ht": "ht",
+	"hu": "hu",
+	"hw": "hw",
+	"hy": "am",    // Armenian: "hy" uses the "am.svg" flag
+	"id": "id",
+	"jv": "id",
+	"is": "is",
+	"it": "it",
+	"la": "it",
+	"ja": "jp",
+	"ka": "ge",
+	"kk": "kz",
+	"km": "kh",
+	"ko": "kr",
+	"ku": "iq",
+	"ky": "kg",
+	"lb": "lu",
+	"lo": "la",
+	"lt": "lt",
+	"lv": "lv",
+	"mg": "mg",
+	"mi": "nz",
+	"mk": "mk",
+	"mn": "mn",
+	"ms": "my",
+	"mt": "mt",
+	"my": "mm",
+	"ne": "np",
+	"no": "no",
+	"ny": "mw",
+	"pl": "pl",
+	"ps": "af",
+	"pt": "pt",
+	"ro": "ro",
+	"sd": "pk",
+	"ur": "pk",
+	"si": "lk",
+	"sk": "sk",
+	"sl": "si",
+	"sm": "ws",
+	"sn": "zw",
+	"so": "so",
+	"sq": "al",
+	"sa": "rs",
+	"sr-latn": "rs",
+	"sr": "rs",
+	"st": "ng",
+	"yo": "ng",
+	"su": "sd",
+	"sv": "se",
+	"sw": "ke",
+	"tg": "tj",
+	"th": "th",
+	"to": "to",
+	"tk": "tr",
+	"tr": "tr",
+	"tt": "tr",
+	"tw": "tw",
+	"zh-tw": "tw",
+	"ty": "pf",
+	"uk": "ua",
+	"uz": "uz",
+	"vi": "vn",
+	"zh": "cn",
+	"hm": "hm",
+	"hmn": "hm",
+	"ug": "ug",
+	"fc": "ca",
+	"fr-ca": "ca",
+	"rw": "rw"
+);
+
+// Mixin to output flag rules for a given language code and country code.
+$lang-prefix: "wg-";
+
+@mixin weglot-flag($level, $lang, $countryCode) {
+	.weglot-flags.flag-#{$level}.#{$lang-prefix}#{$lang} > a:before,
+	.weglot-flags.flag-#{$level}.#{$lang-prefix}#{$lang} > span:before {
+		background-image: url("https://cdn.weglot.com/flags/#{map-get($flag-styles, $level)}/#{$countryCode}.svg");
+		background-position: unset !important;
+		width: map-get($flag-widths, $level) !important;
+	}
+}
+
+// Loop over each language code in the map.
+@each $lang, $country in $weglot-flags {
+	@each $level, $dummy in $flag-styles {
+		@include weglot-flag($level, $lang, $country);
+	}
+}
+
+// Optionally, add a rule for .flag-0 without extra language classes.
+.weglot-flags.flag-0 > a:before,
+.weglot-flags.flag-0 > span:before {
+	background-position: unset !important;
+	width: map-get($flag-widths, 0) !important;
+}

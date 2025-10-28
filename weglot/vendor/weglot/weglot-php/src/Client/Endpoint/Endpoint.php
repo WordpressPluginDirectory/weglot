@@ -2,16 +2,10 @@
 
 namespace Weglot\Client\Endpoint;
 
-use Psr\Http\Message\ResponseInterface;
 use Weglot\Client\Api\Exception\ApiError;
 use Weglot\Client\Caching\CacheInterface;
 use Weglot\Client\Client;
-use Weglot\Client\Caching\Cache;
 
-/**
- * Class Endpoint
- * @package Weglot\Client\Endpoint
- */
 abstract class Endpoint
 {
     const METHOD = 'GET';
@@ -22,17 +16,12 @@ abstract class Endpoint
      */
     protected $client;
 
-    /**
-     * Endpoint constructor.
-     * @param Client $client
-     */
     public function __construct(Client $client)
     {
         $this->setClient($client);
     }
 
     /**
-     * @param Client $client
      * @return void
      */
     public function setClient(Client $client)
@@ -61,25 +50,29 @@ abstract class Endpoint
      */
     public function getPath()
     {
-        $parentClass = \get_called_class();
+        $parentClass = static::class;
+
         return $parentClass::ENDPOINT;
     }
 
     /**
-     * Used to run endpoint onto given Client
+     * Used to run endpoint onto given Client.
+     *
+     * @return mixed
      */
     abstract public function handle();
 
     /**
-     * @param array $body
-     * @param bool $ignoreCache
-     * @param bool $asArray
-     * @return array|ResponseInterface
+     * @param array<mixed> $body
+     * @param bool         $asArray
+     *
+     * @return ($asArray is true ? array<mixed> : array{string, int, array<string, string>})
+     *
      * @throws ApiError
      */
     protected function request(array $body = [], $asArray = true)
     {
-        $parentClass = \get_called_class();
+        $parentClass = static::class;
         $response = $this->getClient()->makeRequest($parentClass::METHOD, $parentClass::ENDPOINT, $body, $asArray);
 
         return $response;

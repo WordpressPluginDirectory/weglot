@@ -26,7 +26,7 @@ class Contactform7_Json_Keys implements Hooks_Interface_Weglot {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->contactform7_active_services = weglot_get_service( 'Contactform7_Active' );
+		$this->contactform7_active_services = weglot_get_service( Contactform7_Active::class );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Contactform7_Json_Keys implements Hooks_Interface_Weglot {
 	/**
 	 * @since 3.1.2
 	 * @param array<string,mixed>$keys
-	 * @return array<string,mixed>
+	 * @return array<int|string,mixed>
 	 */
 	public function weglot_contactform7_keys( $keys ) {
 		$keys[] = 'message';

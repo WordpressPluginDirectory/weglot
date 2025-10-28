@@ -39,10 +39,10 @@ class Button_Service_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->option_services      = weglot_get_service( 'Option_Service_Weglot' );
-		$this->request_url_services = weglot_get_service( 'Request_Url_Service_Weglot' );
-		$this->language_services    = weglot_get_service( 'Language_Service_Weglot' );
-		$this->amp_services         = weglot_get_service( 'Amp_Service_Weglot' );
+		$this->option_services      = weglot_get_service( Option_Service_Weglot::class );
+		$this->request_url_services = weglot_get_service( Request_Url_Service_Weglot::class );
+		$this->language_services    = weglot_get_service( Language_Service_Weglot::class );
+		$this->amp_services         = weglot_get_service( Amp_Service_Weglot::class );
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Button_Service_Weglot {
 	 * @param string $add_class
 	 * @param string $add_attr_target
 	 * @param string $add_attr_sibling
-	 * @param string $pos
+	 * @param string|int $pos
 	 * @param array<string,mixed> $switcher
 	 *
 	 * @return string
@@ -206,13 +206,13 @@ class Button_Service_Weglot {
 		$display_first = false;
 		if ( $this->request_url_services->is_eligible_url( $this->request_url_services->get_full_url() ) || $language_button_displayed ) {
 			$uniq_id = 'wg' . uniqid( '', true ) . strval( strtotime( 'now' ) ) . wp_rand( 1, 1000 );
-			$button_html   .= sprintf( '<input id="%s" class="weglot_choice" type="checkbox" name="menu"/><label data-l="' . $current_language->getExternalCode() . '" tabindex="-1" for="%s" class="wgcurrent wg-li weglot-lang weglot-language %s" data-code-language="%s" data-name-language="%s"><span class="wglanguage-name">%s</span></label>', esc_attr( $uniq_id ), esc_attr( $uniq_id ), esc_attr( $flag_class . $current_language->getInternalCode() ), esc_attr( $current_language->getInternalCode() ), esc_html( $name ), esc_html( $name ) );
+			$button_html   .= sprintf( '<input id="%s" class="weglot_choice" type="checkbox" name="menu"/><label data-l="' . $current_language->getExternalCode() . '" tabindex="-1" for="%s" class="wgcurrent wg-li weglot-lang weglot-language %s" data-code-language="%s" data-name-language="%s"><span class="wglanguage-name">%s</span></label>', esc_attr( $uniq_id ), esc_attr( $uniq_id ), esc_attr( $flag_class . 'wg-' . $current_language->getInternalCode() ), esc_attr( 'wg-' . $current_language->getInternalCode() ), esc_html( $name ), esc_html( $name ) );
 			$display_first = true;
 		}
 
 		if ( ! $display_first && ! $hide_all_language ) {
 			$uniq_id = 'wg' . uniqid( '', true ) . strval( strtotime( 'now' ) ) . wp_rand( 1, 1000 );
-			$button_html   .= sprintf( '<input id="%s" class="weglot_choice" type="checkbox" name="menu"/><label tabindex="-1" for="%s" class="wgcurrent wg-li weglot-lang weglot-language %s" data-code-language="%s" data-name-language="%s"><span class="wglanguage-name">%s</span></label>', esc_attr( $uniq_id ), esc_attr( $uniq_id ), esc_attr( $flag_class . $current_language->getInternalCode() ), esc_attr( $current_language->getInternalCode() ), esc_html( $name ), esc_html( $name ) );
+			$button_html   .= sprintf( '<input id="%s" class="weglot_choice" type="checkbox" name="menu"/><label tabindex="-1" for="%s" class="wgcurrent wg-li weglot-lang weglot-language %s" data-code-language="%s" data-name-language="%s"><span class="wglanguage-name">%s</span></label>', esc_attr( $uniq_id ), esc_attr( $uniq_id ), esc_attr( $flag_class . 'wg-' . $current_language->getInternalCode() ), esc_attr( 'wg-' . $current_language->getInternalCode() ), esc_html( $name ), esc_html( $name ) );
 			$display_first = true;
 		}
 
@@ -237,33 +237,51 @@ class Button_Service_Weglot {
 			}
 
 			if ( $link_button ) {
-				$button_html .= sprintf( '<li data-l="' . $language->getExternalCode() . '" class="wg-li weglot-lang weglot-language %s" data-code-language="%s" role="option">', $flag_class . $language->getInternalCode(), $language->getInternalCode() );
-				$name        = $this->get_name_with_language_entry( $language, $switcher );
+				$button_html .= sprintf(
+					'<li data-l="' . $language->getExternalCode() . '" class="wg-li weglot-lang weglot-language %s" data-code-language="%s" role="option">',
+					$flag_class . 'wg-' . $language->getInternalCode(),
+					$language->getInternalCode()
+				);
+				$name = $this->get_name_with_language_entry( $language, $switcher );
 
 				if ( $this->option_services->get_option( 'auto_redirect' ) ) {
 					$is_orig = $language === $this->language_services->get_original_language() ? 'true' : 'false';
-					if ( strpos( $link_button, '?' ) !== false ) {
+					if ( is_string($link_button) && strpos( $link_button, '?' ) !== false ) {
 						$link_button = str_replace( '?', "?wg-choose-original=$is_orig&", $link_button );
 					} else {
 						$link_button .= "?wg-choose-original=$is_orig";
 					}
 				}
 
-				$wg_original_no_follow     = apply_filters( 'weglot_autoredirect_no_follow', false );
+				$wg_original_no_follow = apply_filters( 'weglot_autoredirect_no_follow', false );
 
-				if(strpos( $link_button, 'wg-choose-original' ) !== false && $wg_original_no_follow){
+				// Check if $add_class contains "weglot-preview"
+				if ( strpos( $add_class, 'weglot-preview' ) === false ) {
+					if ( is_string($link_button) && strpos( $link_button, 'wg-choose-original' ) !== false && $wg_original_no_follow ) {
+						$button_html .= sprintf(
+							'<a rel="nofollow" title="Language switcher : ' . $language->getEnglishName() . '" class="weglot-language-' . $language->getExternalCode() . '" role="option" data-wg-notranslate="" href="%s">%s</a>',
+							esc_url( $link_button ),
+							esc_html( $name )
+						);
+					} else {
+						if ( ! is_string( $link_button ) ) {
+							continue;
+						}
+						$button_html .= sprintf(
+							'<a title="Language switcher : ' . $language->getEnglishName() . '" class="weglot-language-' . $language->getExternalCode() . '" role="option" data-wg-notranslate="" href="%s">%s</a>',
+							esc_url( $link_button ),
+							esc_html( $name )
+						);
+					}
+				} else {
+
+					// If "weglot-preview" is in $add_class, use a <span> instead
 					$button_html .= sprintf(
-						'<a rel="nofollow" title="Language switcher : ' . $language->getEnglishName() . '" class="weglot-language-' . $language->getExternalCode() . '" role="option" data-wg-notranslate="" href="%s">%s</a>',
-						esc_url( $link_button ),
-						esc_html( $name )
-					);
-				}else{
-					$button_html .= sprintf(
-						'<a title="Language switcher : ' . $language->getEnglishName() . '" class="weglot-language-' . $language->getExternalCode() . '" role="option" data-wg-notranslate="" href="%s">%s</a>',
-						esc_url( $link_button ),
+						'<span title="Language switcher : ' . $language->getEnglishName() . '" class="weglot-language-' . $language->getExternalCode() . '" role="option" data-wg-notranslate="">%s</span>',
 						esc_html( $name )
 					);
 				}
+
 				$button_html .= '</li>';
 			}
 		}

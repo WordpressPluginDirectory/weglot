@@ -88,25 +88,23 @@ $plans     = $this->user_api_services->get_plans();
 				}
 				$original_languages_possible = $language_services->get_languages_available( [ 'sort' => true ] );
 				foreach ( $original_languages_possible as $language ) {
-					if ( $language->getInternalCode() !== 'br' ) {
-						?>
-						<?php if ( $this->options['has_first_settings'] ) { ?>
-							<option
-								value="<?php echo esc_attr( $language->getInternalCode() ); ?>"
-								<?php selected( $language->getInternalCode(), $wplang ); ?>
-							>
-								<?php esc_html_e( $language->getEnglishName(), 'weglot' ); //phpcs:ignore ?>
-							</option>
-							<?php
-						} else { ?>
-							<option
-								value="<?php echo esc_attr( $language->getInternalCode() ); ?>"
-								<?php selected( $language->getInternalCode(), $this->options[ $options_available['language_from']['key'] ] ); ?>
-							>
-								<?php esc_html_e( $language->getEnglishName(), 'weglot' ); //phpcs:ignore ?>
-							</option>
-						<?php }
-					}
+					?>
+					<?php if ( $this->options['has_first_settings'] ) { ?>
+						<option
+							value="<?php echo esc_attr( $language->getInternalCode() ); ?>"
+							<?php selected( $language->getInternalCode(), $wplang ); ?>
+						>
+							<?php esc_html_e( $language->getEnglishName(), 'weglot' ); //phpcs:ignore ?>
+						</option>
+						<?php
+					} else { ?>
+						<option
+							value="<?php echo esc_attr( $language->getInternalCode() ); ?>"
+							<?php selected( $language->getInternalCode(), $this->options[ $options_available['language_from']['key'] ] ); ?>
+						>
+							<?php esc_html_e( $language->getEnglishName(), 'weglot' ); //phpcs:ignore ?>
+						</option>
+					<?php }
 				}
 				?>
 			</select>

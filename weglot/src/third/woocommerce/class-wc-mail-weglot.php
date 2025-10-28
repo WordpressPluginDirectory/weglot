@@ -37,9 +37,9 @@ class WC_Mail_Weglot implements Hooks_Interface_Weglot {
 	 * @since 3.1.6
 	 */
 	public function __construct() {
-		$this->wc_active_services   = weglot_get_service( 'Wc_Active' );
-		$this->request_url_services = weglot_get_service( 'Request_Url_Service_Weglot' );
-		$this->language_services    = weglot_get_service( 'Language_Service_Weglot' );
+		$this->wc_active_services   = weglot_get_service( Wc_Active::class );
+		$this->request_url_services = weglot_get_service( Request_Url_Service_Weglot::class );
+		$this->language_services    = weglot_get_service( Language_Service_Weglot::class );
 	}
 
 	/**
@@ -66,9 +66,12 @@ class WC_Mail_Weglot implements Hooks_Interface_Weglot {
 	public function translate_following_mail( $args, $mail ) {
 
 		$translate_email = apply_filters( 'weglot_translate_email', weglot_get_option( 'email_translate' ), $args );
+		/** @var \WC_Email $mail */
 
 		if (
 			$translate_email
+			&& property_exists( $mail, 'object' )
+			&& is_object( $mail->object )
 			&& (
 				is_a( $mail->object, 'Automattic\WooCommerce\Admin\Overrides\Order' )
 				|| is_a( $mail->object, 'WC_Order' )
@@ -79,7 +82,9 @@ class WC_Mail_Weglot implements Hooks_Interface_Weglot {
 				$woocommerce_order_language = get_post_meta( $mail->object->get_id(), 'weglot_language', true );
 				if( empty($woocommerce_order_language)){
 					$order = wc_get_order($mail->object->get_id());
-					$woocommerce_order_language = $order->get_meta('weglot_language');
+					if ( $order && is_object( $order ) ) {
+						$woocommerce_order_language = $order->get_meta('weglot_language');
+					}
 				}
 				if ( ! empty( $woocommerce_order_language ) ) {
 
@@ -141,10 +146,8 @@ class WC_Mail_Weglot implements Hooks_Interface_Weglot {
 		$order = wc_get_order($order_id);
 		if ( ! $woocommerce_order_language ) {
 			$current_language = $this->request_url_services->get_current_language()->getExternalCode();
-			if ($order) {
-				// Add your custom metadata
+			if ($order instanceof \WC_Order ) {
 				$order->update_meta_data('weglot_language', $current_language);
-				// Save the order data
 				$order->save();
 			}
 		}

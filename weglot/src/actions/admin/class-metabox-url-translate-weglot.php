@@ -25,7 +25,7 @@ class Metabox_Url_Translate_Weglot implements Hooks_Interface_Weglot {
 	 * @since 2.1.0
 	 */
 	public function __construct() {
-		$this->option_services    = weglot_get_service( 'Option_Service_Weglot' );
+		$this->option_services    = weglot_get_service( Option_Service_Weglot::class );
 	}
 
 	/**
@@ -77,7 +77,7 @@ class Metabox_Url_Translate_Weglot implements Hooks_Interface_Weglot {
 		}
 		$organization_slug = $this->option_services->get_option('organization_slug');
 		$project_slug = $this->option_services->get_option('project_slug');
-		$project_slug_url = esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/slugs/', array('weglot') );
-		echo sprintf( esc_html__( 'The translation URL feature is now available in your Weglot account (Requires Pro plan minimum) : %1$sTranslate URL slugs%2$s.', 'weglot' ), '<a target="_blank" href="' . esc_url($project_slug_url ) . '">', '</a>' );
+		$project_slug_url = 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/slugs/';
+		echo sprintf( esc_html__( 'The translation URL feature is now available in your Weglot account (Requires Pro plan minimum) : %1$sTranslate URL slugs%2$s.', 'weglot' ), '<a target="_blank" href="' . esc_url( $project_slug_url ) . '">', '</a>' );
 	}
 }

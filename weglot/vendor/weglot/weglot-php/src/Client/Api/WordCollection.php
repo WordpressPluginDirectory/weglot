@@ -5,8 +5,7 @@ namespace Weglot\Client\Api;
 use Weglot\Client\Api\Shared\AbstractCollection;
 
 /**
- * Class WordCollection
- * @package Weglot\Client\Api
+ * @phpstan-extends AbstractCollection<WordEntry>
  */
 class WordCollection extends AbstractCollection
 {

@@ -4,54 +4,49 @@ namespace Weglot\Client\Api;
 
 use Weglot\Client\Api\Shared\AbstractCollectionEntry;
 
-/**
- * Class LanguageEntry
- * @package Weglot\Client\Api
- */
 class LanguageEntry extends AbstractCollectionEntry
 {
     /**
-     * Internal weglot code to identify language, is 2 letters, eg tw
+     * Internal weglot code to identify language, is 2 letters, eg tw.
      *
      * @var string
      */
     protected $internalCode;
 
     /**
-     * External code that shows on website on URLs (can be more than 2 letters)
+     * External code that shows on website on URLs (can be more than 2 letters).
      *
      * @var string
      */
     protected $externalCode;
 
     /**
-     * English name of the language
+     * English name of the language.
      *
      * @var string
      */
     protected $englishName;
 
     /**
-     * Name of the language in the language
+     * Name of the language in the language.
      *
      * @var string
      */
     protected $localName;
 
     /**
-     * Language is right to left
+     * Language is right to left.
      *
      * @var bool
      */
     protected $isRtl;
 
     /**
-     * LanguageEntry constructor.
-     * @param string $internalCode    Internal weglot code to identify language
-     * @param string $externalCode     External code that shows on website on URLs
-     * @param string $englishName   English name of the language
-     * @param string $localName     Name of the language in the language
-     * @param bool $isRtl           Language is right to left
+     * @param string $internalCode Internal weglot code to identify language
+     * @param string $externalCode External code that shows on website on URLs
+     * @param string $englishName  English name of the language
+     * @param string $localName    Name of the language in the language
+     * @param bool   $isRtl        Language is right to left
      */
     public function __construct($internalCode, $externalCode, $englishName, $localName, $isRtl = false)
     {
@@ -64,7 +59,8 @@ class LanguageEntry extends AbstractCollectionEntry
     }
 
     /**
-     * @param $internalCode
+     * @param string $internalCode
+     *
      * @return $this
      */
     public function setInternalCode($internalCode)
@@ -83,7 +79,8 @@ class LanguageEntry extends AbstractCollectionEntry
     }
 
     /**
-     * @param $externalCode
+     * @param string|null $externalCode
+     *
      * @return $this
      */
     public function setExternalCode($externalCode)
@@ -103,6 +100,7 @@ class LanguageEntry extends AbstractCollectionEntry
 
     /**
      * @param string $englishName
+     *
      * @return $this
      */
     public function setEnglishName($englishName)
@@ -121,7 +119,8 @@ class LanguageEntry extends AbstractCollectionEntry
     }
 
     /**
-     * @param $localName
+     * @param string $localName
+     *
      * @return $this
      */
     public function setLocalName($localName)
@@ -141,6 +140,7 @@ class LanguageEntry extends AbstractCollectionEntry
 
     /**
      * @param bool $rtl
+     *
      * @return $this
      */
     public function setRtl($rtl)
@@ -162,11 +162,11 @@ class LanguageEntry extends AbstractCollectionEntry
     public function jsonSerialize()
     {
         return [
-            'internal_code'      => $this->getInternalCode(),
-            'external_code'      => $this->getExternalCode(),
-            'english'   => $this->getEnglishName(),
-            'local'     => $this->getLocalName(),
-            'rtl'       => $this->isRtl(),
+            'internal_code' => $this->getInternalCode(),
+            'external_code' => $this->getExternalCode(),
+            'english' => $this->getEnglishName(),
+            'local' => $this->getLocalName(),
+            'rtl' => $this->isRtl(),
         ];
     }
 }

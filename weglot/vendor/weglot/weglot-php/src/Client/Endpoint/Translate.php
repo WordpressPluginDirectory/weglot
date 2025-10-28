@@ -11,10 +11,6 @@ use Weglot\Client\Api\TranslateEntry;
 use Weglot\Client\Client;
 use Weglot\Client\Factory\Translate as TranslateFactory;
 
-/**
- * Class Translate
- * @package Weglot\Client\Endpoint
- */
 class Translate extends Endpoint
 {
     const METHOD = 'POST';
@@ -25,11 +21,6 @@ class Translate extends Endpoint
      */
     protected $translateEntry;
 
-    /**
-     * Translate constructor.
-     * @param TranslateEntry $translateEntry
-     * @param Client $client
-     */
     public function __construct(TranslateEntry $translateEntry, Client $client)
     {
         $this->setTranslateEntry($translateEntry);
@@ -45,7 +36,6 @@ class Translate extends Endpoint
     }
 
     /**
-     * @param TranslateEntry $translateEntry
      * @return $this
      */
     public function setTranslateEntry(TranslateEntry $translateEntry)
@@ -66,12 +56,11 @@ class Translate extends Endpoint
 
         $defaultParams = [
             'from' => $this->getTranslateEntry()->getParams('language_from'),
-            'to' => $this->getTranslateEntry()->getParams('language_to')
+            'to' => $this->getTranslateEntry()->getParams('language_to'),
         ];
 
         // fetch words to check if anything hit the cache
         foreach ($words as $key => $word) {
-
             // adding from & to languages to make key unique by language-pair
             $word = array_merge($word, $defaultParams);
             $cachedWord = $this->getCache()->getWithGenerate($word);
@@ -95,20 +84,18 @@ class Translate extends Endpoint
             $array[$next] = $element;
             $fullWords[$key] = [
                 'where' => $where,
-                'place' => $next
+                'place' => $next,
             ];
         }
 
         return [
             $requestWords,
             $cachedWords,
-            $fullWords
+            $fullWords,
         ];
     }
 
     /**
-     * @param array $response
-     * @param array $beforeRequestResult
      * @return array
      */
     protected function afterRequest(array $response, array $beforeRequestResult)
@@ -119,13 +106,13 @@ class Translate extends Endpoint
 
         $defaultParams = [
             'from' => $this->getTranslateEntry()->getParams('language_from'),
-            'to' => $this->getTranslateEntry()->getParams('language_to')
+            'to' => $this->getTranslateEntry()->getParams('language_to'),
         ];
 
         // fetch all words in one array
         foreach ($fullWords as $key => $details) {
             // if current word was in cache, just retrieve it
-            if ($details['where'] === 'cached') {
+            if ('cached' === $details['where']) {
                 $fromWords[$key] = $cachedWords[$details['place']]['from'];
                 $toWords[$key] = $cachedWords[$details['place']]['to'];
                 continue;
@@ -142,7 +129,7 @@ class Translate extends Endpoint
 
             $cachedWord->set([
                 'from' => $from,
-                'to' => $to
+                'to' => $to,
             ]);
             $this->getCache()->save($cachedWord);
 
@@ -159,6 +146,7 @@ class Translate extends Endpoint
 
     /**
      * @return TranslateEntry
+     *
      * @throws ApiError
      * @throws InputAndOutputCountMatchException
      * @throws InvalidWordTypeException
@@ -169,7 +157,7 @@ class Translate extends Endpoint
     {
         $beforeRequest = [];
         $asArray = $this->translateEntry->jsonSerialize();
-        $response = array();
+        $response = [];
         if ($this->getCache()->enabled()) {
             $beforeRequest = $this->beforeRequest();
             $asArray['words'] = $beforeRequest[0];
@@ -181,7 +169,7 @@ class Translate extends Endpoint
             }
         } else {
             list($rawBody, $httpStatusCode) = $this->request($asArray, false);
-            if ($httpStatusCode !== 200) {
+            if (200 !== $httpStatusCode) {
                 throw new ApiError($rawBody, $asArray);
             }
 
@@ -192,6 +180,7 @@ class Translate extends Endpoint
         }
 
         $factory = new TranslateFactory($response);
+
         return $factory->handle();
     }
 }

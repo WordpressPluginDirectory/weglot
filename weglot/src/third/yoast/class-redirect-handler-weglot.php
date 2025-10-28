@@ -1,7 +1,7 @@
 <?php
 
 use WeglotWP\Services\Language_Service_Weglot;
-use WeglotWP\Services\Request_Url_Service_Weglot;
+use Yoast\WP\SEO\Premium\Initializers\Redirect_Handler;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Override Yoast Premium
  */
-class Redirect_Handler_Weglot extends \WPSEO_Redirect_Handler {
+class Redirect_Handler_Weglot extends Redirect_Handler {
 
 	/**
 	 * The options where the URL redirects are stored.
@@ -100,26 +100,39 @@ class Redirect_Handler_Weglot extends \WPSEO_Redirect_Handler {
 				$redirect_url = str_replace( $code_language[0] . '/', '', $request_url );
 				$redirect_url = $this->find_url( $redirect_url );
 
-				if ( ! empty( $redirect_url ) ) { // If find URL redirect on Yoast
-
+				if ( ! empty( $redirect_url ) ) {
 					// Prepare Eligible URL from Yoast
 					$eligible_url = $redirect_url['url'];
-					if ( '/' !== $eligible_url[0] ) {
+
+					// Check if the first character exists and is a slash; if not, prepend it.
+					if ( ! isset( $eligible_url[0] ) || $eligible_url[0] !== '/' ) {
 						$eligible_url = '/' . $eligible_url;
 					}
+
 					if ( substr( $eligible_url, -1 ) !== '/' ) {
 						$eligible_url .= '/';
 					}
 
-					$redirect_url['url'] = sprintf( '%s/%s', $code_language[0], $redirect_url['url'] );
+					$redirect_url['url'] = sprintf( '%s%s', $code_language[0], $eligible_url );
+
 				}
+
 			}
 		}
 
 		// Get the URL and doing the redirect.
-		if ( ! empty( $redirect_url ) ) {
-			$this->is_redirected = true;
-			$this->do_redirect( $redirect_url['url'], $redirect_url['type'] );
+		if ( ! empty( $redirect_url ) && ! empty( $redirect_url['url'] ) ) {
+			// Use wp_remote_head to fetch the headers of the URL.
+			$response = wp_remote_head( $redirect_url['url'] );
+			if ( ! is_wp_error( $response ) ) {
+				// Retrieve the response code.
+				$status_code = wp_remote_retrieve_response_code( $response );
+				// Proceed with the redirect only if the response code is not 404.
+				if ( 404 !== (int) $status_code ) {
+					$this->is_redirected = true;
+					$this->do_redirect( $redirect_url['url'], $redirect_url['type'] );
+				}
+			}
 		}
 	}
 }

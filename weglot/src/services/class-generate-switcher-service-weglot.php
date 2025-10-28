@@ -27,8 +27,8 @@ class Generate_Switcher_Service_Weglot {
 	 * @since 2.3.0
 	 */
 	public function __construct() {
-		$this->option_services      = weglot_get_service( 'Option_Service_Weglot' );
-		$this->button_services      = weglot_get_service( 'Button_Service_Weglot' );
+		$this->option_services      = weglot_get_service( Option_Service_Weglot::class );
+		$this->button_services      = weglot_get_service( Button_Service_Weglot::class );
 	}
 
 	/**
@@ -67,7 +67,8 @@ class Generate_Switcher_Service_Weglot {
 	 * @since 2.3.0
 	 */
 	public function render_default_button( $dom ) {
-		if ( strpos( $dom, 'weglot-language' ) !== false ) {
+		$force_js_render_switcher = apply_filters('force_js_render_switcher', false);
+		if ( strpos( $dom, 'weglot-language' ) !== false || $force_js_render_switcher) {
 			return $dom;
 		}
 
@@ -147,7 +148,7 @@ class Generate_Switcher_Service_Weglot {
 
 	/**
 	 * @param array<int|string,mixed> $switcher
-	 * @param string $pos
+	 * @param string|int $pos
 	 * @return string
 	 * @throws \Exception
 	 * @version 3.0.0
@@ -187,9 +188,11 @@ class Generate_Switcher_Service_Weglot {
 		$dom = $this->replace_div_id( $dom );
 		$dom = $this->check_weglot_menu( $dom );
 
+		$switchers = $this->option_services->get_switchers_editor_button();
+
 		// check if custom switcher(s) exist in settings otherwise return default switcher.
-		if ( ! empty( $this->option_services->get_switchers_editor_button() ) ) {
-			$dom_with_switchers = $this->render_switcher_editor_button( $dom, $this->option_services->get_switchers_editor_button() );
+		if ( ! empty( $switchers ) && is_array( $switchers ) ) {
+			$dom_with_switchers = $this->render_switcher_editor_button( $dom, $switchers );
 		}
 
 		$dom = ! empty( $dom_with_switchers ) ? $dom_with_switchers : $this->render_default_button( $dom );

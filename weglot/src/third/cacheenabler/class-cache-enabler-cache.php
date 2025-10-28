@@ -33,8 +33,8 @@ class Cache_Enabler_Cache implements Hooks_Interface_Weglot {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->cache_enabler_active      = weglot_get_service( 'Cache_Enabler_Active' );
-		$this->generate_switcher_service = weglot_get_service( 'Generate_Switcher_Service_Weglot' );
+		$this->cache_enabler_active      = weglot_get_service( Cache_Enabler_Active::class );
+		$this->generate_switcher_service = weglot_get_service( Generate_Switcher_Service_Weglot::class );
 	}
 
 	/**
@@ -62,9 +62,9 @@ class Cache_Enabler_Cache implements Hooks_Interface_Weglot {
 	public function bypass_cache( $bypass_cache ) {
 
 		/** @var Request_Url_Service_Weglot $request_url_services */
-		$request_url_services = weglot_get_service( 'Request_Url_Service_Weglot' );
+		$request_url_services = weglot_get_service( Request_Url_Service_Weglot::class );
 		/** @var Language_Service_Weglot $language_services */
-		$language_services = weglot_get_service( 'Language_Service_Weglot' );
+		$language_services = weglot_get_service( Language_Service_Weglot::class );
 
 		if ( $request_url_services->get_current_language() !== $language_services->get_original_language() ) {
 			return true;

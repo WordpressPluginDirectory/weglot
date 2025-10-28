@@ -2,15 +2,8 @@
 
 namespace Weglot\Client\Api\Exception;
 
-/**
- * Class MissingRequiredParamException
- * @package Weglot\Client\Api\Exception
- */
 class MissingRequiredParamException extends AbstractException
 {
-    /**
-     * MissingRequiredParamException constructor.
-     */
     public function __construct()
     {
         parent::__construct(

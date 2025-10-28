@@ -40,6 +40,23 @@ setTimeout(() => {
 	}
 }, 1500);
 
+window.WeglotSwitcherControl = {
+	hideSwitchers: true, // Default behavior to hide switchers
+	updateSwitchers: function () {
+		const switchers = document.querySelectorAll('.weglot-dropdown');
+		if (switchers !== null) {
+			[].forEach.call(switchers, function (switcher) {
+				switcher.style.display = window.WeglotSwitcherControl.hideSwitchers ? "none" : "";
+			});
+		}
+	}
+};
+
+document.addEventListener("WeglotSwitcherUpdate", function () {
+	window.WeglotSwitcherControl.updateSwitchers();
+});
+
+
 document.addEventListener( "DOMContentLoaded", function ( event ) {
 
 	function getOffset(element) {
@@ -71,14 +88,9 @@ document.addEventListener( "DOMContentLoaded", function ( event ) {
 		button.className += " weglot-invert";
 	}
 
-	//check if your page is load by an iframe
 	if (inFrame()) {
-		const switchers = document.querySelectorAll('.weglot-dropdown')
-		if (switchers !== null) {
-			[].forEach.call(switchers, function (switcher) {
-				switcher.style.display = "none";
-			});
-		}
+		// Initial update based on the default setting
+		window.WeglotSwitcherControl.updateSwitchers();
 	}
 
 	document.addEventListener("click", (evt) => {

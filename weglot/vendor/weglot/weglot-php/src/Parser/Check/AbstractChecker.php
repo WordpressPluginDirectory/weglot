@@ -2,13 +2,9 @@
 
 namespace Weglot\Parser\Check;
 
-use WGSimpleHtmlDom\simple_html_dom;
 use Weglot\Parser\Parser;
+use WGSimpleHtmlDom\simple_html_dom;
 
-/**
- * Class AbstractChecker
- * @package Weglot\Parser\Check
- */
 abstract class AbstractChecker
 {
     /**
@@ -21,11 +17,6 @@ abstract class AbstractChecker
      */
     protected $dom;
 
-    /**
-     * DomChecker constructor.
-     * @param Parser $parser
-     * @param simple_html_dom $dom
-     */
     public function __construct(Parser $parser, simple_html_dom $dom)
     {
         $this
@@ -34,7 +25,6 @@ abstract class AbstractChecker
     }
 
     /**
-     * @param Parser $parser
      * @return $this
      */
     public function setParser(Parser $parser)
@@ -53,7 +43,6 @@ abstract class AbstractChecker
     }
 
     /**
-     * @param simple_html_dom $dom
      * @return $this
      */
     public function setDom(simple_html_dom $dom)

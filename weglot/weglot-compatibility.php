@@ -25,7 +25,7 @@ if ( ! function_exists( 'wp_doing_ajax' ) ) {
 }
 
 
-if ( ! function_exists( 'is_rest' ) ) {
+if ( ! function_exists( 'wg_is_rest' ) ) {
 	/**
 	 * Checks if the current request is a WP REST API request.
 	 *
@@ -37,7 +37,7 @@ if ( ! function_exists( 'is_rest' ) ) {
 	 * @return boolean
 	 * @author matzeeable
 	 */
-	function is_rest() {
+	function wg_is_rest() {
 		$prefix = rest_get_url_prefix();
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST // (#1)
 		     || isset( $_GET['rest_route'] ) //phpcs:ignore

@@ -2,8 +2,8 @@
 
 /**
  * Add wp-rocket coolie for cache
- * @param array<string,mixed> $cookies
- * @return array<string,mixed>
+ * @param array<int|string,mixed> $cookies
+ * @return array<int|string,mixed>
  */
 function weglot_mandatory_cookie( $cookies ) {
 	$cookies[] = 'weglot_wp_rocket_cache';

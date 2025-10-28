@@ -8,7 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Weglot\Util\SourceType;
 
-
 /**
  * @since 2.0.7
  */
@@ -23,5 +22,5 @@ class Wc_Json_Add_Cart_Variations {
 	 * @var string[] Array of string keys
 	 * @since 2.0.7
 	 */
-	public static $KEYS = array('i18n_no_matching_variations_text', 'i18n_make_a_selection_text', 'i18n_unavailable_text');
+	public static $KEYS = array('i18n_no_matching_variations_text', 'i18n_make_a_selection_text', 'i18n_unavailable_text', 'i18n_reset_alert_text');
 }

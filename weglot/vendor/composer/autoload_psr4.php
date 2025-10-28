@@ -7,7 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Weglot\\' => array($vendorDir . '/weglot/weglot-php/src'),
+    'WeglotLanguages\\' => array($vendorDir . '/weglot/weglot-php/node_modules/@weglot/languages/dist'),
+    'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'Morphism\\' => array($vendorDir . '/gmulti/morphism-php/lib'),
-    'Languages\\' => array($vendorDir . '/weglot/weglot-php/node_modules/@weglot/languages/dist'),
 );

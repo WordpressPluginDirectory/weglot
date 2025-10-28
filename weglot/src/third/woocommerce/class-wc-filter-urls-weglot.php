@@ -40,9 +40,9 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->request_url_services = weglot_get_service( 'Request_Url_Service_Weglot' );
-		$this->wc_active_services   = weglot_get_service( 'Wc_Active' );
-		$this->replace_url_services = weglot_get_service( 'Replace_Url_Service_Weglot' );
+		$this->request_url_services = weglot_get_service( Request_Url_Service_Weglot::class );
+		$this->wc_active_services   = weglot_get_service( Wc_Active::class );
+		$this->replace_url_services = weglot_get_service( Replace_Url_Service_Weglot::class );
 	}
 
 	/**
@@ -108,7 +108,7 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 	 *
 	 * @param string $url_filter
 	 *
-	 * @return string
+	 * @return bool|string
 	 * @since 2.0
 	 */
 	public function woocommerce_filter_order_received_url( $url_filter ) {
@@ -123,7 +123,7 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 	 * @param string $url
 	 * @param string $endpoint
 	 *
-	 * @return string
+	 * @return bool|string
 	 * @since 2.0
 	 */
 	public function weglot_woocommerce_get_endpoint_url( $url, $endpoint ) {
@@ -134,17 +134,23 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 				if ( strpos( $header, 'wp-resetpass' ) !== false ) {
 					preg_match( '#wp-resetpass-(.*?)=(.*?);#', $header, $matches_name );
 					preg_match( '#path=(.*?);#', $header, $matches_path );
-					if ( isset( $matches_name[0] ) && isset( $matches_path[0] ) && isset( $matches_path[1] ) ) {
+					if ( isset( $matches_name[1], $matches_name[2] ) && isset( $matches_path[1] ) ) {
 						$theUrl         = $this->request_url_services->create_url_object( $matches_path[1] );
 						$translated_url = $theUrl->getForLanguage( $this->request_url_services->get_current_language() );
-						setcookie( 'wp-resetpass-' . $matches_name[1], urldecode( $matches_name[2] ), 0, $translated_url, '', is_ssl(), true ); // phpcs:ignore
+						if ( is_string( $translated_url ) ) {
+							setcookie( 'wp-resetpass-' . $matches_name[1], urldecode( $matches_name[2] ), 0, $translated_url, '', is_ssl(), true ); // phpcs:ignore
+							return $translated_url;
+						}
 
-						return $translated_url;
 					}
 				}
 			}
 
 			$current_url = $this->request_url_services->create_url_object( $url );
+
+			if(! is_string( $current_url->getForLanguage( $this->request_url_services->get_current_language() ) )){
+				return $url;
+			}
 
 			return $current_url->getForLanguage( $this->request_url_services->get_current_language() );
 		}
@@ -162,7 +168,7 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 	 */
 	public function woocommerce_filter_url_array( $result ) {
 		/** @var Language_Service_Weglot $language_service */
-		$language_service = weglot_get_service( 'Language_Service_Weglot' );
+		$language_service = weglot_get_service( Language_Service_Weglot::class );
 
 		$choose_current_language = $this->request_url_services->get_current_language();
 		if ( $choose_current_language !== $language_service->get_original_language() ) { // Not ajax
@@ -192,24 +198,33 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 	/**
 	 * Redirect URL Lost password for WooCommerce
 	 *
-	 * @param mixed $url
 	 *
 	 * @return void
 	 * @throws Exception
 	 * @version 2.0.4
 	 * @since 2.0
 	 */
-	public function woocommerce_filter_reset_password( $url ) {
+	public function woocommerce_filter_reset_password() {
+
+		$reset_link_sent = apply_filters( 'weglot_redirect_woocommerce_filter_reset_password', true );
+
+		if( ! $reset_link_sent ){
+			return;
+		}
+
 		/** @var Language_Service_Weglot $language_service */
-		$language_service = weglot_get_service( 'Language_Service_Weglot' );
+		$language_service = weglot_get_service( Language_Service_Weglot::class );
 
 		if ( $this->request_url_services->get_current_language() === $language_service->get_original_language() ) {
-			exit;
+			return;
 		}
 
 		$url_redirect = add_query_arg( 'reset-link-sent', 'true', wc_get_account_endpoint_url( 'lost-password' ) );
 		$url_redirect = $this->request_url_services->create_url_object( $url_redirect );
 
+		if(! is_string( $url_redirect->getForLanguage( $this->request_url_services->get_current_language() ))){
+			return;
+		}
 		wp_redirect( $url_redirect->getForLanguage( $this->request_url_services->get_current_language() ) ); //phpcs:ignore
 		exit;
 	}
@@ -233,8 +248,13 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 				$checkout_url        = wc_get_checkout_url();
 				$cart_url            = wc_get_cart_url();
 				$request_url_service = weglot_get_request_url_service();
-				$replaced_url        = $request_url_service->create_url_object( $checkout_url )->getForLanguage( $request_url_service->get_current_language() );
-				$replaced_cart_url   = $request_url_service->create_url_object( $cart_url )->getForLanguage( $request_url_service->get_current_language() );
+				$current_language    = $request_url_service->get_current_language();
+
+				$translated_checkout_url = $request_url_service->create_url_object( $checkout_url )->getForLanguage( $current_language );
+				$translated_cart_url     = $request_url_service->create_url_object( $cart_url )->getForLanguage( $current_language );
+
+				$js_checkout_url = is_string( $translated_checkout_url ) ? $translated_checkout_url : $checkout_url;
+				$js_cart_url     = is_string( $translated_cart_url ) ? $translated_cart_url : $cart_url;
 
 				?>
 				<script>
@@ -255,19 +275,19 @@ class WC_Filter_Urls_Weglot implements Hooks_Interface_Weglot {
 							const miniCartButton = document.querySelector('.wc-block-mini-cart__footer-cart');
 							let allModified = true;
 							if (checkoutButton !== null) {
-								checkoutButton.setAttribute('href', "<?php echo esc_js( $replaced_url ); ?>");
+								checkoutButton.setAttribute('href', "<?php echo esc_js( $js_checkout_url ); ?>");
 							} else {
 								allModified = false;
 							}
 
 							if (miniCartCheckoutButton !== null) {
-								miniCartCheckoutButton.setAttribute('href', "<?php echo esc_js( $replaced_url ); ?>");
+								miniCartCheckoutButton.setAttribute('href', "<?php echo esc_js( $js_checkout_url ); ?>");
 							} else {
 								allModified = false;
 							}
 
 							if (miniCartButton !== null) {
-								miniCartButton.setAttribute('href', "<?php echo esc_js( $replaced_cart_url ); ?>");
+								miniCartButton.setAttribute('href', "<?php echo esc_js( $js_cart_url ); ?>");
 							} else {
 								allModified = false;
 							}

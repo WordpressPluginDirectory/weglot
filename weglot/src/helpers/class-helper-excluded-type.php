@@ -41,15 +41,15 @@ class Helper_Excluded_Type {
 			case RegexEnum::START_WITH:
 				return __( 'URL starts with', 'weglot' );
 			case RegexEnum::NOT_START_WITH:
-				return __( 'URL not starts with', 'weglot' );
+				return __( 'URL does not start with', 'weglot' );
 			case RegexEnum::END_WITH:
 				return __( 'URL ends with', 'weglot' );
 			case RegexEnum::NOT_END_WITH:
-				return __( 'URL not ends with', 'weglot' );
+				return __( 'URL does not end with', 'weglot' );
 			case RegexEnum::CONTAIN:
 				return __( 'URL contains substring', 'weglot' );
 			case RegexEnum::NOT_CONTAIN:
-				return __( 'URL not contains substring', 'weglot' );
+				return __( 'URL does not contain substring', 'weglot' );
 			case RegexEnum::IS_EXACTLY:
 				return __( 'URL is exactly', 'weglot' );
 			case RegexEnum::NOT_IS_EXACTLY:

@@ -2,13 +2,7 @@
 
 namespace Weglot\Client\Api\Exception;
 
-use Exception;
-
-/**
- * Class AbstractException
- * @package Weglot\Client\Api\Exception
- */
-abstract class AbstractException extends Exception
+abstract class AbstractException extends \Exception
 {
     /**
      * @var int
@@ -16,15 +10,14 @@ abstract class AbstractException extends Exception
     protected $weglotCode;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $jsonBody;
 
     /**
-     * AbstractException constructor.
-     * @param string $message
-     * @param int $weglotCode
-     * @param array $jsonBody
+     * @param string       $message
+     * @param int          $weglotCode
+     * @param array<mixed> $jsonBody
      */
     public function __construct($message, $weglotCode = WeglotCode::GENERIC, $jsonBody = [])
     {
@@ -43,7 +36,7 @@ abstract class AbstractException extends Exception
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getJsonBody()
     {

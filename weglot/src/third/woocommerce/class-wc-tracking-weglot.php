@@ -17,17 +17,12 @@ use WeglotWP\Third\Woocommerce\Wc_Active;
  * @since 3.1.4
  */
 class Wc_Tracking_Weglot implements Hooks_Interface_Weglot {
-	/**
-	 * @var Wc_Active
-	 */
-	private $wc_active_services;
 
 	/**
 	 * @since 3.1.4
 	 * @return void
 	 */
 	public function __construct() {
-		$this->wc_active_services = weglot_get_service( 'Wc_Active' );
 	}
 
 	/**
@@ -40,7 +35,7 @@ class Wc_Tracking_Weglot implements Hooks_Interface_Weglot {
 			return;
 		}
 
-		if ( ! $this->wc_active_services->is_active() || ! WEGLOT_WOOCOMMERCE) {
+		if ( ! WEGLOT_WOOCOMMERCE) {
 			return;
 		}
 
@@ -58,7 +53,7 @@ class Wc_Tracking_Weglot implements Hooks_Interface_Weglot {
 		if ( isset( $options_available['api_key_private']['description'] ) ) {
 
 			$register_link         = 'https://dashboard.weglot.com/register-wordpress';
-			$register_link_tracked = 'https://dashboard.weglot.com/register-wordpress?utm_source=partners&utm_medium=integration&utm_campaign=woocommerce';
+			$register_link_tracked = 'https://dashboard.weglot.com/register?fp_ref=woocommerce';
 
 			$options_available['api_key_private']['description'] = \str_replace( $register_link, $register_link_tracked, $options_available['api_key_private']['description'] );
 		}

@@ -19,7 +19,7 @@ abstract class Helper_Filter_Url_Weglot {
 	/**
 	 * @since 2.4.0
 	 * @param string $url
-	 * @return string
+	 * @return string|bool
 	 */
 	public static function filter_url_lambda( $url ) {
 		$request_url_service = weglot_get_request_url_service();
@@ -36,13 +36,13 @@ abstract class Helper_Filter_Url_Weglot {
 	 * @since 2.0
 	 * @version 2.0.2
 	 * @param string $url_filter
-	 * @return string
+	 * @return string|bool
 	 */
 	public static function filter_url_log_redirect( $url_filter ) {
 
 		$request_url_service = weglot_get_request_url_service();
 		/** @var Language_Service_Weglot $language_service */
-		$language_service = weglot_get_service( 'Language_Service_Weglot' );
+		$language_service = weglot_get_service( Language_Service_Weglot::class );
 
 		$url = $request_url_service->create_url_object( $url_filter );
 

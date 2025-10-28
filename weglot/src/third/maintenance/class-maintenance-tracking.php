@@ -26,7 +26,7 @@ class Maintenance_Tracking implements Hooks_Interface_Weglot {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->maintenance_active_services = weglot_get_service( 'Maintenance_Active' );
+		$this->maintenance_active_services = weglot_get_service( Maintenance_Active::class );
 	}
 
 	/**

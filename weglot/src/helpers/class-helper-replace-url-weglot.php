@@ -19,16 +19,16 @@ class Helper_Replace_Url_Weglot {
 	 */
 	public static function get_replace_modify_link() {
 		$data = array(
-			'a'         => '/<a([^\>]+?)?href=(\"|\')([^\s\>]+?)(\"|\')([^\>]+?)?>/',
-			'datalink'  => '/<([^\>]+?)?data-link=(\"|\')([^\s\>]+?)(\"|\')([^\>]+?)?>/',
-			'dataurl'   => '/<([^\>]+?)?data-url=(\"|\')([^\s\>]+?)(\"|\')([^\>]+?)?>/',
-			'datacart'  => '/<([^\>]+?)?data-cart-url=(\"|\')([^\s\>]+?)(\"|\')([^\>]+?)?>/',
-			'form'      => '/<form([^\>]+?)?action=(\"|\')([^\s\>]+?)(\"|\')/',
-			'canonical' => '/<link rel="canonical"(.*?)?href=(\"|\')([^\s\>]+?)(\"|\')/',
-			'amp'       => '/<link rel="amphtml"(.*?)?href=(\"|\')([^\s\>]+?)(\"|\')/',
-			'meta'      => '/<meta property="og:url"(.*?)?content=(\"|\')([^\s\>]+?)(\"|\')/',
-			'next' => '/<link rel="next"(.*?)?href=(\"|\')([^\s\>]+?)(\"|\')/',
-			'prev' => '/<link rel="prev"(.*?)?href=(\"|\')([^\s\>]+?)(\"|\')/',
+			'a'         => '/<a(?![^>]*wg-excluded-link)([^\>]+?)?href=(\"|\')([^\s\>]+?)(\"|\')([^\>]+?)?>/',
+			'datalink'  => '/<([^\>]+?)?(?!wg-excluded-link)data-link=(\"|\')([^\s\>]+?)(\"|\')([^\>]+?)?>/',
+			'dataurl'   => '/<([^\>]+?)?(?!wg-excluded-link)data-url=(\"|\')([^\s\>]+?)(\"|\')([^\>]+?)?>/',
+			'datacart'  => '/<([^\>]+?)?(?!wg-excluded-link)data-cart-url=(\"|\')([^\s\>]+?)(\"|\')([^\>]+?)?>/',
+			'form'      => '/<form(?![^>]*wg-excluded-link)([^\>]+?)?action=(\"|\')([^\s\>]+?)(\"|\')/',
+			'canonical' => '/<link(?![^>]*wg-excluded-link) rel="canonical"(.*?)?href=(\"|\')([^\s\>]+?)(\"|\')/',
+			'amp'       => '/<link(?![^>]*wg-excluded-link) rel="amphtml"(.*?)?href=(\"|\')([^\s\>]+?)(\"|\')/',
+			'meta'      => '/<meta(?![^>]*wg-excluded-link) property="og:url"(.*?)?content=(\"|\')([^\s\>]+?)(\"|\')/',
+			'next'      => '/<link(?![^>]*wg-excluded-link) rel="next"(.*?)?href=(\"|\')([^\s\>]+?)(\"|\')/',
+			'prev'      => '/<link(?![^>]*wg-excluded-link) rel="prev"(.*?)?href=(\"|\')([^\s\>]+?)(\"|\')/',
 		);
 
 		return apply_filters( 'weglot_get_replace_modify_link', $data );

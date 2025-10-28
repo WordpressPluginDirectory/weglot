@@ -30,8 +30,8 @@ class Metabox_Visual_Editor_Weglot implements Hooks_Interface_Weglot {
 	 * @since 2.1.0
 	 */
 	public function __construct() {
-		$this->option_services      = weglot_get_service( 'Option_Service_Weglot' );
-		$this->request_url_services = weglot_get_service( 'Request_Url_Service_Weglot' );
+		$this->option_services      = weglot_get_service( Option_Service_Weglot::class );
+		$this->request_url_services = weglot_get_service( Request_Url_Service_Weglot::class );
 	}
 
 	/**
@@ -85,30 +85,18 @@ class Metabox_Visual_Editor_Weglot implements Hooks_Interface_Weglot {
 	}
 
 	/**
-	 * @param object $post
-	 * @return string
+	 * @param \WP_Post $post
+	 * @return void
 	 *  @since 2.1.0
 	 *
 	 */
 	public function weglot_visual_editor_meta_box_callback( $post ) {
 		echo '<ul>';
 		$path = get_permalink( $post->ID );
-		$this->get_weglot_path_status( $path, true );
-
-		return '';
-	}
-
-	/**
-	 * @param int $post_id
-	 * @return bool
-	 *  @since 2.1.0
-	 *
-	 */
-	public function weglot_visual_editor_save_meta_box( $post_id ) {
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return false;
+		if ( ! $path ) {
+			return;
 		}
-		return true;
+		$this->get_weglot_path_status( $path, true );
 	}
 
 	/**
@@ -135,6 +123,9 @@ class Metabox_Visual_Editor_Weglot implements Hooks_Interface_Weglot {
 
 		if ( $column_name == 'wg-visual-editor-url' ) {
 			$path = get_permalink( $post_id );
+			if ( ! $path ) {
+				return;
+			}
 			$this->get_weglot_path_status( $path, false );
 		}
 	}
@@ -208,9 +199,9 @@ class Metabox_Visual_Editor_Weglot implements Hooks_Interface_Weglot {
 		$wg_path       = $this->request_url_services->create_url_object( $path );
 		$organization_slug = $this->option_services->get_option('organization_slug');
 		$project_slug = $this->option_services->get_option('project_slug');
-		$visual_editor = esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/visual-editor/launch?mode=translations&url='.$wg_path->getUrl(), array('weglot') );
-		$visual_exclusion = esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/visual-editor/launch?mode=exclusions&url='.$wg_path->getUrl(), array('weglot') );
-		$url_exclusion = esc_url( 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/settings/exclusions#excluded-urls', array('weglot') );
+		$visual_editor = 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/visual-editor/launch?mode=translations&url='.$wg_path->getUrl();
+		$visual_exclusion = 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/translations/visual-editor/launch?mode=exclusions&url='.$wg_path->getUrl();
+		$url_exclusion = 'https://dashboard.weglot.com/workspaces/' . $organization_slug . '/projects/'. $project_slug .'/settings/exclusions#excluded-urls';
 
 		if ( $list ) {
 			echo '<a class="components-button is-secondary" href="' . esc_url( $visual_editor ) . '" target="_blank">Edit translations</a><br /><br />';

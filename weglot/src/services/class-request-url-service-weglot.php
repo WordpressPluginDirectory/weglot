@@ -40,8 +40,8 @@ class Request_Url_Service_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->option_services   = weglot_get_service( 'Option_Service_Weglot' );
-		$this->language_services = weglot_get_service( 'Language_Service_Weglot' );
+		$this->option_services   = weglot_get_service( Option_Service_Weglot::class );
+		$this->language_services = weglot_get_service( Language_Service_Weglot::class );
 	}
 
 	/**
@@ -52,21 +52,33 @@ class Request_Url_Service_Weglot {
 	 * @return Url
 	 */
 	public function create_url_object( $url ) {
-		// Define the default path to check
 		$default_path = '/';
-		// Apply the filter to allow modification of the path to check
-		$path_to_check = apply_filters('custom_path_to_check', $default_path);
-		// Parse the URL path
-		$parsed_url_path = wp_parse_url($url, PHP_URL_PATH);
+		$use_custom_path = apply_filters('use_custom_path_for_path_check', false);
 
-		// Check if the URL path is valid and contains the specified path
-		$contains_path = $parsed_url_path !== null && strpos($parsed_url_path, $path_to_check) !== false;
+		if ($use_custom_path) {
+			// Apply the filter to allow modification of the path to check
+			$path_to_check = apply_filters('custom_path_to_check', $default_path);
 
-		if ($contains_path) {
-			$home_directory = $this->get_home_wordpress_directory($path_to_check);
+			// Parse the URL path
+			$parsed_url_path = wp_parse_url($url, PHP_URL_PATH);
+
+			// Check if the URL path is valid and contains the specified path
+			if(!is_string($parsed_url_path)){
+				$contains_path = false;
+			}else{
+				$contains_path = $parsed_url_path !== null && strpos($parsed_url_path, $path_to_check) !== false;
+			}
+
+			if ($contains_path) {
+				$home_directory = $this->get_home_wordpress_directory($path_to_check);
+			} else {
+				$home_directory = $this->get_home_wordpress_directory();
+			}
 		} else {
+			// Default behavior if the filter is not set or returns false
 			$home_directory = $this->get_home_wordpress_directory();
 		}
+
 
 		return new Url(
 			$url,
@@ -100,7 +112,7 @@ class Request_Url_Service_Weglot {
 			$this->init_weglot_url();
 		}
 
-		return $this->weglot_url;
+		return apply_filters( 'weglot_url_object', $this->weglot_url );
 	}
 
 	/**
@@ -179,8 +191,12 @@ class Request_Url_Service_Weglot {
 			$parsed_url = parse_url($opt_home); // phpcs:ignore
 			$path = $parsed_url['path'] ?? '/';
 
-			if (empty($allow_custom_path)) {
-				return '';
+			$use_custom_path = apply_filters('use_custom_path_for_path_check', false);
+
+			if ($use_custom_path) {
+				if (empty($allow_custom_path)) {
+					return '';
+				}
 			}
 
 			return $path;
@@ -250,17 +266,94 @@ class Request_Url_Service_Weglot {
 	 * @since 2.0
 	 */
 	public function is_allowed_private() {
-		$headers = getallheaders();
+
 		if ( current_user_can( 'administrator' )
 		     || strpos( $this->get_full_url(), 'weglot-private=1' ) !== false
 		     || isset( $_COOKIE['weglot_allow_private'] )
-		     || ( isset( $_SERVER['HTTP_USER_AGENT'] ) && strpos( sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ), "Weglot Visual Editor" ) !== false ) //phpcs:ignore
-		     || ( isset( $headers['weglot-private'] ) && $headers['weglot-private'] == 1 ) //phpcs:ignore
+		     || ( isset( $_SERVER['HTTP_WEGLOT_PRIVATE'] ) && '1' === $_SERVER['HTTP_WEGLOT_PRIVATE'] )
 		) {
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns the canonical URL for the current page.
+	 *
+	 * @return string The canonical URL.
+	 */
+	public function get_current_canonical_url() {
+		// If this is a singular post or page.
+		if ( is_singular() ) {
+			$url = get_permalink( get_queried_object_id() );
+			if ( $url ) {
+				return $url;
+			}
+		}
+
+		// If this is a post type archive.
+		if ( is_post_type_archive() ) {
+			$post_type = get_query_var( 'post_type' );
+			// If multiple post types are set, take the first.
+			if ( is_array( $post_type ) ) {
+				$post_type = reset( $post_type );
+			}
+			$url = get_post_type_archive_link( $post_type );
+			if ( $url ) {
+				return $url;
+			}
+		}
+
+		// Additional checks for archive types, if needed.
+		if ( is_category() ) {
+			$cat_id = get_query_var( 'cat' );
+			$url    = get_category_link( $cat_id );
+			if ( $url ) {
+				return $url;
+			}
+		}
+
+		if ( is_tag() ) {
+			$tag_id = get_query_var( 'tag_id' );
+			$url    = get_tag_link( $tag_id );
+			if ( $url ) {
+				return $url;
+			}
+		}
+
+		if ( is_author() ) {
+			$author_id = get_query_var( 'author' );
+			$url       = get_author_posts_url( $author_id );
+			if ( $url ) {
+				return $url;
+			}
+		}
+
+		// For search results, you might want to include the search query.
+		if ( is_search() ) {
+			return add_query_arg( 's', get_search_query(), home_url( '/' ) );
+		}
+
+		// For date archives (year, month, day), a canonical URL might be less straightforward.
+		// You could build something here if needed. For now, we fall back to home_url.
+
+		// If nothing else matches, fall back to the home URL.
+		return home_url( '/' );
+	}
+
+	/**
+	 * Cleans up a URL by replacing redundant slashes with a single slash,
+	 * while preserving the double slashes after the protocol (e.g. http:// or https://).
+	 *
+	 * This function uses a regular expression with a negative lookbehind to ensure that
+	 * only the unintended multiple slashes in the path are replaced.
+	 *
+	 * @param string $url The URL to be cleaned.
+	 * @return string The cleaned URL.
+	 */
+	public function clean_url_slashes( $url ) {
+		return preg_replace( '#(?<!:)/{2,}#', '/', $url );
 	}
 }
 

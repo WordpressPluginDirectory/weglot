@@ -15,9 +15,8 @@ class Profile
     protected $translationEngine;
 
     /**
-     * Profile constructor.
      * @param string $apiKey
-     * @param int $translationEngine
+     * @param int    $translationEngine
      */
     public function __construct($apiKey, $translationEngine)
     {
@@ -26,13 +25,15 @@ class Profile
 
     /**
      * @param string $apiKey
-     * @param int $translationEngine
+     * @param int    $translationEngine
+     *
+     * @return void
      */
     protected function setup($apiKey, $translationEngine)
     {
         $apiKeyLength = \strlen($apiKey);
 
-        if ($apiKeyLength === 35) {
+        if (35 === $apiKeyLength) {
             $this
                 ->setApiVersion(1)
                 ->setTranslationEngine(1);
@@ -45,6 +46,7 @@ class Profile
 
     /**
      * @param int $version
+     *
      * @return $this
      */
     public function setApiVersion($version)
@@ -64,6 +66,7 @@ class Profile
 
     /**
      * @param int $translationEngine
+     *
      * @return $this
      */
     public function setTranslationEngine($translationEngine)

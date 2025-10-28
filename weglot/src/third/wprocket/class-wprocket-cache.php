@@ -33,8 +33,8 @@ class Wprocket_Cache implements Hooks_Interface_Weglot {
 	 * @since 3.1.4
 	 */
 	public function __construct() {
-		$this->wprocket_active_services = weglot_get_service( 'Wprocket_Active' );
-		$this->option_services          = weglot_get_service( 'Option_Service_Weglot' );
+		$this->wprocket_active_services = weglot_get_service( Wprocket_Active::class );
+		$this->option_services          = weglot_get_service( Option_Service_Weglot::class );
 	}
 
 	/**

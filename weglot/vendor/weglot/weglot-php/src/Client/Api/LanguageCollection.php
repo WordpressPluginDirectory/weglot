@@ -6,13 +6,11 @@ use Weglot\Client\Api\Shared\AbstractCollection;
 use Weglot\Client\Api\Shared\AbstractCollectionEntry;
 
 /**
- * Class LanguageCollection
- * @package Weglot\Client\Api
+ * @phpstan-extends AbstractCollection<LanguageEntry>
  */
 class LanguageCollection extends AbstractCollection
 {
     /**
-     * @param AbstractCollectionEntry $entry
      * @return $this
      */
     public function addOne(AbstractCollectionEntry $entry)
@@ -23,15 +21,16 @@ class LanguageCollection extends AbstractCollection
     }
 
     /**
-     * @param string $iso639    ISO 639-1 code to identify language
+     * @param string $iso639 ISO 639-1 code to identify language
      *
-     * @return AbstractCollectionEntry|null
+     * @return LanguageEntry|null
      */
     public function getCode($iso639)
     {
-        if (isset($this[$iso639])) {
-            return $this[$iso639];
+        if (isset($this->collection[$iso639])) {
+            return $this->collection[$iso639];
         }
+
         return null;
     }
 }

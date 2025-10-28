@@ -57,7 +57,7 @@ $options_available = [
 <hr/>
 <?php if ( ! empty( $option_services->get_switchers_editor_button() ) ) { ?>
 
-	<p><?php esc_html_e( 'We have detected the usage of the Switcher Editor feature. As a result, please be aware that the following options will be avalaible for switcher added in menu, widget or in source code.', 'weglot' ); ?></p>
+	<p><?php esc_html_e( 'We have detected the usage of the switcher Editor feature. As a result, please be aware that the following options will be available for switcher added in menu, widget or in source code.', 'weglot' ); ?></p>
 
 <?php } ?>
 <table class="form-table">

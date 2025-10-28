@@ -30,8 +30,8 @@ class Customize_Menu_Weglot implements Hooks_Interface_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->option_services       = weglot_get_service( 'Option_Service_Weglot' );
-		$this->menu_options_services = weglot_get_service( 'Menu_Options_Service_Weglot' );
+		$this->option_services       = weglot_get_service( Option_Service_Weglot::class );
+		$this->menu_options_services = weglot_get_service( Menu_Options_Service_Weglot::class );
 	}
 
 	/**

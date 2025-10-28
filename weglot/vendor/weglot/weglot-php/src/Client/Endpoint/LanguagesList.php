@@ -4,19 +4,22 @@ namespace Weglot\Client\Endpoint;
 
 use Weglot\Client\Api\LanguageCollection;
 use Weglot\Client\Factory\Languages as LanguagesFactory;
-use Languages\Languages;
+use WeglotLanguages\Languages;
+
 /**
- * Class Languages
- * @package Weglot\Client\Endpoint
+ * @phpstan-import-type Language from Languages
  */
 class LanguagesList extends Endpoint
 {
     const METHOD = 'GET';
     const ENDPOINT = '/languages';
 
-    public function getLanguages(){
-        $data = Languages::$defaultLanguages;
-        return $data;
+    /**
+     * @return array<string, Language>
+     */
+    public function getLanguages()
+    {
+        return Languages::getData();
     }
 
     /**
@@ -25,32 +28,31 @@ class LanguagesList extends Endpoint
     public function handle()
     {
         $languageCollection = new LanguageCollection();
-        $data = Languages::$defaultLanguages;
+        $data = $this->getLanguages();
 
-        $data = array_map(function($data) {
-
+        $data = array_map(function ($data) {
             $external_code = $data['code'];
-            if($external_code == 'tw') {
+            if ('tw' == $external_code) {
                 $external_code = 'zh-tw';
             }
-            if($external_code == 'br') {
+            if ('br' == $external_code) {
                 $external_code = 'pt-br';
             }
-            if($external_code == 'sa') {
+            if ('sa' == $external_code) {
                 $external_code = 'sr-lt';
             }
 
-            return array(
+            return [
                 'internal_code' => $data['code'],
                 'english' => $data['english'],
                 'local' => $data['local'],
                 'rtl' => $data['rtl'],
-                'external_code' => $external_code
-            );
+                'external_code' => $external_code,
+            ];
         }, $data);
 
         foreach ($data as $language) {
-            if($language['internal_code'] != 'fc'){
+            if ('fc' != $language['internal_code']) {
                 $factory = new LanguagesFactory($language);
                 $languageCollection->addOne($factory->handle());
             }

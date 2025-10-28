@@ -30,7 +30,7 @@ class Stackable_Translate implements Hooks_Interface_Weglot {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->stackable_active      = weglot_get_service( 'Stackable_Active' );
+		$this->stackable_active      = weglot_get_service( Stackable_Active::class );
 	}
 
 	/**

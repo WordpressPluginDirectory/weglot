@@ -2,29 +2,26 @@
 
 namespace Weglot\Client\Api\Shared;
 
-use Countable;
-use Iterator;
-use ArrayAccess;
-use JsonSerializable;
-
 /**
- * Class AbstractCollection
- * @package Weglot\Client\Api\Shared
+ * @phpstan-template T of AbstractCollectionEntry
+ *
+ * @phpstan-implements AbstractCollectionInterface<T>
+ * @phpstan-implements \ArrayAccess<int, T>
+ * @phpstan-implements \Iterator<int, T>
  */
-abstract class AbstractCollection implements Countable, Iterator, ArrayAccess, JsonSerializable, AbstractCollectionInterface
+abstract class AbstractCollection implements \Countable, \Iterator, \ArrayAccess, \JsonSerializable, AbstractCollectionInterface
 {
-    use AbstractCollectionCountable;
     use AbstractCollectionArrayAccess;
-    use AbstractCollectionSerializable;
+    use AbstractCollectionCountable;
     use AbstractCollectionIterator;
+    use AbstractCollectionSerializable;
 
     /**
-     * @var AbstractCollectionEntry[]
+     * @phpstan-var array<T>
      */
     protected $collection = [];
 
     /**
-     * @param AbstractCollectionEntry $entry
      * @return $this
      */
     public function addOne(AbstractCollectionEntry $entry)
@@ -35,7 +32,6 @@ abstract class AbstractCollection implements Countable, Iterator, ArrayAccess, J
     }
 
     /**
-     * @param array $entries
      * @return $this
      */
     public function addMany(array $entries)

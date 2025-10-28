@@ -1,19 +1,23 @@
 <?php
 /*
-*Plugin Name: Weglot Translate
-*Plugin URI: http://wordpress.org/plugins/weglot/
-*Description: Translate your website into multiple languages in minutes without doing any coding. Fully SEO compatible.
-*Author: Weglot Translate team
-*Author URI: https://weglot.com/
-*Text Domain: weglot
-*Domain Path: /languages/
-*Version: 4.2.9
+* Plugin Name: Weglot Translate
+* Plugin URI: https://www.weglot.com/integrations/wordpress-translation-plugin
+* Description: Translate your website into multiple languages in minutes without doing any coding. Fully SEO compatible.
+* Author: Weglot Translate team
+* Author URI: https://www.weglot.com/
+* Text Domain: weglot
+* Domain Path: /languages/
+* WC requires at least: 4.0
+* WC tested up to: 9.5
+* Version: 5.2
 */
 
 /**
  * This file need to be compatible with PHP 5.3
  * Example : Don't use short syntax for array()
  */
+
+use WeglotWP\Third\Wprocket\Wprocket_Active;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,8 +26,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WEGLOT_NAME', 'Weglot' );
 define( 'WEGLOT_SLUG', 'weglot-translate' );
 define( 'WEGLOT_OPTION_GROUP', 'group-weglot-translate' );
-define( 'WEGLOT_VERSION', '4.2.9' );
-define( 'WEGLOT_PHP_MIN', '5.6' );
+define( 'WEGLOT_VERSION', '5.2' );
+define( 'WEGLOT_PHP_MIN', '7.4' );
 define( 'WEGLOT_BNAME', plugin_basename( __FILE__ ) );
 define( 'WEGLOT_DIR', __DIR__ );
 define( 'WEGLOT_DIR_LANGUAGES', WEGLOT_DIR . '/languages' );
@@ -31,7 +35,7 @@ define( 'WEGLOT_DIR_DIST', WEGLOT_DIR . '/dist' );
 
 define( 'WEGLOT_DIRURL', plugin_dir_url( __FILE__ ) );
 define( 'WEGLOT_URL_DIST', WEGLOT_DIRURL . 'dist' );
-define( 'WEGLOT_LATEST_VERSION', '2.7.0' );
+define( 'WEGLOT_LATEST_VERSION', '5.1' );
 define( 'WEGLOT_DEBUG', false );
 define( 'WEGLOT_DEV', false );
 
@@ -47,7 +51,9 @@ if ( ! function_exists( 'is_plugin_active' ) ) {
 	include_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
 
+
 // Compatibility Yoast premium Redirection
+$dir_yoast = plugin_dir_path( __DIR__ ) . 'wordpress-seo';
 $dir_yoast_premium = plugin_dir_path( __DIR__ ) . 'wordpress-seo-premium';
 if ( file_exists( $dir_yoast_premium . '/wp-seo-premium.php' ) ) {
 
@@ -55,16 +61,16 @@ if ( file_exists( $dir_yoast_premium . '/wp-seo-premium.php' ) ) {
 		return;
 	}
 
-	$yoast_plugin_data        = get_plugin_data( $dir_yoast_premium . '/wp-seo-premium.php' );
-	$dir_yoast_premium_inside = $dir_yoast_premium . '/premium/';
-
+	$yoast_plugin_data        = get_plugin_data( $dir_yoast_premium . '/wp-seo-premium.php', true, false );
+	$dir_yoast_premium_inside = $dir_yoast_premium . '/';
+	$dir_yoast_inside = $dir_yoast . '/';
 	// Override yoast redirect
 	if (
 		! is_admin() &&
 		version_compare( $yoast_plugin_data['Version'], '7.1.0', '>=' ) &&
 		is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ) &&
 		file_exists( $dir_yoast_premium_inside ) &&
-		file_exists( $dir_yoast_premium_inside . 'classes/redirect/redirect-handler.php' ) &&
+		file_exists( $dir_yoast_premium_inside . 'src/initializers/redirect-handler.php' ) &&
 		file_exists( $dir_yoast_premium_inside . 'classes/redirect/redirect-util.php' )
 	) {
 		require_once __DIR__ . '/weglot-autoload.php';
@@ -85,13 +91,72 @@ wpml_is_active();
  * @return bool
  */
 function weglot_is_compatible() {
-	// Check php version.
 	if ( version_compare( PHP_VERSION, WEGLOT_PHP_MIN ) < 0 ) {
 		add_action( 'admin_notices', 'weglot_php_min_compatibility' );
 		return false;
 	}
 
+	if ( weglot_should_skip_init() ) {
+		return false;
+	}
+
 	return true;
+}
+
+/**
+ *
+ * @return array{
+ *   pages: string[],
+ *   screens: string[],
+ *   callbacks: callable[]
+ * }
+ */
+function weglot_skip_contexts() {
+	$contexts = [
+		'pages'     => [
+			'integration-cds',
+		],
+		'screens'   => [
+		],
+		'callbacks' => [
+		],
+	];
+
+	return apply_filters( 'weglot/skip_contexts', $contexts );
+}
+
+/**
+ * @return bool
+ */
+function weglot_should_skip_init() {
+	if ( ! is_admin() ) {
+		return false;
+	}
+
+	$contexts = weglot_skip_contexts();
+
+	$page = '';
+	if ( isset( $_GET['page'] ) ) {
+		$page = sanitize_key( wp_unslash( $_GET['page'] ) );
+	}
+	if ( $page && in_array( $page, $contexts['pages'], true ) ) {
+		return true;
+	}
+
+	if ( function_exists('get_current_screen') ) {
+		$screen = get_current_screen();
+		if ( $screen && ! empty( $contexts['screens'] ) && in_array( $screen->id, $contexts['screens'], true ) ) {
+			return true;
+		}
+	}
+
+	foreach ( (array) $contexts['callbacks'] as $cb ) {
+		if ( is_callable( $cb ) && (bool) call_user_func( $cb ) === true ) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -211,8 +276,24 @@ function weglot_php_min_compatibility() {
  */
 function weglot_plugin_activate() {
 	if ( ! weglot_is_compatible() ) {
-		return;
+		// Deactivate the plugin.
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+
+		// Die with an error message.
+		wp_die(
+			sprintf(
+			/* translators: 1: Required PHP version, 2: Current PHP version */
+				esc_html__( 'Weglot could not be activated because it requires PHP version %1$s or higher. Your current version is %2$s.', 'weglot' ),
+				WEGLOT_PHP_MIN,
+				PHP_VERSION
+			),
+			esc_html__( 'Plugin Activation Error', 'weglot' ),
+			array(
+				'back_link' => true,
+			)
+		);
 	}
+
 
 	require_once __DIR__ . '/weglot-autoload.php';
 	require_once __DIR__ . '/vendor/autoload.php';
@@ -224,7 +305,7 @@ function weglot_plugin_activate() {
 
 	$dir_wp_rocket = plugin_dir_path( __DIR__ ) . 'wp-rocket';
 	if ( file_exists( $dir_wp_rocket . '/wp-rocket.php' ) ) {
-		if(  weglot_get_service( 'Wprocket_Active' )->is_active()) {
+		if(  weglot_get_service( Wprocket_Active::class )->is_active()) {
 
 			add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
 			add_filter( 'rocket_cache_mandatory_cookies', 'weglot_mandatory_cookie' );
@@ -250,7 +331,7 @@ function weglot_plugin_deactivate() {
 
 	$dir_wp_rocket = plugin_dir_path( __DIR__ ) . 'wp-rocket';
 	if ( file_exists( $dir_wp_rocket . '/wp-rocket.php' ) ) {
-		if(  weglot_get_service( 'Wprocket_Active' )->is_active()) {
+		if(  weglot_get_service( Wprocket_Active::class )->is_active()) {
 			remove_filter( 'rocket_htaccess_mod_rewrite', '__return_true' );
 			remove_filter( 'rocket_cache_mandatory_cookies', 'weglot_mandatory_cookie' );
 			flush_wp_rocket();
@@ -328,4 +409,13 @@ add_action( 'plugins_loaded', 'weglot_plugin_loaded' , $priority);
 $dir_wp_rocket = plugin_dir_path( __DIR__ ) . 'wp-rocket';
 if ( file_exists( $dir_wp_rocket . '/wp-rocket.php' ) ) {
 	include_once __DIR__ . '/src/third/wprocket/wp-rocket-weglot.php';
+}
+
+// Ensure WooCommerce is active before adding compatibility and add compatibility with HPOS WooCommerce
+if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+	add_action( 'before_woocommerce_init', function() {
+		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		}
+	} );
 }

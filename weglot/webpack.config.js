@@ -9,6 +9,7 @@ module.exports = {
 		"front-js": "./app/javascripts/front.js",
 		"admin-js": "./app/javascripts/index.js",
 		"front-css": "./app/styles/index.scss",
+		"new-flags": "./app/styles/new-flags.scss",
 		"admin-css": "./app/styles/admin.scss",
 		"front-amp-css": "./app/styles/amp.scss",
 		"nav-js" : "./app/javascripts/nav.js"
@@ -43,10 +44,10 @@ module.exports = {
 							loader: "css-loader?url=false"
 						},
 						{
-							loader: "sass-loader"
+							loader: "postcss-loader"
 						},
 						{
-							loader: "postcss-loader"
+							loader: "sass-loader"
 						}
 					]
 				})

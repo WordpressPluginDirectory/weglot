@@ -5,9 +5,7 @@ namespace Weglot\Client\Api\Enum;
 /**
  * Enum BotType
  * Used to define which bot is parsing the page.
- * Basically, most of time we recommend to use as "human"
- *
- * @package Weglot\Client\Api\Enum
+ * Basically, most of time we recommend to use as "human".
  */
 abstract class BotType
 {

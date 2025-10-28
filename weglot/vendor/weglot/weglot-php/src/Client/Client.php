@@ -2,51 +2,45 @@
 
 namespace Weglot\Client;
 
-use GuzzleHttp\Exception\GuzzleException;
 use Psr\Cache\CacheItemPoolInterface;
-use Psr\Http\Message\ResponseInterface;
 use Weglot\Client\Api\Exception\ApiError;
 use Weglot\Client\Caching\Cache;
 use Weglot\Client\Caching\CacheInterface;
 use Weglot\Client\HttpClient\ClientInterface;
 use Weglot\Client\HttpClient\CurlClient;
 
-/**
- * Class Client
- * @package Weglot\Client
- */
 class Client
 {
     /**
-     * Library version
+     * Library version.
      *
      * @var string
      */
     const VERSION = '0.5.11';
 
     /**
-     * Weglot API Key
+     * Weglot API Key.
      *
      * @var string
      */
     protected $apiKey;
 
     /**
-     * Weglot settings file Version
+     * Weglot settings file Version.
      *
-     * @var string
+     * @var string|int
      */
     protected $version;
 
     /**
-     * Options for client
+     * Options for client.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $options;
 
     /**
-     * Http Client
+     * Http Client.
      *
      * @var ClientInterface
      */
@@ -63,11 +57,10 @@ class Client
     protected $cache;
 
     /**
-     * Client constructor.
-     * @param string    $apiKey     your Weglot API key
-     * @param int       $translationEngine
-     * @param string    $version    your settings file version
-     * @param array     $options    an array of options, currently only "host" is implemented
+     * @param string               $apiKey            your Weglot API key
+     * @param int                  $translationEngine
+     * @param string|int           $version           your settings file version
+     * @param array<string, mixed> $options           an array of options, currently only "host" is implemented
      */
     public function __construct($apiKey, $translationEngine, $version = '1', $options = [])
     {
@@ -82,7 +75,9 @@ class Client
     }
 
     /**
-     * Creating Guzzle HTTP connector based on $options
+     * Creating Guzzle HTTP connector based on $options.
+     *
+     * @return void
      */
     protected function setupConnector()
     {
@@ -90,19 +85,19 @@ class Client
     }
 
     /**
-     * Default options values
+     * Default options values.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function defaultOptions()
     {
         return [
-            'host'  => 'https://api.weglot.com'
+            'host' => 'https://api.weglot.com',
         ];
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getOptions()
     {
@@ -110,35 +105,39 @@ class Client
     }
 
     /**
-     * @param array $options
+     * @param array<string, mixed> $options
+     *
      * @return $this
      */
     public function setOptions($options)
     {
         // merging default options with user options
         $this->options = array_merge($this->defaultOptions(), $options);
+
         return $this;
     }
 
     /**
-     * @param null|ClientInterface $httpClient
-     * @param null|string $customHeader
+     * @param ClientInterface|null $httpClient
+     * @param string|null          $customHeader
+     *
      * @return $this
      */
     public function setHttpClient($httpClient = null, $customHeader = null)
     {
-        if ($httpClient === null) {
+        if (null === $httpClient) {
             $httpClient = new CurlClient();
 
             $header = 'Weglot-Context: PHP\\'.self::VERSION;
-            if (!is_null($customHeader)) {
-                $header .= ' ' .$customHeader;
+            if (null !== $customHeader) {
+                $header .= ' '.$customHeader;
             }
             $httpClient->addHeader($header);
         }
         if ($httpClient instanceof ClientInterface) {
             $this->httpClient = $httpClient;
         }
+
         return $this;
     }
 
@@ -159,12 +158,13 @@ class Client
     }
 
     /**
-     * @param null|CacheInterface $cache
+     * @param CacheInterface|null $cache
+     *
      * @return $this
      */
     public function setCache($cache = null)
     {
-        if ($cache === null || !($cache instanceof CacheInterface)) {
+        if (!$cache instanceof CacheInterface) {
             $cache = new Cache();
         }
 
@@ -182,7 +182,8 @@ class Client
     }
 
     /**
-     * @param null|CacheItemPoolInterface $cacheItemPool
+     * @param CacheItemPoolInterface|null $cacheItemPool
+     *
      * @return $this
      */
     public function setCacheItemPool($cacheItemPool)
@@ -193,48 +194,90 @@ class Client
     }
 
     /**
+     * Recursively converts an array or string to UTF-8 encoding.
+     *
+     * @param mixed $data the data to convert to UTF-8 encoding
+     *
+     * @return mixed the data with all string values converted to UTF-8 encoding
+     */
+    public function recursivelyConvertToUtf8($data)
+    {
+        if (\is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->recursivelyConvertToUtf8($value);
+            }
+        } elseif (\is_string($data)) {
+            if (mb_check_encoding($data, 'UTF-8')) {
+                return $data;
+            }
+            $encoding = mb_detect_encoding($data, mb_detect_order(), true);
+            if (false !== $encoding) {
+                return mb_convert_encoding($data, 'UTF-8', $encoding);
+            }
+
+            return $data;
+        }
+
+        return $data;
+    }
+
+    /**
      * Make the API call and return the response.
      *
-     * @param string $method    Method to use for given endpoint
-     * @param string $endpoint  Endpoint to hit on API
-     * @param array $body       Body content of the request as array
-     * @param bool $asArray     To know if we return an array or ResponseInterface
-     * @return array|ResponseInterface
+     * @param string               $method   method to use for given endpoint
+     * @param string               $endpoint endpoint to hit on API
+     * @param array<string, mixed> $body     body content of the request as an array
+     * @param bool                 $asArray  to only get the body decoded
+     *
+     * @return ($asArray is true ? array<mixed> : array{string, int, array<string, string>})
+     *
      * @throws ApiError
      */
     public function makeRequest($method, $endpoint, $body = [], $asArray = true)
     {
         try {
-            if($method === 'GET') {
-                $urlParams = array_merge( ['api_key' => $this->apiKey, 'v' => $this->version], $body);
+            if ('GET' === $method) {
+                $urlParams = array_merge(['api_key' => $this->apiKey, 'v' => $this->version], $body);
                 $body = [];
-            }
-            else {
+            } else {
                 $urlParams = ['api_key' => $this->apiKey, 'v' => $this->version];
             }
+
+            // Check JSON encoding validity before make API call
+            $jsonBody = json_encode($body);
+            if (false === $jsonBody) {
+                // Attempt to convert data to UTF-8.
+                $body = $this->recursivelyConvertToUtf8($body);
+                $jsonBody = json_encode($body);
+                if (false === $jsonBody) {
+                    throw new \Exception('JSON encoding error: '.json_last_error_msg());
+                }
+            }
+
             list($rawBody, $httpStatusCode, $httpHeader) = $this->getHttpClient()->request(
                 $method,
                 $this->makeAbsUrl($endpoint),
                 $urlParams,
                 $body
             );
-            $array = json_decode($rawBody, true);
         } catch (\Exception $e) {
             throw new ApiError($e->getMessage(), $body);
         }
 
         if ($asArray) {
-            return $array;
+            return json_decode($rawBody, true);
         }
+
         return [$rawBody, $httpStatusCode, $httpHeader];
     }
 
     /**
      * @param string $endpoint
+     *
      * @return string
      */
     protected function makeAbsUrl($endpoint)
     {
-        return $this->options['host'] . $endpoint;
+        return $this->options['host'].$endpoint;
     }
 }

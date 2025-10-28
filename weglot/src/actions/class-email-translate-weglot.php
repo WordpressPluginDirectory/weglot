@@ -41,10 +41,10 @@ class Email_Translate_Weglot implements Hooks_Interface_Weglot {
 	 * @since 2.0
 	 */
 	public function __construct() {
-		$this->option_services          = weglot_get_service( 'Option_Service_Weglot' );
-		$this->request_url_services     = weglot_get_service( 'Request_Url_Service_Weglot' );
-		$this->email_translate_services = weglot_get_service( 'Email_Translate_Service_Weglot' );
-		$this->language_services        = weglot_get_service( 'Language_Service_Weglot' );
+		$this->option_services          = weglot_get_service( Option_Service_Weglot::class );
+		$this->request_url_services     = weglot_get_service( Request_Url_Service_Weglot::class );
+		$this->email_translate_services = weglot_get_service( Email_Translate_Service_Weglot::class );
+		$this->language_services        = weglot_get_service( Language_Service_Weglot::class );
 	}
 
 	/**

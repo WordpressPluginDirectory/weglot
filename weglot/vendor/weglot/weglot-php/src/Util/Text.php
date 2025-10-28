@@ -2,18 +2,16 @@
 
 namespace Weglot\Util;
 
-/**
- * Class Text
- * @package Weglot\Parser\Util
- */
-class Text {
+class Text
+{
     /**
      * @param string $word
      *
      * @return string
      */
-    public static function fullTrim( $word ) {
-        return trim( $word, " \t\n\r\0\x0B\xA0�" );
+    public static function fullTrim($word)
+    {
+        return trim($word, " \t\n\r\0\x0B\xA0�");
     }
 
     /**
@@ -22,8 +20,9 @@ class Text {
      *
      * @return bool
      */
-    public static function contains( $haystack, $search ) {
-        if (is_string($haystack) && strpos($haystack, $search) !== false) {
+    public static function contains($haystack, $search)
+    {
+        if (\is_string($haystack) && str_contains($haystack, $search)) {
             return true;
         } else {
             return false;
@@ -31,39 +30,55 @@ class Text {
     }
 
     /**
-     * @param string $filename
+     * @param string|null $filename
      *
      * @return string
      */
-    public static function removeFileExtension( $filename ) {
-        $filename = !is_null( $filename ) ? $filename : '';
-        return preg_replace( '/\\.[^.\\s]{3,4}$/', '', $filename );
+    public static function removeFileExtension($filename)
+    {
+        $filename = null !== $filename ? $filename : '';
+
+        return preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
     }
 
     /**
-     * @param string $regex
+     * @param string|null $regex
      *
      * @return string
      */
-    public static function escapeForRegex( $regex ) {
-        if ( ! is_null( $regex ) ) {
-            return str_replace( '\\\\/', '\/', str_replace( '/', '\/', $regex ) );
+    public static function escapeForRegex($regex)
+    {
+        if (null !== $regex) {
+            return str_replace('\\\\/', '\/', str_replace('/', '\/', $regex));
         } else {
-            return str_replace( '\\\\/', '\/', str_replace( '/', '\/', '' ) );
+            return str_replace('\\\\/', '\/', str_replace('/', '\/', ''));
         }
     }
 
-    public static function isJSON( $string ) {
-        if (!is_string($string) || empty($string)) {
+    /**
+     * @param mixed $string
+     *
+     * @return bool
+     */
+    public static function isJSON($string)
+    {
+        if (!\is_string($string) || empty($string)) {
             return false;
         }
         json_decode($string);
-        return ( json_last_error() == JSON_ERROR_NONE && in_array( substr( $string, 0, 1 ), array( '{', '[' ) ) );
+
+        return \JSON_ERROR_NONE == json_last_error() && \in_array(substr($string, 0, 1), ['{', '[']);
     }
 
-    public static function isHTML( $string ) {
-        if ( ! is_null( $string ) ) {
-            return strip_tags( $string ) !== $string && is_string( $string );
+    /**
+     * @param mixed $string
+     *
+     * @return bool
+     */
+    public static function isHTML($string)
+    {
+        if (\is_string($string)) {
+            return strip_tags($string) !== $string;
         } else {
             return false;
         }

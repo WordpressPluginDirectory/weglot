@@ -3,22 +3,21 @@
 namespace Weglot\Parser\Check;
 
 use Weglot\Client\Api\Enum\WordType;
-use WGSimpleHtmlDom\simple_html_dom;
-use WGSimpleHtmlDom\simple_html_dom_node;
 use Weglot\Client\Api\Exception\InvalidWordTypeException;
 use Weglot\Client\Api\WordEntry;
 use Weglot\Parser\Check\Dom\AbstractDomChecker;
 use Weglot\Parser\Parser;
 use Weglot\Util\Text;
+use WGSimpleHtmlDom\simple_html_dom;
+use WGSimpleHtmlDom\simple_html_dom_node;
 
 class DomCheckerProvider
 {
-
     /**
      * @var array
      */
     protected $inlineNodes = [
-        'a' , 'span',
+        'a', 'span',
         'strong', 'b',
         'em', 'i',
         'small', 'big',
@@ -28,7 +27,7 @@ class DomCheckerProvider
         'bdo',
         'cite',
         'kbd',
-        'q', 'u'
+        'q', 'u', 'mark',
     ];
 
     const DEFAULT_CHECKERS_NAMESPACE = '\\Weglot\\Parser\\Check\\Dom\\';
@@ -36,7 +35,7 @@ class DomCheckerProvider
     /**
      * @var Parser
      */
-    protected $parser = null;
+    protected $parser;
 
     /**
      * @var array
@@ -54,8 +53,6 @@ class DomCheckerProvider
     protected $translationEngine;
 
     /**
-     * DomChecker constructor.
-     * @param Parser $parser
      * @param int $translationEngine
      */
     public function __construct(Parser $parser, $translationEngine)
@@ -66,7 +63,6 @@ class DomCheckerProvider
     }
 
     /**
-     * @param Parser $parser
      * @return $this
      */
     public function setParser(Parser $parser)
@@ -86,6 +82,7 @@ class DomCheckerProvider
 
     /**
      * @param array $inlineNodes
+     *
      * @return $this
      */
     public function setInlineNodes($inlineNodes)
@@ -104,14 +101,20 @@ class DomCheckerProvider
     }
 
     /**
-     * @return array
+     * @param string $node
+     *
+     * @return $this
      */
-    public function addInlineNode($node) {
+    public function addInlineNode($node)
+    {
         $this->inlineNodes[] = $node;
+
+        return $this;
     }
 
     /**
      * @param int $translationEngine
+     *
      * @return $this
      */
     public function setTranslationEngine($translationEngine)
@@ -130,7 +133,8 @@ class DomCheckerProvider
     }
 
     /**
-     * @param $checker
+     * @param AbstractDomChecker $checker
+     *
      * @return $this
      */
     public function addChecker($checker)
@@ -141,7 +145,6 @@ class DomCheckerProvider
     }
 
     /**
-     * @param array $checkers
      * @return $this
      */
     public function addCheckers(array $checkers)
@@ -152,14 +155,15 @@ class DomCheckerProvider
     }
 
     /**
-     * @param array $removeCheckers
      * @return $this
      */
     public function removeCheckers(array $removeCheckers)
     {
         $this->checkers = array_diff($this->checkers, $removeCheckers);
+
         return $this;
     }
+
     /**
      * @return array
      */
@@ -181,9 +185,9 @@ class DomCheckerProvider
     }
 
     /**
-     * @param $domToSearch
-     * @param simple_html_dom $dom
-     * @return simple_html_dom_node
+     * @param string $domToSearch
+     *
+     * @return array<simple_html_dom_node>
      */
     public function discoverCachingGet($domToSearch, simple_html_dom $dom)
     {
@@ -195,49 +199,56 @@ class DomCheckerProvider
     }
 
     /**
-     * Load default checkers
+     * Load default checkers.
+     *
+     * @return void
      */
     protected function loadDefaultCheckers()
     {
-        $files = array_diff(scandir(__DIR__ . '/Dom'), ['AbstractDomChecker.php', '..', '.']);
+        $files = array_diff(scandir(__DIR__.'/Dom'), ['AbstractDomChecker.php', '..', '.']);
         $checkers = array_map(function ($filename) {
-            return self::DEFAULT_CHECKERS_NAMESPACE . Text::removeFileExtension($filename);
+            return self::DEFAULT_CHECKERS_NAMESPACE.Text::removeFileExtension($filename);
         }, $files);
 
         $this->addCheckers($checkers);
     }
 
     /**
-     * @param string $checker   Class of the Checker to add
+     * @param mixed $checker Class of the Checker to add
+     *
      * @return bool
      */
     public function register($checker)
     {
         if ($checker instanceof AbstractDomChecker) {
             $this->addChecker($checker);
+
             return true;
         }
+
         return false;
     }
 
     /**
      * @param string $class
+     *
      * @return array
      */
     protected function getClassDetails($class)
     {
-        $class = self::DEFAULT_CHECKERS_NAMESPACE. $class;
+        $class = self::DEFAULT_CHECKERS_NAMESPACE.$class;
+
         return [
             $class,
             $class::DOM,
             $class::PROPERTY,
-            $class::WORD_TYPE
+            $class::WORD_TYPE,
         ];
     }
 
     /**
-     * @param simple_html_dom $dom
      * @return array
+     *
      * @throws InvalidWordTypeException
      */
     public function handle(simple_html_dom $dom)
@@ -250,44 +261,41 @@ class DomCheckerProvider
 
             $discoveringNodes = $this->discoverCachingGet($selector, $dom);
 
-            if($this->getTranslationEngine() <= 2) { // Old model
-               $this->handleOldEngine($discoveringNodes, $nodes , $class, $property, $defaultWordType);
+            if ($this->getTranslationEngine() <= 2) { // Old model
+                $this->handleOldEngine($discoveringNodes, $nodes, $class, $property, $defaultWordType);
             }
-            if($this->getTranslationEngine() == 3)  { //New model
-
-                for ($i = 0; $i < count($discoveringNodes); $i++) {
+            if (3 == $this->getTranslationEngine()) { // New model
+                for ($i = 0; $i < \count($discoveringNodes); ++$i) {
                     $node = $discoveringNodes[$i];
                     $instance = new $class($node, $property);
 
                     if ($instance->handle()) {
-
                         $wordType = $defaultWordType;
                         $attributes = []; // Will contain attributes of merged node so that we can put them back after the API call.
 
-                        if($selector === 'text') {
-                            if($node->parent->tag === 'title'){
+                        if ('text' === $selector) {
+                            if ('title' === $node->parent->tag) {
                                 $wordType = WordType::TITLE;
                             }
-
 
                             $shift = 0;
 
                             // If the parent node is eligible, we take it instead and we continue until it's not eligible.
-                            while($number = $this->numberOfTextNodeInParentAfterChild($node->parentNode(), $node)) {
-
+                            while ($number = $this->numberOfTextNodeInParentAfterChild($node->parentNode(), $node)) {
                                 $node = $node->parentNode();
                                 $shift = $number - 1;
-                                if($node->tag === 'root')
+                                if ('root' === $node->tag) {
                                     break;
+                                }
                             }
 
                             // We descend the node to see if we can take a child instead, in the case there are wrapping node or empty nodes. For instance, In that case <p><b>Hello</b></p>, it's better to chose node "b" than "p"
                             $node = $this->getMinimalNode($node);
 
-                            //We remove attributes from all child nodes and replace by wg-1, wg-2, etc... Real attributes are saved into $attributes.
+                            // We remove attributes from all child nodes and replace by wg-1, wg-2, etc... Real attributes are saved into $attributes.
                             $node = $this->removeAttributesFromChild($node, $attributes);
 
-                            $i = $i + $shift;
+                            $i += $shift;
                         }
 
                         $this->getParser()->getWords()->addOne(new WordEntry($node->$property, $wordType));
@@ -298,17 +306,28 @@ class DomCheckerProvider
                             'property' => $property,
                             'attributes' => $attributes,
                         ];
-
                     }
                 }
             }
-
         }
+
         return $nodes;
     }
 
-    public function handleOldEngine($discoveringNodes, &$nodes, $class, $property, $wordType) {
-        foreach ($discoveringNodes as $k => $node) {
+    /**
+     * @param array        $discoveringNodes
+     * @param array        $nodes
+     * @param class-string $class
+     * @param string       $property
+     * @param int          $wordType
+     *
+     * @return void
+     *
+     * @throws InvalidWordTypeException
+     */
+    public function handleOldEngine($discoveringNodes, &$nodes, $class, $property, $wordType)
+    {
+        foreach ($discoveringNodes as $node) {
             $instance = new $class($node, $property);
 
             if ($instance->handle()) {
@@ -320,53 +339,57 @@ class DomCheckerProvider
                     'property' => $property,
                 ];
             } else {
-                if (strpos($node->$property, '&gt;') !== false || strpos($node->$property, '&lt;') !== false) {
+                if (str_contains($node->$property, '&gt;') || str_contains($node->$property, '&lt;')) {
                     $node->$property = str_replace(['&lt;', '&gt;'], ['<', '>'], $node->$property);
                 }
             }
         }
     }
 
-
-    // This function is important : It return the number of text node inside a given node, but it count only text node that are inside or after a given child (if no child is given it count everything)
-    // If at some point it find a block or a excluded block, it returns false.
-    public function numberOfTextNodeInParentAfterChild($node, $child = null, &$countEmptyText = false) {
+    /**
+     * This function is important : It return the number of text node inside a given node, but it count only text node that are inside or after a given child (if no child is given it count everything)
+     * If at some point it find a block or a excluded block, it returns false.
+     *
+     * @param simple_html_dom_node|null $node
+     * @param simple_html_dom_node|null $child
+     * @param bool                      $countEmptyText
+     *
+     * @return int|false
+     */
+    public function numberOfTextNodeInParentAfterChild($node, $child = null, &$countEmptyText = false)
+    {
         $count = 0;
-        if($this->isText($node)) {
-
-            if(!$countEmptyText && Text::fullTrim($node->innertext()) != ''
+        if ($this->isText($node)) {
+            if (!$countEmptyText && '' != Text::fullTrim($node->innertext())
                 && !is_numeric(Text::fullTrim($node->innertext()))
                 && !preg_match('/^\d+%$/', Text::fullTrim($node->innertext()))
             ) {
                 $countEmptyText = true;
             }
 
-            if($countEmptyText) {
-                $count++;
+            if ($countEmptyText) {
+                ++$count;
             }
         }
 
-        if (is_array($node) || is_object($node)) {
+        if (\is_object($node)) {
             foreach ($node->nodes as $k => $n) {
-
-                if($n->tag === 'comment') {
+                if ('comment' === $n->tag) {
                     unset($node->nodes[$k]);
                     continue;
                 }
-
 
                 if ($this->containsBlock($n) || $n->hasAttribute(Parser::ATTRIBUTE_NO_TRANSLATE)) {
                     return false;
                 }
 
-
-                if ($child != null && $n->outertext() == $child->outertext()) {
+                if (null != $child && $n->outertext() == $child->outertext()) {
                     $child = null;
                 }
 
-                if ($child == null) {
+                if (null == $child) {
                     $number = $this->numberOfTextNodeInParentAfterChild($n, null, $countEmptyText);
-                    if ($number === false) {
+                    if (false === $number) {
                         return false;
                     } else {
                         $count += $number;
@@ -375,43 +398,54 @@ class DomCheckerProvider
             }
             $node->nodes = array_values($node->nodes);
         }
+
         return $count;
     }
 
-    public function getMinimalNode($node) {
-        if($this->isText($node)) {
+    /**
+     * @param simple_html_dom_node $node
+     *
+     * @return simple_html_dom_node
+     */
+    public function getMinimalNode($node)
+    {
+        if ($this->isText($node)) {
             return $node;
         }
 
-        //We remove unnecessary wrapping nodes
-        while(count($node->nodes) == 1)
+        // We remove unnecessary wrapping nodes
+        while (1 == \count($node->nodes)) {
             $node = $node->nodes[0];
+        }
 
         $notEmptyChild = [];
         foreach ($node->nodes as $n) {
-            if(!$this->hasOnlyEmptyChild($n)) {
+            if (!$this->hasOnlyEmptyChild($n)) {
                 $notEmptyChild[] = $n;
             }
         }
 
-        if(count($notEmptyChild) == 1) {
+        if (1 == \count($notEmptyChild)) {
             return $this->getMinimalNode($notEmptyChild[0]);
         }
-
 
         return $node;
     }
 
-
-    public function removeAttributesFromChild($node, &$attributes) {
-
+    /**
+     * @param simple_html_dom_node $node
+     * @param array                $attributes
+     *
+     * @return simple_html_dom_node
+     */
+    public function removeAttributesFromChild($node, &$attributes)
+    {
         foreach ($node->children() as $child) {
-
-            if($child->tag === 'comment') {
+            if ('comment' === $child->tag) {
                 continue;
             }
 
-            $k = count($attributes)+1;
+            $k = \count($attributes) + 1;
             $attributes['wg-'.$k] = $child->getAllAttributes();
             $child->attr = [];
             $child->setAttribute('wg-'.$k, '');
@@ -421,57 +455,102 @@ class DomCheckerProvider
         return $node;
     }
 
-    public function hasOnlyEmptyChild($node) {
-        if($this->isText($node)) {
-            if(Text::fullTrim($node->innertext()) != '')
-               return false;
-            else
+    /**
+     * @param simple_html_dom_node $node
+     *
+     * @return bool
+     */
+    public function hasOnlyEmptyChild($node)
+    {
+        if ($this->isText($node)) {
+            if ('' != Text::fullTrim($node->innertext())) {
+                return false;
+            } else {
                 return true;
+            }
         }
 
         foreach ($node->nodes as $child) {
-            if(!$this->hasOnlyEmptyChild($child))
+            if (!$this->hasOnlyEmptyChild($child)) {
                 return false;
-        }
-        return true;
-
-    }
-
-    public function isInline($node) {
-        return in_array($node->tag, $this->getInlineNodes());
-    }
-
-    public function isText($node) {
-        return $node->tag === 'text';
-    }
-
-    public function isBlock($node) {
-        return (!$this->isInline($node) && !$this->isText($node) && !($node->tag === 'br'));
-    }
-
-    public function containsBlock($node) {
-
-        if($this->isBlock($node))
-            return true;
-        else {
-            foreach($node->nodes as $n) {
-                if($this->containsBlock($n))
-                    return true;
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param simple_html_dom_node $node
+     *
+     * @return bool
+     */
+    public function isInline($node)
+    {
+        return \in_array($node->tag, $this->getInlineNodes());
+    }
+
+    /**
+     * @param simple_html_dom_node $node
+     *
+     * @return bool
+     */
+    public function isText($node)
+    {
+        return 'text' === $node->tag;
+    }
+
+    /**
+     * @param simple_html_dom_node $node
+     *
+     * @return bool
+     */
+    public function isBlock($node)
+    {
+        return !$this->isInline($node) && !$this->isText($node) && !('br' === $node->tag);
+    }
+
+    /**
+     * @param simple_html_dom_node $node
+     *
+     * @return bool
+     */
+    public function containsBlock($node)
+    {
+        if ($this->isBlock($node)) {
+            return true;
+        } else {
+            foreach ($node->nodes as $n) {
+                if ($this->containsBlock($n)) {
+                    return true;
+                }
+            }
+
             return false;
         }
-
     }
 
-    public function isInlineOrText($node) {
+    /**
+     * @param simple_html_dom_node $node
+     *
+     * @return bool
+     */
+    public function isInlineOrText($node)
+    {
         return $this->isInline($node) || $this->isText($node);
     }
 
-    public function unsetValue(array $array, $value, $strict = TRUE)
+    /**
+     * @param mixed $value
+     * @param bool  $strict
+     *
+     * @return array
+     */
+    public function unsetValue(array $array, $value, $strict = true)
     {
-        if(($key = array_search($value, $array, $strict)) !== FALSE) {
+        if (($key = array_search($value, $array, $strict)) !== false) {
             unset($array[$key]);
         }
+
         return $array;
     }
 }

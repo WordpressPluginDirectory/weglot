@@ -19,7 +19,7 @@ class Bootstrap_Weglot {
 	/**
 	 * List actions WordPress
 	 * @since 2.0
-	 * @var array<int,string>
+	 * @var array<int|string,mixed>
 	 */
 	protected $actions = array();
 
@@ -77,15 +77,18 @@ class Bootstrap_Weglot {
 	 * @since 2.0
 	 */
 	public function get_service( $name ) {
-		if ( ! array_key_exists( $name, $this->services ) ) {
+		$parts = explode( '\\', $name );
+		$key   = end( $parts );
+
+		if ( ! array_key_exists( $key, $this->services ) ) {
 			throw new Exception( 'Service : ' . $name . ' not exist' );
 		}
 
-		if ( is_string( $this->services[ $name ] ) ) {
-			$this->services[ $name ] = new $this->services[ $name ]();
+		if ( is_string( $this->services[ $key ] ) ) {
+			$this->services[ $key ] = new $this->services[ $key ]();
 		}
 
-		return $this->services[ $name ];
+		return $this->services[ $key ];
 	}
 
 	/**

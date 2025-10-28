@@ -2,15 +2,15 @@
 
 namespace Weglot\Client\Api;
 
-use JsonSerializable;
 use Weglot\Client\Api\Exception\MissingRequiredParamException;
 
-if (!function_exists('array_keys_exists')) {
+if (!\function_exists('array_keys_exists')) {
     /**
-     * Used to check if multiple keys are defined in given array
+     * Used to check if multiple keys are defined in given array.
      *
-     * @param array $keys
-     * @param array $arr
+     * @param array<string|int> $keys
+     * @param array<mixed>      $arr
+     *
      * @return bool
      */
     function array_keys_exists(array $keys, array $arr)
@@ -19,14 +19,10 @@ if (!function_exists('array_keys_exists')) {
     }
 }
 
-/**
- * Class TranslateEntry
- * @package Weglot\Client\Api
- */
-class TranslateEntry implements JsonSerializable
+class TranslateEntry implements \JsonSerializable
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $params;
 
@@ -41,12 +37,12 @@ class TranslateEntry implements JsonSerializable
     protected $outputWords;
 
     /**
-     * TranslateEntry constructor.
-     * @param array $params                     Params of the translate entry, required fields: language_from, language_to, bot, request_url & optional: title ("Empty title" by default)
-     * @param WordCollection|null $words        Collection of words
-     * @throws MissingRequiredParamException    If params are missing we throw this exception
+     * @param array<string, mixed> $params Params of the translate entry, required fields: language_from, language_to, bot, request_url & optional: title ("Empty title" by default)
+     * @param WordCollection|null  $words  Collection of words
+     *
+     * @throws MissingRequiredParamException If params are missing we throw this exception
      */
-    public function __construct(array $params, WordCollection $words = null)
+    public function __construct(array $params, ?WordCollection $words = null)
     {
         $this->setParams($params)
             ->setInputWords($words)
@@ -54,21 +50,21 @@ class TranslateEntry implements JsonSerializable
     }
 
     /**
-     * Default params values
+     * Default params values.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     protected function defaultParams()
     {
         return [
-            'title' => 'Empty title'
+            'title' => 'Empty title',
         ];
     }
 
     /**
-     * Required params field names
+     * Required params field names.
      *
-     * @return array
+     * @return array<string>
      */
     protected function requiredParams()
     {
@@ -76,20 +72,22 @@ class TranslateEntry implements JsonSerializable
             'language_from',
             'language_to',
             'bot',
-            'request_url'
+            'request_url',
         ];
     }
 
     /**
-     * @param null|string $key
-     * @return array|bool|mixed
+     * @param string|null $key
+     *
+     * @return mixed
      */
     public function getParams($key = null)
     {
-        if ($key !== null) {
+        if (null !== $key) {
             if (isset($this->params[$key])) {
                 return $this->params[$key];
             }
+
             return false;
         }
 
@@ -97,9 +95,11 @@ class TranslateEntry implements JsonSerializable
     }
 
     /**
-     * @param array $params
+     * @param array<string, mixed> $params
+     *
      * @return $this
-     * @throws MissingRequiredParamException    If params are missing we throw this exception
+     *
+     * @throws MissingRequiredParamException If params are missing we throw this exception
      */
     public function setParams(array $params)
     {
@@ -123,14 +123,15 @@ class TranslateEntry implements JsonSerializable
 
     /**
      * Used to fill input words collection
-     * If $words is null, it would put an empty word collection
+     * If $words is null, it would put an empty word collection.
      *
      * @param WordCollection|null $words
+     *
      * @return $this
      */
     public function setInputWords($words = null)
     {
-        if ($words === null) {
+        if (null === $words) {
             $this->inputWords = new WordCollection();
         } else {
             $this->inputWords = $words;
@@ -149,14 +150,15 @@ class TranslateEntry implements JsonSerializable
 
     /**
      * Used to fill output words collection
-     * If $words is null, it would put an empty word collection
+     * If $words is null, it would put an empty word collection.
      *
      * @param WordCollection|null $words
+     *
      * @return $this
      */
     public function setOutputWords($words = null)
     {
-        if ($words === null) {
+        if (null === $words) {
             $this->outputWords = new WordCollection();
         } else {
             $this->outputWords = $words;
@@ -165,9 +167,6 @@ class TranslateEntry implements JsonSerializable
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
@@ -177,7 +176,7 @@ class TranslateEntry implements JsonSerializable
             'bot' => $this->params['bot'],
             'title' => $this->params['title'],
             'request_url' => $this->params['request_url'],
-            'words' => $this->inputWords->jsonSerialize()
+            'words' => $this->inputWords->jsonSerialize(),
         ];
     }
 }
